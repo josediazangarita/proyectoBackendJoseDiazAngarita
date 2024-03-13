@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Ruta para obtener todos los productos o una cantidad específica
-app.get('api/products', async (req, res) => {
+app.get('/products', async (req, res) => {
     try {
         let products = store.getProducts(); // Se obtienen todos los productos
         const { limit } = req.query;
@@ -25,7 +25,7 @@ app.get('api/products', async (req, res) => {
 });
 
 // Ruta para obtener un producto por ID
-app.get('api/products/:pid', async (req, res) => {
+app.get('/products/:pid', async (req, res) => {
     try {
         const { pid } = req.params;
         const productId = parseInt(pid);
