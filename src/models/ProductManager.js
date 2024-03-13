@@ -1,12 +1,12 @@
 //Script del desafío entregable dos del curso Backend de Coderhouse
-console.log("\nTercer desafío entregable Backend de José Gregorio Díaz Angarita\n")
+console.log("\nPrimera entrega Backend de José Gregorio Díaz Angarita\n")
 
 //Se importa el módulo de FuleSystem para manipular archivos
 import { readFileSync, writeFileSync } from 'fs';
 
 export default class ProductManager {
     constructor() {
-        this.path = '../src/products.json';
+        this.path = '../src/data/products.json';
         this.products = [];
         this.productIdCounter = 1;
         this.loadProducts();
