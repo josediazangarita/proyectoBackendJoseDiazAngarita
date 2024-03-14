@@ -13,22 +13,19 @@ export default class ProductManager {
     }
     //Método para agregar productos
     addProduct(product) {
-        if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
-            console.log("Error: Está intentando ingresar un producto con campos faltantes, ingrese el campo o los campos faltantes y reinténtelo.\n");
-            return;
+        if (!product.title || !product.description || !product.price || !product.code || !product.stock) {
+            return { error: 'Está intentando ingresar un producto con campos faltantes, ingrese el campo o los campos faltantes y reinténtelo.' };
         }
-        //Verificar si el código de un producto ya existe
         if (this.products.some(p => p.code === product.code)) {
-            console.log("Error: El código del producto que intenta ingresar ya existe, asígnele otro código.\n");
-            return;
+            return { error: 'El código del producto que intenta ingresar ya existe, asígnele otro código.' };
         }
-        //Asignar ID al producto
         product.id = this.productIdCounter++;
         this.products.push(product);
         this.saveProducts();
-        console.log(`Se ha agregado un producto con ID ${product.id} correctamente.\n`);
-        return product.id;
+        return { success: true, productId: product.id };
     }
+    
+    
     //Método para obtener todos los productos almacenados
     getProducts() {
         console.log("Lista de todos los productos:", this.products);
@@ -69,22 +66,31 @@ export default class ProductManager {
     }
 
     updateProduct(id, updatedFields) {
-        const index = this.products.findIndex(product => product.id === id);
+        const productId = parseInt(id); // Convertir el ID a un número entero
+        const index = this.products.findIndex(product => product.id === productId);
+        console.log('ID del producto que se intenta actualizar:', productId);
+        console.log('Índice del producto que se intenta actualizar:', index);
+        console.log('Campos actualizados:', updatedFields);
+        
         if (index === -1) {
-            console.error(`No se encuentra el producto con el ID ${id} ingresado\n`);
+            console.error(`No se encuentra el producto con el ID ${productId} ingresado\n`);
             return;
         }
-        //Verificar si el campo id no sea modificado y corresponda con el inicial
-        if ('id' in updatedFields && updatedFields.id !== id) {
-            console.error(`No se puede modificar el ID del producto con ID ${id}\n`);
+    
+        // Verificar si el campo id no sea modificado y corresponda con el inicial
+        if ('id' in updatedFields && updatedFields.id !== productId) {
+            console.error(`No se puede modificar el ID del producto con ID ${productId}\n`);
             return;
         }
-        //Actualizar los campos excepto el id
+    
+        // Actualizar los campos excepto el id
         this.products[index] = { ...this.products[index], ...updatedFields };
         this.saveProducts();
-        console.log(`Se actualizó el producto con ID ${id}\n`);
-        return id;
+        console.log(`Se actualizó el producto con ID ${productId}\n`);
+        return productId;
     }
+    
+    
     //Método para eliminar producto
     deleteProduct(id) {
         const index = this.products.findIndex(product => product.id === id);

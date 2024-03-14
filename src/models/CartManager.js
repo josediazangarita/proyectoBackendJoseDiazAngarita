@@ -1,9 +1,9 @@
 // Clase CartsManager
 import { readFileSync, writeFileSync } from 'fs';
 
-export class CartsManager {
+export default class CartManager {
     constructor() {
-        this.path = './src/data/carts.json';
+        this.path = '../src/data/carts.json';
         this.carts = [];
         this.cartIdCounter = 1;
         this.loadCarts();
