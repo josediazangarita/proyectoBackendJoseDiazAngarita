@@ -8,7 +8,7 @@ const store = new CartManager();
 router.post('/', (req, res) => {
     try {
         const newCart = store.createCart();
-        res.json(newCart);
+        res.status(201).json({ message: 'Carrito creado correctamente', cartId: newCart });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -39,5 +39,3 @@ router.post('/:cid/product/:pid', (req, res) => {
 });
 
 export default router;
-
-

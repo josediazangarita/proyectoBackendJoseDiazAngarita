@@ -36,9 +36,17 @@ export default class CartManager {
         const cart = { id: cartId, products: [] };
         this.carts.push(cart);
         this.saveCarts();
-        return cartId;
+        return cart;
     }
 
+    // Método para obtener un carrito por su ID
+    getCartById(cartId) {
+        const parsedCartId = parseInt(cartId); // Convertir el ID a entero
+        const cart = this.carts.find(cart => cart.id === parsedCartId);
+        return cart ? cart : null; // Retornar el carrito si se encuentra, de lo contrario, retornar null
+    }
+
+    
     // Método para obtener los productos de un carrito por su ID
     getCartProducts(cartId) {
         const cart = this.carts.find(cart => cart.id === cartId);
@@ -47,16 +55,21 @@ export default class CartManager {
 
     // Método para agregar un producto a un carrito por su ID y la cantidad
     addProductToCart(cartId, productId, quantity) {
-        const cart = this.carts.find(cart => cart.id === cartId);
+        const cart = this.getCartById(cartId);
         if (cart) {
-            const existingProduct = cart.products.find(product => product.id === productId);
-            if (existingProduct) {
-                existingProduct.quantity += quantity;
+            const productQuantity = parseInt(quantity) || 1; // Si no se proporciona cantidad, establecerla en 1
+            const existingProductIndex = cart.products.findIndex(product => product.id === productId);
+            if (existingProductIndex !== -1) {
+                // El producto ya existe en el carrito, sumar la cantidad proporcionada a la cantidad existente
+                cart.products[existingProductIndex].quantity += productQuantity;
             } else {
-                cart.products.push({ id: productId, quantity });
+                // El producto no existe en el carrito, agregarlo con la cantidad proporcionada
+                cart.products.push({ id: productId, quantity: productQuantity });
             }
             this.saveCarts();
         }
     }
+    
+    
 }
 

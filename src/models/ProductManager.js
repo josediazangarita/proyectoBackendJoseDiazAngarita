@@ -19,11 +19,18 @@ export default class ProductManager {
         if (this.products.some(p => p.code === product.code)) {
             return { error: 'El código del producto que intenta ingresar ya existe, asígnele otro código.' };
         }
+        // Actualizar el ID del producto y otras propiedades necesarias
         product.id = this.productIdCounter++;
+        product.status = true; // Por defecto, el producto está activo
+        product.thumbnails = product.thumbnails || []; // Por defecto, las imágenes son un array vacío
+        // Agregar el producto actualizado al almacenamiento interno
         this.products.push(product);
+        // Guardar los cambios en el archivo
         this.saveProducts();
+        // Devolver el ID del producto agregado como éxito
         return { success: true, productId: product.id };
     }
+    
     
     
     //Método para obtener todos los productos almacenados
@@ -39,12 +46,14 @@ export default class ProductManager {
         const product = this.products.find(p => p.id === productId);
         if (!product) {
             console.log(`Error: No se encuentra el producto con el ID ${productId}.\n`);
+            return null; // Devolver null si el producto no se encuentra
         } else {
             console.log(`El producto con ID ${productId} es el siguiente:`, product);
             console.log('\n');
+            return product; // Devolver el producto si se encuentra
         }
-        return product;
     }
+    
 
     async loadProducts() {
         try {
@@ -91,15 +100,16 @@ export default class ProductManager {
     }
     
     
-    //Método para eliminar producto
+    // Método para eliminar producto
     deleteProduct(id) {
         const index = this.products.findIndex(product => product.id === id);
         if (index === -1) {
-            console.log("No se encuentra el producto con el ID ingresado por lo que no puede ser eliminado.\n");
-            return;
+            console.log(`No se encuentra el producto con el ID ${id} para ser eliminado.`);
+            return null; // Indicar que el producto no se encontró
         }
         this.products.splice(index, 1);
         this.saveProducts();
-        console.log(`El producto con ID ${id} fue eliminado correctamente.\n`)
+        console.log(`El producto con ID ${id} fue eliminado correctamente.`);
+        return id; // Devolver el ID del producto eliminado
     }
-}
+}    
