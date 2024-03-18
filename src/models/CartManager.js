@@ -41,15 +41,20 @@ export default class CartManager {
 
     // Método para obtener un carrito por su ID
     getCartById(cartId) {
-        const parsedCartId = parseInt(cartId); // Convertir el ID a entero
+        // Convertir el ID a entero y validar que sea un número
+        const parsedCartId = parseInt(cartId);
+        if (isNaN(parsedCartId)) {
+            console.error('El ID del carrito proporcionado no es válido:', cartId);
+            return null;
+        }
         const cart = this.carts.find(cart => cart.id === parsedCartId);
-        return cart ? cart : null; // Retornar el carrito si se encuentra, de lo contrario, retornar null
+        return cart ? cart : null;
     }
 
     
     // Método para obtener los productos de un carrito por su ID
     getCartProducts(cartId) {
-        const cart = this.carts.find(cart => cart.id === cartId);
+        const cart = this.getCartById(cartId);
         return cart ? cart.products : [];
     }
 
