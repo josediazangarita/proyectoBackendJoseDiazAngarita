@@ -22,6 +22,15 @@ app.set("view engine", "handlebars");
 //Establecemos el servidor estático de archivos
 app.use(express.static(`${__dirname}/../public`));
 
+//Método get que renderiza la pantalla
+app.get('/', (req, res) => {
+    let testUser = {
+        name: "JG",
+        last_name: "DA"
+    }
+    res.render('index', testUser);
+})
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
