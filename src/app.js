@@ -14,7 +14,7 @@ const PORT = 8080;
 app.engine("handlebars", handlebars.engine());
 
 //Establecemos la ruta de vistas
-app.set("views", `${__dirname}/views`)
+app.set("views", `${__dirname}/views`);
 
 //Establecemos el motor de renderizado
 app.set("view engine", "handlebars");
@@ -42,3 +42,13 @@ const httpServer = app.listen(PORT, () => {
     console.log(`Servidor activo en el puerto ${PORT}`);
 });
 const socketServer = new Server(httpServer);
+
+socketServer.on("connection", socket => {
+    console.log("Nuevo cliente conectado");
+
+    socket.on("message", data => {
+        console.log("Recibi el dato: ", data);
+    })
+});
+
+
