@@ -1,0 +1,38 @@
+*{
+    background-color: aliceblue;
+    color:black;
+}
+
+/* Estilos para el contenedor de la lista de productos */
+#productList {
+    list-style: none;
+    padding: 0;
+}
+
+/* Estilos para cada elemento de la lista de productos */
+#productList li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px; /* Reducir el margen inferior */
+}
+
+/* Estilos para el formulario de creación de productos */
+#productForm {
+    margin-top: 20px;
+}
+
+/* Estilos para los botones */
+button {
+    padding: 5px 10px;
+    margin-left: 40px;
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: black;
+}
