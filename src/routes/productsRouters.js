@@ -87,6 +87,8 @@ router.post('/', (req, res) => {
 
         // Producto agregado correctamente
         res.json({ message: 'Producto agregado correctamente', productId: result.productId });
+        // Emitir el evento 'newProduct' a través de sockets
+        io.emit('newProduct', result);
     } catch (error) {
         // Capturar cualquier error interno y responder con un error 500
         res.status(500).json({ error: error.message });
