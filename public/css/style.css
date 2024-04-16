@@ -1,7 +1,15 @@
-*{
-    background-color: aliceblue;
-    color:black;
-}
+/* reset y fuente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', sans-serif; }
+  
+  /* estilos generales */
+  body {
+    display: flex;
+    flex-direction: column;
+    background-color: #001524; }
 
 /* Estilos para el contenedor de la lista de productos */
 #productList {
