@@ -7,14 +7,11 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1> Lista de productos actualizada </h1>
-    <ul id="productList">
-        <!-- Los productos se agregarán aquí de forma dinámica -->
-    </ul>
-
     <!-- Formulario para la creación de un nuevo producto -->
-    <h2>Complete los campos para ingresar un nuevo producto</h2>
+     
+    
     <form id="productForm">
+        <h2>Complete los campos para ingresar un nuevo producto</h2>
         <input type="text" name="title" placeholder="Título" required>
         <input type="text" name="description" placeholder="Descripción" required>
         <input type="text" name="code" placeholder="Código" required>
@@ -24,30 +21,46 @@
         <button type="submit">Crear Producto</button>
     </form>
 
+    <h2> Lista de productos actualizada </h2>
+    <ul id="productList">
+        <!-- Los productos se agregarán aquí de forma dinámica -->
+    </ul>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io(); // Conectar al servidor de sockets
 
         // Manejar el evento 'productList' emitido desde el servidor de sockets
         socket.on('productList', (products) => {
-            const productList = document.getElementById('productList');
-            productList.innerHTML = '';
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
 
-            products.forEach(product => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${product.title} - ${product.description}`;
+    products.forEach(product => {
+        const listItem = document.createElement('li');
 
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Eliminar';
-                deleteButton.addEventListener('click', () => {
-                    console.log('Clic en botón de eliminar:', product.id);
-                    socket.emit('deleteProduct', product.id);
-                });
+        // Crear elemento para el título
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = product.title;
+        listItem.appendChild(titleElement);
 
-                listItem.appendChild(deleteButton);
-                productList.appendChild(listItem);
-            });
+        // Crear elemento para la descripción
+        const descriptionElement = document.createElement('p');
+        descriptionElement.textContent = product.description;
+        listItem.appendChild(descriptionElement);
+
+        // Botón de eliminar
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.addEventListener('click', () => {
+            console.log('Clic en botón de eliminar:', product.id);
+            socket.emit('deleteProduct', product.id);
         });
+
+        listItem.appendChild(deleteButton);
+        productList.appendChild(listItem);
+    });
+});
+
 
         // Manejar el envío del formulario para crear un nuevo producto
         const productForm = document.getElementById('productForm');

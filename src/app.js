@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
 });
 
 // Ruta para renderizar la vista home
-app.get('/home', (req, res) => {
+app.get('/products', (req, res) => {
     const products = productManager.getProducts();
     res.render('home', { products });
 });
