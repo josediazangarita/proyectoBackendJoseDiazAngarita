@@ -1,15 +1,149 @@
-/* reset y fuente */
+/* Reset y fuente */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Fredoka', sans-serif; }
   
-  /* estilos generales */
-  body {
+/* Estilos generales */
+body {
+display: flex;
+flex-direction: column;
+margin-top: 80px;
+background-color: #001524;
+min-height: 100vh;
+background-image: url(../img/Blue\ &\ Black\ Elegant\ Black\ Tech\ Desktop\ Wallpaper.png);
+background-size: cover;
+background-position: center;
+min-height: calc(100vh - 80px);
+}
+
+/* Estilos de navbar */
+
+.header{
     display: flex;
-    flex-direction: column;
-    background-color: #001524; }
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 20px 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.header::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+    transition: .5s;
+
+}
+
+.header:hover::before{
+    left: 100%;
+
+}
+
+.logo{
+    color: #ffff;
+    font-size: 25px;
+    text-decoration: none;
+    cursor:default;
+}
+
+.navbar{
+    display: flex;
+}
+
+.navbar a{
+    color: #ffff;
+    font-size: 18px;
+    text-decoration: none;
+    margin-left: 35px;
+    transition: .3s;
+}
+
+.navbar a:hover{
+    color: yellow;
+}
+
+.menu-toggle {
+    display: none; /* Ocultar por defecto en pantallas grandes */
+    cursor: pointer;
+}
+
+
+/*Estilos títulos u subtítulos*/
+.title-ecommerce{
+    text-align: center;
+    padding: 10px;
+    color: #4bc2e5;
+    font-size: 2.5rem;
+
+}
+
+.subtitle-ecommerce{
+    text-align: center;
+    margin-bottom: 25px;
+    color: yellow;
+    font-size: 1.5rem;
+}
+
+
+/*Estilos cards de productos*/
+
+.grid-container {
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    font-size: 1.5em;
+    text-align: center;
+    color: #4bc2e5;
+}
+
+.card-body {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(50px);
+    color: antiquewhite;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
+
+
 
 /* Estilos para el contenedor de la lista de productos */
 #productList {
@@ -44,3 +178,70 @@ button {
 button:hover {
     background-color: black;
 }
+
+/*Estilos de footer*/
+footer{
+    display: flex;
+    color: yellow;
+    font-size: 1.2rem;
+    margin-top: auto;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/*Media querys*/
+
+@media screen and (max-width: 768px) {
+
+    .header{
+        background: rgba(29, 231, 238, 0.7);
+        backdrop-filter: none;
+    }
+
+    .logo{
+        color: black;
+    }
+
+    .navbar {
+        display: none;
+        flex-direction: column;
+        background: rgba(29, 231, 238, 0.7);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .navbar.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navbar a {
+        display: block;
+        color: black;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 24px;
+    }
+}
+
+
+
+
+

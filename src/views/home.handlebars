@@ -8,23 +8,30 @@
 </head>
 <body>
     
-    <h2>Lista de productos</h2>
-        <ul>
-            {{#each products}}
-            <li>
-                <strong>{{this.title}}</strong><br>
-                Descripción: {{this.description}}<br>
-                Código: {{this.code}}<br>
-                Precio: {{this.price}}<br>
-                Stock: {{this.stock}}<br>
+<div class="grid-container">
+    <h2 class="subtitle-ecommerce">Lista de productos</h2>
+    <div class="grid">
+        {{#each products}}
+        <div class="card">
+            <div class="card-header">
+                <strong>{{this.title}}</strong>
+            </div>
+            <div class="card-body">
                 {{#if this.thumbnails.[0]}}
-                <img src="{{this.thumbnails.[0]}}" alt="Thumbnail">
+                <img src="{{this.thumbnails.[0]}}" alt="Thumbnail" class="product-image">
                 {{else}}
-                    Sin imagen disponible
+                <p>Sin imagen disponible</p>
                 {{/if}}
-            </li>
-            {{/each}}
-        </ul>
+                <p>Descripción: {{this.description}}</p>
+                <p>Código: {{this.code}}</p>
+                <p>Precio: {{this.price}}</p>
+                <p>Stock: {{this.stock}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
 
 </body>
 </html>
