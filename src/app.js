@@ -3,6 +3,7 @@ import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server as SocketServer } from "socket.io";
 import ProductManager from './models/ProductManager.js';
+import mongoose from 'mongoose'
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
@@ -12,48 +13,34 @@ import cartRoutes from './routes/cartRoutes.js';
 // Se crea una instancia de express
 const app = express();
 
-// Se establece el puerto
-const PORT = process.env.PORT || 8080;
-
-// Servidor HTTP
-const httpServer = createServer(app);
-
-// Servidor de sockets
-const io = new SocketServer(httpServer);
-
 // Instancia de ProductManager
 const productManager = new ProductManager();
 
-//Inicializamos el motor de plantillas
+// Se establece el puerto
+const PORT = process.env.PORT || 8080;
+
+// Servidor HTTP y escucha del puerto
+const httpServer = createServer(app);
+
+httpServer.listen(PORT, () => {
+    console.log(`Servidor activo en el puerto ${PORT}`);
+});
+
+//Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine("handlebars", handlebars.engine());
-
-//Establecemos la ruta de vistas
 app.set("views", `${__dirname}/views`);
-
-//Establecemos el motor de renderizado
 app.set("view engine", "handlebars");
 
 //Establecemos el servidor estático de archivos
 app.use(express.static(`${__dirname}/../public`));
 
-//Método get que renderiza la pantalla
+//Método get que renderiza la pantalla (por revisar)
 app.get('/', (req, res) => {
     let testUser = {
         name: "JG",
         last_name: "DA"
     }
     res.render('index', testUser);
-});
-
-// Ruta para renderizar la vista home
-app.get('/products', (req, res) => {
-    const products = productManager.getProducts();
-    res.render('home', { products });
-});
-
-// Ruta para renderizar la vista de productos en tiempo real
-app.get('/realtimeproducts', (req, res) => {
-    res.render('realTimeProducts', {});
 });
 
 // Middleware para parsear JSON y URL-encoded
@@ -65,12 +52,21 @@ app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 
-// Escucha el puerto
-httpServer.listen(PORT, () => {
-    console.log(`Servidor activo en el puerto ${PORT}`);
+// Ruta para renderizar la vista products
+app.get('/products', (req, res) => {
+    const products = productManager.getProducts();
+    res.render('home', { products });
 });
 
-// Manejar conexiones WebSocket
+// Ruta para renderizar la vista de productos en tiempo real
+app.get('/realtimeproducts', (req, res) => {
+    res.render('realTimeProducts', {});
+});
+
+// Servidor de sockets
+const io = new SocketServer(httpServer);
+
+// Manejar conexiones WebSocket (pasar lógica a un archivo js separado)
 io.on("connection", socket => {
     console.log("Nuevo cliente conectado");
 
@@ -97,3 +93,9 @@ io.on("connection", socket => {
         }
     });
 });
+
+// Conexión a MongoDB
+const uri = "mongodb+srv://jgda:jgda@cluster0.abjsbjo.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0";
+mongoose.connect(uri)
+    .then(() => console.log('Conectado a MongoDB Atlas'))
+    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
