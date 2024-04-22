@@ -1,7 +1,7 @@
 // Clase CartsManager
 import { readFileSync, writeFileSync } from 'fs';
 
-export default class CartManager {
+export default class CartManagerFS {
     constructor() {
         this.path = '../src/data/carts.json';
         this.carts = [];
@@ -51,7 +51,7 @@ export default class CartManager {
         return cart ? cart : null;
     }
 
-    
+
     // Método para obtener los productos de un carrito por su ID
     getCartProducts(cartId) {
         const cart = this.getCartById(cartId);
@@ -74,7 +74,7 @@ export default class CartManager {
             this.saveCarts();
         }
     }
-    
-    
+
+
 }
 

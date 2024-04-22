@@ -1,9 +1,9 @@
 // Rutas de Cart
 import express from 'express';
-import CartManager from '../models/CartManager.js';
+import CartManagerFS from '../dao/models/cartManagerFS.js';
 
 const router = express.Router();
-const store = new CartManager();
+const store = new CartManagerFS();
 
 router.post('/', (req, res) => {
     try {
