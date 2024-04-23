@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/{{style}}">
 </head>
 <body>
     
@@ -23,6 +23,7 @@
                 <p>Sin imagen disponible</p>
                 {{/if}}
                 <p>Descripción: {{this.description}}</p>
+                <p>Categoría: {{this.category}}</p>
                 <p>Código: {{this.code}}</p>
                 <p>Precio: {{this.price}}</p>
                 <p>Stock: {{this.stock}}</p>
@@ -31,7 +32,7 @@
         {{/each}}
     </div>
 </div>
-
-
+<script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="/js/index.js"></script> --}}
 </body>
 </html>

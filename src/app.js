@@ -70,9 +70,6 @@ app.get('/realtimeproducts', (req, res) => {
 // Servidor de sockets
 websocket(io);
 
-// Manejar conexiones WebSocket (pasar lógica a un archivo js separado)
-
-
 // Conexión a MongoDB
 const uri = "mongodb+srv://jgda:jgda@cluster0.abjsbjo.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(uri)

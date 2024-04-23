@@ -1,5 +1,5 @@
-//Script del desafío entregable dos del curso Backend de Coderhouse
-//console.log("\nPrimera entrega Backend de José Gregorio Díaz Angarita\n")
+
+//console.log("\nSegunda entrega Backend de José Gregorio Díaz Angarita\n")
 
 //Se importa el módulo de FileSystem para manipular archivos
 import { readFileSync, writeFileSync } from 'fs';
@@ -22,12 +22,10 @@ export default class ProductManagerFS {
         // Actualizar el ID del producto y otras propiedades necesarias
         product.id = this.productIdCounter++;
         product.status = true; // Por defecto, el producto está activo
-        product.thumbnails = product.thumbnails || []; // Por defecto, las imágenes son un array vacío
+        product.thumbnails = product.thumbnails || [];
         // Agregar el producto actualizado al almacenamiento interno
         this.products.push(product);
-        // Guardar los cambios en el archivo
         this.saveProducts();
-        // Devolver el ID del producto agregado como éxito
         return { success: true, productId: product.id };
     }
 
@@ -42,15 +40,15 @@ export default class ProductManagerFS {
 
     //Método para obtener un producto almacenado por su ID
     getProductById(id) {
-        const productId = parseInt(id); // Convertir el ID a entero
+        const productId = parseInt(id);
         const product = this.products.find(p => p.id === productId);
         if (!product) {
             console.log(`Error: No se encuentra el producto con el ID ${productId}.\n`);
-            return null; // Devolver null si el producto no se encuentra
+            return null;
         } else {
             console.log(`El producto con ID ${productId} es el siguiente:`, product);
             console.log('\n');
-            return product; // Devolver el producto si se encuentra
+            return product;
         }
     }
 
@@ -75,7 +73,7 @@ export default class ProductManagerFS {
     }
 
     updateProduct(id, updatedFields) {
-        const productId = parseInt(id); // Convertir el ID a un número entero
+        const productId = parseInt(id);
         const index = this.products.findIndex(product => product.id === productId);
         console.log('ID del producto que se intenta actualizar:', productId);
         console.log('Índice del producto que se intenta actualizar:', index);
@@ -105,11 +103,11 @@ export default class ProductManagerFS {
         const index = this.products.findIndex(product => product.id === id);
         if (index === -1) {
             console.log(`No se encuentra el producto con el ID ${id} para ser eliminado.`);
-            return null; // Indicar que el producto no se encontró
+            return null;
         }
         this.products.splice(index, 1);
         this.saveProducts();
         console.log(`El producto con ID ${id} fue eliminado correctamente.`);
-        return id; // Devolver el ID del producto eliminado
+        return id;
     }
 }    
