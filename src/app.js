@@ -2,7 +2,7 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server as SocketServer } from "socket.io";
-import ProductManager from './dao/ProductManager.js';
+import ProductManagerFS from './dao/productManagerFS.js';
 import mongoose from 'mongoose'
 
 import __dirname from './utils.js';
@@ -14,7 +14,7 @@ import cartRoutes from './routes/cartRoutes.js';
 const app = express();
 
 // Instancia de ProductManager
-const productManager = new ProductManager();
+const productManager = new ProductManagerFS();
 
 // Se establece el puerto
 const PORT = process.env.PORT || 8080;

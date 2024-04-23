@@ -1,9 +1,9 @@
 import express from 'express';
 
-import ProductManager from '../dao/ProductManager.js';
+import ProductManagerFS from '../dao/productManagerFS.js';
 
 const router = express.Router();
-const store = new ProductManager(); // Crea una instancia de ProductManager
+const store = new ProductManagerFS(); // Crea una instancia de ProductManager
 
 router.get('/', (req, res) => {
     res.render('index', {});

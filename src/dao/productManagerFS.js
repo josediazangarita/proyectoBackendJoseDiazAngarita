@@ -4,7 +4,7 @@ console.log("\nPrimera entrega Backend de José Gregorio Díaz Angarita\n")
 //Se importa el módulo de FileSystem para manipular archivos
 import { readFileSync, writeFileSync } from 'fs';
 
-export default class ProductManager {
+export default class ProductManagerFS {
     constructor() {
         this.path = '../src/data/products.json';
         this.products = [];

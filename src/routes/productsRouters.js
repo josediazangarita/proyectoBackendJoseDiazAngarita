@@ -1,9 +1,9 @@
 // Ruta de productos
 import express from 'express';
-import ProductManager from '../dao/ProductManager.js';
+import ProductManagerFS from '../dao/productManagerFS.js';
 
 const router = express.Router();
-const store = new ProductManager();
+const store = new ProductManagerFS();
 
 router.get('/', (req, res) => {
     try {
