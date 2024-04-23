@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/{{style}}">
+</head>
+<body>
+    
+<div class="grid-container">
+    <h2>Lista de productos</h2>
+    <div class="grid">
+        {{#each products}}
+        <div class="card">
+            <div class="card-header">
+                <strong>{{this.title}}</strong>
+            </div>
+            <div class="card-body">
+                {{#if this.thumbnails.[0]}}
+                <img src="{{this.thumbnails.[0]}}" alt="Thumbnail" class="product-image">
+                {{else}}
+                <p>Sin imagen disponible</p>
+                {{/if}}
+                <p>Descripción: {{this.description}}</p>
+                <p>Categoría: {{this.category}}</p>
+                <p>Código: {{this.code}}</p>
+                <p>Precio: {{this.price}}</p>
+                <p>Stock: {{this.stock}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="/js/index.js"></script> --}}
+</body>
+</html>

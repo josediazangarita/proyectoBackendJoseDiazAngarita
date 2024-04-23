@@ -1,7 +1,173 @@
-*{
-    background-color: aliceblue;
-    color:black;
+/* Reset y fuente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', sans-serif; }
+  
+/* Estilos generales */
+body {
+display: flex;
+flex-direction: column;
+margin-top: 80px;
+background-color: #001524;
+min-height: 100vh;
+background-image: url(../img/wallpaper.jpg);
+background-size: cover;
+background-position: center;
+min-height: calc(100vh - 80px);
 }
+
+/* Estilos de navbar */
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 20px 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.header::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+    transition: .5s;
+
+}
+
+.header:hover::before{
+    left: 100%;
+
+}
+
+.logo{
+    color: #ffff;
+    font-size: 25px;
+    text-decoration: none;
+    cursor:default;
+}
+
+.navbar{
+    display: flex;
+}
+
+.navbar a{
+    color: #ffff;
+    font-size: 18px;
+    text-decoration: none;
+    margin-left: 35px;
+    transition: .3s;
+}
+
+.navbar a:hover{
+    color: yellow;
+}
+
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+
+/*Estilos títulos u subtítulos*/
+h1{
+    text-align: center;
+    padding: 10px;
+    color: #4bc2e5;
+    font-size: 2.5rem;
+
+}
+
+h2{
+    text-align: center;
+    margin-bottom: 25px;
+    color: yellow;
+    font-size: 2rem;
+}
+
+h3{
+    text-align: center;
+    padding: 5px;
+    color: #4bc2e5;
+    font-size: 1.2rem;  
+}
+
+.saludoCliente{
+    padding: 10px;
+    color: #ffff;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.messageHome{
+    margin: auto;
+}
+
+p{
+    padding: 10px;
+    color: #ffff;
+    text-align: center;
+}
+
+
+/*Estilos cards de productos*/
+
+.grid-container {
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    font-size: 1.5em;
+    text-align: center;
+    color: #4bc2e5;
+}
+
+.card-body {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(50px);
+    color: antiquewhite;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
+
+
 
 /* Estilos para el contenedor de la lista de productos */
 #productList {
@@ -14,25 +180,152 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px; /* Reducir el margen inferior */
+    margin-bottom: 5px;
 }
 
 /* Estilos para el formulario de creación de productos */
 #productForm {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(50px);
+    border-radius: 8px;
+    color: antiquewhite;
+    font-size: 1.2em;
+    text-align: center;
+    margin: auto; 
+    width: 80%; 
+    max-width: 500px; 
 }
 
-/* Estilos para los botones */
-button {
-    padding: 5px 10px;
-    margin-left: 40px;
-    background-color: red;
-    color: #fff;
+#productForm input[type="text"],
+#productForm input[type="number"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+#productForm button {
+    padding: 10px 15px;
+    background-color:  #38a2c2;
+    color: black;
+    font-size: 1rem;
     border: none;
-    border-radius: 3px;
+    border-radius: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: black;
+#productForm button:hover {
+    background-color: yellowgreen;
 }
+
+/* Estilos para lista de productos de realTimeProducts */
+#productList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    width: 100vw;
+    padding: 20px;
+}
+
+#productList li {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #4bc2e5;
+    font-size: 1em;
+}
+
+#productList button {
+    padding: 10px 15px;
+    background-color: red;
+    color: #ffff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#productList button:hover {
+    background-color: black;
+    color: #ffff;
+}
+
+
+/*Estilos de footer*/
+footer{
+    display: flex;
+    color: yellow;
+    font-size: 1.2rem;
+    margin-top: auto;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/*Media querys*/
+
+@media screen and (max-width: 768px) {
+
+    .header{
+        background: rgba(29, 231, 238, 0.7);
+        backdrop-filter: none;
+    }
+
+    .logo{
+        color: black;
+    }
+
+    .navbar {
+        display: none;
+        flex-direction: column;
+        background: rgba(29, 231, 238, 0.7);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .navbar.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navbar a {
+        display: block;
+        color: black;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        font-size: 24px;
+    }
+}
+
+
+
+
+

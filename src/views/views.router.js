@@ -1,25 +1,37 @@
 import express from 'express';
 
-import ProductManager from '../models/ProductManager.js';
+//import ProductManagerFS from '../dao/productManagerFS.js';
+import ProductManagerDB from '../dao/productManagerDB.js';
 
 const router = express.Router();
-const store = new ProductManager(); // Crea una instancia de ProductManager
+// Se crea una instancia de ProductManager
+//const store = new ProductManagerFS(); 
+const store = new ProductManagerDB();
 
 router.get('/', (req, res) => {
     res.render('index', {});
 });
 
-router.get('/home', (req, res) => {
-    try {
-        const products = store.getProducts(); // Obtener la lista de productos desde el modelo
-        res.render('home', { products }); // Renderiza la vista home y pasa la lista de productos
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+router.get('/products', async (req, res) => {
+    res.render(
+        'products',
+        {
+            title: 'Productos',
+            style: 'style.css',
+            products: await store.getProducts()
+        }
+    )
 });
 
-router.get('/realtimeproducts', (req, res) => {
-    res.render('realTimeProducts', {});
+router.get('/realtimeproducts', async (req, res) => {
+    res.render(
+        'realTimeProducts',
+        {
+            title: 'Productos',
+            style: 'style.css',
+            products: await store.getProducts()
+        }
+    )
 });
 
 export default router;
