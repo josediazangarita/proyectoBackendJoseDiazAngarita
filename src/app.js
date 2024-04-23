@@ -2,7 +2,7 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server as SocketServer } from "socket.io";
-import ProductManager from './models/ProductManager.js';
+import ProductManager from './dao/ProductManager.js';
 import mongoose from 'mongoose'
 
 import __dirname from './utils.js';

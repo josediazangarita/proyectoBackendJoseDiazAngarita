@@ -1,6 +1,6 @@
 // Ruta de productos
 import express from 'express';
-import ProductManager from '../models/ProductManager.js';
+import ProductManager from '../dao/ProductManager.js';
 
 const router = express.Router();
 const store = new ProductManager();

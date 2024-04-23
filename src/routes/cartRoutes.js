@@ -1,6 +1,6 @@
 // Rutas de Cart
 import express from 'express';
-import CartManagerFS from '../dao/models/cartManagerFS.js';
+import CartManagerFS from '../dao/cartManagerFS.js';
 
 const router = express.Router();
 const store = new CartManagerFS();
