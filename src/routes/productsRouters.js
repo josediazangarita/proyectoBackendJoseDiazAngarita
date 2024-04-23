@@ -1,98 +1,97 @@
-// Ruta de productos
-import express from 'express';
-import ProductManagerFS from '../dao/productManagerFS.js';
+import { Router } from 'express';
+//import { productManagerFS } from '../dao/productManagerFS.js';
+import ProductManagerDB from '../dao/productManagerDB.js';
+import { uploader } from '../utils/multerUtil.js';
 
-const router = express.Router();
-const store = new ProductManagerFS();
+const router = Router();
+//const ProductService = new productManagerFS('products.json');
+const store = new ProductManagerDB();
 
-router.get('/', (req, res) => {
+router.get('/products', async (req, res) => {
+    const result = await store.getProducts();
+
+    res.send({
+        status: 'success',
+        payload: result
+    });
+});
+
+router.get('/:pid', async (req, res) => {
+
     try {
-        let products = store.getProducts();
-        const { limit } = req.query;
-        if (limit) {
-            products = products.slice(0, parseInt(limit));
-        }
-        res.json(products);
+        const result = await store.getProductByID(req.params.pid);
+        res.send({
+            status: 'success',
+            payload: result
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
     }
 });
 
-router.get('/:pid', (req, res) => {
+router.post('/', uploader.array('thumbnails', 3), async (req, res) => {
+
+    if (req.files) {
+        req.body.thumbnails = [];
+        req.files.forEach((file) => {
+            req.body.thumbnails.push(file.filename);
+        });
+    }
+
     try {
-        const product = store.getProductById(req.params.pid);
-        if (product) {
-            res.json(product);
-        } else {
-            res.status(404).json({ error: `Product with ID ${req.params.pid} not found` });
-        }
+        const result = await store.addProduct(req.body);
+        res.send({
+            status: 'success',
+            payload: result
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
     }
 });
 
-router.put('/:pid', (req, res) => {
+router.put('/:pid', uploader.array('thumbnails', 3), async (req, res) => {
+
+    if (req.files) {
+        req.body.thumbnails = [];
+        req.files.forEach((file) => {
+            req.body.thumbnails.push(file.filename);
+        });
+    }
+
     try {
-        const { pid } = req.params;
-        const updatedFields = req.body; // Obtener los campos actualizados del cuerpo de la solicitud
-        const updatedProductId = store.updateProduct(pid, updatedFields); // Pasar los campos actualizados a updateProduct
-        if (updatedProductId === undefined) {
-            res.status(400).json({ error: `No se puede modificar el ID del producto con ID ${pid}` });
-        } else {
-            res.json({ mensaje: `Producto con ID ${updatedProductId} actualizado correctamente` });
-        }
+        const result = await store.updateProduct(req.params.pid, req.body);
+        res.send({
+            status: 'success',
+            payload: result
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
     }
 });
 
-router.delete('/:pid', (req, res) => {
+router.delete('/:pid', async (req, res) => {
+
     try {
-        const { pid } = req.params;
-        const productId = parseInt(pid); // Convertir el ID a un número entero
-        const deletedProductId = store.deleteProduct(productId); // Llamar a deleteProduct con el ID convertido
-        if (deletedProductId === null) {
-            res.status(404).json({ error: `No se encuentra el producto con el ID ${productId} para ser eliminado.` });
-        } else {
-            res.json({ message: `Producto con ID ${deletedProductId} eliminado correctamente` });
-        }
+        const result = await store.deleteProduct(req.params.pid);
+        res.send({
+            status: 'success',
+            payload: result
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).send({
+            status: 'error',
+            message: error.message
+        });
     }
 });
 
-router.post('/', (req, res) => {
-    try {
-        const { title, description, code, price, stock, category, thumbnails } = req.body;
-
-        // Crear el nuevo producto con los datos recibidos en la solicitud
-        const newProduct = {
-            title,
-            description,
-            code,
-            price,
-            stock,
-            category,
-            thumbnails: thumbnails || [], // Si no se proporciona, por defecto es un array vacío
-            status: true // Por defecto, el producto está activo
-        };
-
-        // Agregar el nuevo producto utilizando el método addProduct de ProductManager
-        const result = store.addProduct(newProduct);
-
-        // Verificar si ocurrió un error al agregar el producto
-        if (result.error) {
-            return res.status(400).json({ error: result.error });
-        }
-
-        // Producto agregado correctamente
-        res.json({ message: 'Producto agregado correctamente', productId: result.productId });
-        // Emitir el evento 'newProduct' a través de sockets
-        io.emit('newProduct', result);
-    } catch (error) {
-        // Capturar cualquier error interno y responder con un error 500
-        res.status(500).json({ error: error.message });
-    }
-});
-
-export default router; 
+export default router;

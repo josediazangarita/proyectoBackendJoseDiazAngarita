@@ -1,5 +1,5 @@
 //Script del desafío entregable dos del curso Backend de Coderhouse
-console.log("\nPrimera entrega Backend de José Gregorio Díaz Angarita\n")
+//console.log("\nPrimera entrega Backend de José Gregorio Díaz Angarita\n")
 
 //Se importa el módulo de FileSystem para manipular archivos
 import { readFileSync, writeFileSync } from 'fs';

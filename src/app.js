@@ -1,20 +1,21 @@
 import express from 'express';
 import handlebars from "express-handlebars";
 import { createServer } from 'http';
-import { Server as SocketServer } from "socket.io";
-import ProductManagerFS from './dao/productManagerFS.js';
+import { Server } from 'socket.io';
+import ProductManagerDB from './dao/productManagerDB.js';
 import mongoose from 'mongoose'
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
 import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
+import websocket from './websocket.js';
 
 // Se crea una instancia de express
 const app = express();
 
 // Instancia de ProductManager
-const productManager = new ProductManagerFS();
+const productManager = new ProductManagerDB();
 
 // Se establece el puerto
 const PORT = process.env.PORT || 8080;
@@ -25,6 +26,9 @@ const httpServer = createServer(app);
 httpServer.listen(PORT, () => {
     console.log(`Servidor activo en el puerto ${PORT}`);
 });
+
+// Servidor de sockets
+const io = new Server(httpServer);
 
 //Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine("handlebars", handlebars.engine());
@@ -53,7 +57,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 
 // Ruta para renderizar la vista products
-app.get('/products', (req, res) => {
+app.get('/home', (req, res) => {
     const products = productManager.getProducts();
     res.render('home', { products });
 });
@@ -64,35 +68,10 @@ app.get('/realtimeproducts', (req, res) => {
 });
 
 // Servidor de sockets
-const io = new SocketServer(httpServer);
+websocket(io);
 
 // Manejar conexiones WebSocket (pasar lógica a un archivo js separado)
-io.on("connection", socket => {
-    console.log("Nuevo cliente conectado");
 
-    // Enviar la lista de productos al cliente cuando se conecta
-    socket.emit('productList', productManager.getProducts());
-
-    // Manejar la creación de productos desde sockets
-    socket.on("createProduct", (newProduct) => {
-        // Agregar el nuevo producto a la lista de productos
-        const result = productManager.addProduct(newProduct);
-
-        // Emitir el evento 'newProduct' a todos los clientes conectados
-        io.emit('newProduct', result);
-    });
-
-    // Manejar la eliminación de productos desde sockets
-    socket.on("deleteProduct", (productId) => {
-        // Eliminar el producto con el ID especificado
-        const result = productManager.deleteProduct(productId);
-
-        if (result) {
-            // Si se eliminó con éxito, emitir el evento 'productDeleted' a todos los clientes conectados
-            io.emit('productDeleted', productId);
-        }
-    });
-});
 
 // Conexión a MongoDB
 const uri = "mongodb+srv://jgda:jgda@cluster0.abjsbjo.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0";
