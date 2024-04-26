@@ -136,6 +136,8 @@ p{
 
 .card {
     border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(50px);
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -152,8 +154,6 @@ p{
 
 .card-body {
     padding: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(50px);
     color: antiquewhite;
     font-size: 1.2em;
     text-align: center;
