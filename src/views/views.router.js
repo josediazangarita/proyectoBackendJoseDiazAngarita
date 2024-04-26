@@ -10,7 +10,7 @@ const store = new ProductManagerDB();
 
 //Ruta para la página principal
 router.get('/', (req, res) => {
-    res.render('index', {});
+    res.render('index', { style: 'style.css' });
 });
 
 // Ruta para la página de productos
