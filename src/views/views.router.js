@@ -8,30 +8,21 @@ const router = express.Router();
 //const store = new ProductManagerFS(); 
 const store = new ProductManagerDB();
 
+//Ruta para la página principal
 router.get('/', (req, res) => {
     res.render('index', {});
 });
 
+// Ruta para la página de productos
 router.get('/products', async (req, res) => {
-    res.render(
-        'products',
-        {
-            title: 'Productos',
-            style: 'style.css',
-            products: await store.getProducts()
-        }
-    )
+    const products = await store.getProducts();
+    res.render('products', { title: 'Productos', style: 'style.css', products });
 });
 
+// Ruta para la página de productos en tiempo real
 router.get('/realtimeproducts', async (req, res) => {
-    res.render(
-        'realTimeProducts',
-        {
-            title: 'Productos',
-            style: 'style.css',
-            products: await store.getProducts()
-        }
-    )
+    const products = await store.getProducts();
+    res.render('realTimeProducts', { title: 'Productos en Tiempo Real', style: 'style.css', products });
 });
 
 export default router;

@@ -38,15 +38,6 @@ app.set("view engine", "handlebars");
 //Establecemos el servidor estático de archivos
 app.use(express.static(`${__dirname}/../public`));
 
-//Método get que renderiza la pantalla (por revisar)
-app.get('/', (req, res) => {
-    let testUser = {
-        name: "JG",
-        last_name: "DA"
-    }
-    res.render('index', testUser);
-});
-
 // Middleware para parsear JSON y URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,17 +46,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
-
-// Ruta para renderizar la vista products
-app.get('/home', (req, res) => {
-    const products = productManager.getProducts();
-    res.render('home', { products });
-});
-
-// Ruta para renderizar la vista de productos en tiempo real
-app.get('/realtimeproducts', (req, res) => {
-    res.render('realTimeProducts', {});
-});
 
 // Servidor de sockets
 websocket(io);
