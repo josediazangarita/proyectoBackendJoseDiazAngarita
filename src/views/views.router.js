@@ -14,14 +14,30 @@ router.get('/', (req, res) => {
 });
 
 // Ruta para la página de productos
+// Ruta en viewsRouter para mostrar la página de productos con filtrado opcional
 router.get('/products', async (req, res) => {
-    const products = await store.getProducts();
-    res.render('products', { title: 'Productos', style: 'style.css', products });
+    console.log("🚀 ~ router.get ~ req:", req)
+    let filter = {};
+    if (req.query.category && req.query.category !== '') {
+        filter.category = req.query.category;
+    }
+    const products = await store.getProducts(filter);
+    res.render('products', {
+        title: 'Productos',
+        style: 'style.css',
+        products,
+        category: req.query.category || ''
+    });
 });
+
 
 // Ruta para la página de productos en tiempo real
 router.get('/realtimeproducts', async (req, res) => {
-    const products = await store.getProducts();
+    let filter = {};
+    if (req.query.category && req.query.category !== '') {
+        filter.category = req.query.category;
+    }
+    const products = await store.getProducts(filter);
     res.render('realTimeProducts', { title: 'Productos en Tiempo Real', style: 'style.css', products });
 });
 
