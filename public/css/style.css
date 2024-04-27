@@ -323,20 +323,25 @@ footer{
         color: #fff;
         font-size: 24px;
     }
+    .form-category-filter {
+        flex-direction: column;
+    }
 }
 
 /* Estilos para el filtro de categorías */
 .form-category-filter {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    border-radius: 8px;
+    border-radius: 30px;
     padding: 10px;
     margin: 20px auto;
-    width: fit-content;
+    width: auto;
     color: #ffff;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     font-size: 1.2rem;
 }
 
@@ -353,9 +358,10 @@ footer{
 }
 
 .form-category-filter select:hover, .form-category-filter button:hover {
-    background-color: yellowgreen;
+    background-color: yellow;
     color: #000;
 }
+
 
 /* Estilos para la paginación */
 .pagination {
@@ -365,7 +371,7 @@ footer{
     width: fit-content;
     color: #ffff;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .pagination a {
@@ -380,7 +386,7 @@ footer{
 }
 
 .pagination a:hover {
-    background-color: yellowgreen;
+    background-color: yellow;
     color: #000;
 }
 

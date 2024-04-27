@@ -15,10 +15,11 @@ router.get('/', (req, res) => {
 });
 
 // Ruta para la página de productos para mostrar la página de productos con filtrado opcional
+// Ruta para la página de productos para mostrar la página de productos con filtrado opcional
 router.get('/products', async (req, res) => {
     console.log("🚀 ~ router.get ~ req:", req);
 
-    let { category, page = 1 } = req.query;
+    let { category, sort = 'asc', page = 1 } = req.query;
     page = parseInt(page);
     if (isNaN(page) || page < 1) page = 1;
 
@@ -27,12 +28,26 @@ router.get('/products', async (req, res) => {
         filter.category = category;
     }
 
+    // Configurar la dirección del ordenamiento
+    let sortOptions = {};
+    if (sort === 'desc') {
+        sortOptions.price = -1;
+    } else {
+        sortOptions.price = 1; // Por defecto ordena ascendente
+    }
+
     const limit = 10;
     const baseURL = "http://localhost:8080/products";
 
     try {
-        const options = { page, limit, lean: true };
+        const options = {
+            page,
+            limit,
+            lean: true,
+            sort: sortOptions // Incluye las opciones de ordenamiento en la configuración de paginación
+        };
         const result = await productModel.paginate(filter, options);
+        console.log("🚀 ~ router.get ~ result:", result)
 
         // Construir enlaces de paginación
         const queryParams = new URLSearchParams(req.query);
@@ -46,6 +61,7 @@ router.get('/products', async (req, res) => {
             style: 'style.css',
             products: result.docs,
             category,
+            sort,
             pagination: {
                 totalPages: result.totalPages,
                 currentPage: page,
@@ -60,6 +76,7 @@ router.get('/products', async (req, res) => {
         res.status(500).render('error', { error: error });
     }
 });
+
 
 
 
