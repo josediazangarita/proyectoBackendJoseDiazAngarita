@@ -358,7 +358,7 @@ footer{
 }
 
 .form-category-filter select:hover, .form-category-filter button:hover {
-    background-color: yellow;
+    background-color: #ffff;
     color: #000;
 }
 
@@ -386,7 +386,7 @@ footer{
 }
 
 .pagination a:hover {
-    background-color: yellow;
+    background-color: #ffff;
     color: #000;
 }
 
