@@ -10,6 +10,7 @@ import viewsRouter from './views/views.router.js';
 import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
 import websocket from './websocket.js';
+import usersRouter from './routes/usersRouter.js';
 
 // Se crea una instancia de express
 const app = express();
@@ -46,6 +47,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
+app.use('/api/users', usersRouter);
 
 // Servidor de sockets
 websocket(io);

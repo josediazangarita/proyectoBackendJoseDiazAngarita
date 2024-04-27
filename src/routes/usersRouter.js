@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { userModel } from '../models/userModel.js';
+import { userModel } from '../dao/models/user.model.js';
 
 const router = Router();
 
@@ -13,3 +13,5 @@ router.get('/', async (req, res) => {
         res.status(500).send({ status: "error", message: error.message })
     }
 });
+
+export default router;
