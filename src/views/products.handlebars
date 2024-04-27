@@ -1,4 +1,4 @@
-<form action="/products" method="GET">
+<form action="/products" method="GET" class="form-category-filter">
     <label for="category">Seleccione una categoría:</label>
     <select id="category" name="category">
         <option value="">Todas las categorías</option>
@@ -13,6 +13,7 @@
 <!-- Mostrar los productos -->
 <div class="grid-container">
     <h2>Lista de productos</h2>
+    {{#if products.length}}
     <div class="grid">
         {{#each products}}
         <div class="card">
@@ -34,6 +35,20 @@
         </div>
         {{/each}}
     </div>
+    {{else}}
+    <h3>No hay productos para mostrar</h3>
+    {{/if}}
+</div>
+
+<!-- Paginación -->
+<div class="pagination">
+    {{#if pagination.hasPrevPage}} 
+        <a href="{{pagination.prevLink}}"><< Anterior</a>
+    {{/if}}
+    <span> Página {{pagination.currentPage}} de {{pagination.totalPages}}</span>
+    {{#if pagination.hasNextPage}} 
+        <a href="{{pagination.nextLink}}">Siguiente >></a>
+    {{/if}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
 {{!-- <script src="/js/index.js"></script> --}}
