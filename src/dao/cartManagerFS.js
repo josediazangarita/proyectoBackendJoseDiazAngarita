@@ -59,21 +59,24 @@ export default class CartManagerFS {
     }
 
     // Método para agregar un producto a un carrito por su ID y la cantidad
-    addProductToCart(cartId, productId, quantity) {
-        const cart = this.getCartById(cartId);
-        if (cart) {
-            const productQuantity = parseInt(quantity) || 1; // Si no se proporciona cantidad, establecerla en 1
-            const existingProductIndex = cart.products.findIndex(product => product.id === productId);
-            if (existingProductIndex !== -1) {
-                // El producto ya existe en el carrito, sumar la cantidad proporcionada a la cantidad existente
-                cart.products[existingProductIndex].quantity += productQuantity;
-            } else {
-                // El producto no existe en el carrito, agregarlo con la cantidad proporcionada
-                cart.products.push({ id: productId, quantity: productQuantity });
-            }
-            this.saveCarts();
+    async addProductToCart(cartId, productId, quantity) {
+        const cart = await this.getCartById(cartId);
+        if (!cart) {
+            return null;
         }
+        const productQuantity = parseInt(quantity) || 1;
+        const existingProductIndex = cart.products.findIndex(product => product.id === productId);
+
+        if (existingProductIndex !== -1) {
+            cart.products[existingProductIndex].quantity += productQuantity;
+        } else {
+            cart.products.push({ id: productId, quantity: productQuantity });
+        }
+
+        await this.saveCarts();
+        return cart;
     }
+
 
 
 }
