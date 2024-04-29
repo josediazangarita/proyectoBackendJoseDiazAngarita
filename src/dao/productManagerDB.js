@@ -7,11 +7,21 @@ import productModel from './models/productModel.js';
 export default class ProductManagerDB {
 
     //Método para obtener todos los productos almacenados
-    async getProducts() {
+    /* async getProducts() {
         try {
             return await productModel.find().lean();
         } catch (error) {
             console.error(error.message);
+            throw new Error("Error al buscar los productos");
+        }
+    } */
+    // Se agrega filtro para obtener productos por categoría
+    async getProducts(filter = {}) {
+        console.log("🚀 ~ ProductManagerDB ~ getProducts ~ filter:", filter)
+        try {
+            return await productModel.find(filter).lean();
+        } catch (error) {
+            console.error("Error en getProducts:", error.message);
             throw new Error("Error al buscar los productos");
         }
     }

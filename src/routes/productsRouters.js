@@ -7,13 +7,33 @@ const router = Router();
 //const ProductService = new productManagerFS('products.json');
 const store = new ProductManagerDB();
 
-router.get('/products', async (req, res) => {
+/* router.get('/', async (req, res) => {
     const result = await store.getProducts();
 
     res.send({
         status: 'success',
         payload: result
     });
+}); */
+
+//Filtro por categoría
+router.get('/', async (req, res) => {
+    try {
+        let filter = {};
+        if (req.query.category) {
+            filter.category = req.query.category;
+        }
+        const result = await store.getProducts(filter);
+        res.send({
+            status: 'success',
+            payload: result
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: error.toString()
+        });
+    }
 });
 
 router.get('/:pid', async (req, res) => {

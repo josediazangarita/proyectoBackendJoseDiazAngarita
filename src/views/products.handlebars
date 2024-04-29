@@ -1,15 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="/css/{{style}}">
-</head>
-<body>
-    
+<form action="/products" method="GET" class="form-category-filter">
+    <label for="category">Seleccione una categoría:</label>
+    <select id="category" name="category">
+        <option value="">Todas las categorías</option>
+        <option value="xbox">Xbox</option>
+        <option value="PC">PC</option>
+        <option value="PS">PlayStation</option>
+        <option value="Nintendo">Nintendo</option>
+    </select>
+    <label for="availability">Disponibilidad:</label>
+    <select id="availability" name="availability">
+        <option value="">Ambos</option>
+        <option value="true">Disponible</option>
+        <option value="false">No Disponible</option>
+    </select>
+    <label for="sort">Ordenar por precio:</label>
+    <select id="sort" name="sort">
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+    </select>
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- Mostrar los productos -->
 <div class="grid-container">
     <h2>Lista de productos</h2>
+    {{#if products.length}}
     <div class="grid">
         {{#each products}}
         <div class="card">
@@ -31,8 +46,20 @@
         </div>
         {{/each}}
     </div>
+    {{else}}
+    <h3>No hay productos para mostrar</h3>
+    {{/if}}
+</div>
+
+<!-- Paginación -->
+<div class="pagination">
+    {{#if pagination.hasPrevPage}} 
+        <a href="{{pagination.prevLink}}"><< Anterior</a>
+    {{/if}}
+    <span> Página {{pagination.currentPage}} de {{pagination.totalPages}}</span>
+    {{#if pagination.hasNextPage}} 
+        <a href="{{pagination.nextLink}}">Siguiente >></a>
+    {{/if}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
 {{!-- <script src="/js/index.js"></script> --}}
-</body>
-</html>
