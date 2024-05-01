@@ -5,21 +5,41 @@ import { uploader } from '../utils/multerUtil.js';
 
 const router = Router();
 //const ProductService = new productManagerFS('products.json');
-const store = new ProductManagerDB();
+const productService = new ProductManagerDB();
 
-router.get('/products', async (req, res) => {
+/* router.get('/', async (req, res) => {
     const result = await store.getProducts();
 
     res.send({
         status: 'success',
         payload: result
     });
+}); */
+
+//Filtro por categoría
+router.get('/', async (req, res) => {
+    try {
+        let filter = {};
+        if (req.query.category) {
+            filter.category = req.query.category;
+        }
+        const result = await productService.getProducts(filter);
+        res.send({
+            status: 'success',
+            payload: result
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: error.toString()
+        });
+    }
 });
 
 router.get('/:pid', async (req, res) => {
 
     try {
-        const result = await store.getProductByID(req.params.pid);
+        const result = await productService.getProductByID(req.params.pid);
         res.send({
             status: 'success',
             payload: result
@@ -42,7 +62,7 @@ router.post('/', uploader.array('thumbnails', 3), async (req, res) => {
     }
 
     try {
-        const result = await store.addProduct(req.body);
+        const result = await productService.addProduct(req.body);
         res.send({
             status: 'success',
             payload: result
@@ -65,7 +85,7 @@ router.put('/:pid', uploader.array('thumbnails', 3), async (req, res) => {
     }
 
     try {
-        const result = await store.updateProduct(req.params.pid, req.body);
+        const result = await productService.updateProduct(req.params.pid, req.body);
         res.send({
             status: 'success',
             payload: result
@@ -81,7 +101,7 @@ router.put('/:pid', uploader.array('thumbnails', 3), async (req, res) => {
 router.delete('/:pid', async (req, res) => {
 
     try {
-        const result = await store.deleteProduct(req.params.pid);
+        const result = await productService.deleteProduct(req.params.pid);
         res.send({
             status: 'success',
             payload: result

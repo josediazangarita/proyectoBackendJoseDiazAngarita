@@ -136,6 +136,8 @@ p{
 
 .card {
     border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(50px);
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -152,8 +154,6 @@ p{
 
 .card-body {
     padding: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(50px);
     color: antiquewhite;
     font-size: 1.2em;
     text-align: center;
@@ -323,6 +323,71 @@ footer{
         color: #fff;
         font-size: 24px;
     }
+    .form-category-filter {
+        flex-direction: column;
+    }
+}
+
+/* Estilos para el filtro de categorías */
+.form-category-filter {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 10px;
+    margin: 20px auto;
+    width: auto;
+    color: #ffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 1.2rem;
+}
+
+.form-category-filter select, .form-category-filter button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 20px;
+    background-color: #4bc2e5;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.form-category-filter select:hover, .form-category-filter button:hover {
+    background-color: #ffff;
+    color: #000;
+}
+
+
+/* Estilos para la paginación */
+.pagination {
+    border-radius: 8px;
+    padding: 10px;
+    margin: 20px auto;
+    width: fit-content;
+    color: #ffff;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.pagination a {
+    color: black;
+    background-color: #4bc2e5;
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.pagination a:hover {
+    background-color: #ffff;
+    color: #000;
 }
 
 
