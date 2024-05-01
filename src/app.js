@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import ProductManagerDB from './dao/productManagerDB.js';
 import mongoose from 'mongoose'
+import session from 'express-session';
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
@@ -11,6 +12,7 @@ import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
 import websocket from './websocket.js';
 import usersRouter from './routes/usersRouter.js';
+import sessionRouter from './routes/sessionRouter.js';
 
 // Se crea una instancia de express
 const app = express();
@@ -43,10 +45,18 @@ app.use(express.static(`${__dirname}/../public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Middleware de sesiones
+app.use(session({
+    secret: 'secretCoder',
+    resave: true,
+    saveUninitialized: true
+}));
+
 // Rutas
 app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
+app.use('/session', sessionRouter);
 app.use('/api/users', usersRouter);
 
 // Servidor de sockets
