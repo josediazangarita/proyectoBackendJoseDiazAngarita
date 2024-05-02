@@ -5,6 +5,8 @@ import { Server } from 'socket.io';
 import ProductManagerDB from './dao/productManagerDB.js';
 import mongoose from 'mongoose'
 import session from 'express-session';
+//import MongoStore from 'connect-mongo';
+import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
@@ -13,6 +15,10 @@ import cartRoutes from './routes/cartRoutes.js';
 import websocket from './websocket.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
+
+
+// Se crea una instancia de fileStore para las sesiones
+const fileStorage = fileStore(session);
 
 // Se crea una instancia de express
 const app = express();
@@ -33,6 +39,12 @@ httpServer.listen(PORT, () => {
 // Servidor de sockets
 const io = new Server(httpServer);
 
+// Conexión a MongoDB
+const uri = "mongodb+srv://jgda:jgda@cluster0.abjsbjo.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0";
+mongoose.connect(uri)
+    .then(() => console.log('Conectado a MongoDB Atlas'))
+    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
+
 //Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
@@ -45,12 +57,39 @@ app.use(express.static(`${__dirname}/../public`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware de sesiones
-app.use(session({
-    secret: 'secretCoder',
-    resave: true,
-    saveUninitialized: true
-}));
+// Middleware de cookies
+//app.use(cookieParser());
+
+// Middleware de sesiones con filestorage
+app.use(session(
+    {
+        store: new fileStorage({
+            path: './sessions',
+            ttl: 100,
+            retries: 0
+
+        }),
+        secret: 'secretPhrase',
+        resave: true,
+        saveUninitialized: true
+    }
+));
+
+// Middleware de sesiones con MongoStore
+/* app.use(session(
+    {
+        store: mongoStore.create(
+            {
+                mongoUrl: uri,
+                ttl: 3600
+            }
+        ),
+        secret: 'secretPhrase',
+        resave: true,
+        saveUninitialized: true
+    }
+)); */
+
 
 // Rutas
 app.use("/", viewsRouter);
@@ -62,8 +101,3 @@ app.use('/api/users', usersRouter);
 // Servidor de sockets
 websocket(io);
 
-// Conexión a MongoDB
-const uri = "mongodb+srv://jgda:jgda@cluster0.abjsbjo.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.connect(uri)
-    .then(() => console.log('Conectado a MongoDB Atlas'))
-    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
