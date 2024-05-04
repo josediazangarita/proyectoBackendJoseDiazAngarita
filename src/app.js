@@ -5,8 +5,9 @@ import { Server } from 'socket.io';
 import ProductManagerDB from './dao/productManagerDB.js';
 import mongoose from 'mongoose'
 import session from 'express-session';
-//import MongoStore from 'connect-mongo';
-import fileStore from 'session-file-store';
+import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+//import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
@@ -18,7 +19,7 @@ import sessionRouter from './routes/sessionRouter.js';
 
 
 // Se crea una instancia de fileStore para las sesiones
-const fileStorage = fileStore(session);
+//const fileStorage = fileStore(session);
 
 // Se crea una instancia de express
 const app = express();
@@ -58,9 +59,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware de cookies
-//app.use(cookieParser());
+app.use(cookieParser());
 
-// Middleware de sesiones con filestorage
+// Middleware de sesiones con MongoStore
+ app.use(session(
+    {
+        store: MongoStore.create(
+            {
+                mongoUrl: uri,
+                ttl: 3600
+            }
+        ),
+        secret: 'secretPhrase',
+        resave: true,
+        saveUninitialized: true
+    }
+)); 
+
+/*// Middleware de sesiones con filestorage
 app.use(session(
     {
         store: new fileStorage({
@@ -73,29 +89,14 @@ app.use(session(
         resave: true,
         saveUninitialized: true
     }
-));
-
-// Middleware de sesiones con MongoStore
-/* app.use(session(
-    {
-        store: mongoStore.create(
-            {
-                mongoUrl: uri,
-                ttl: 3600
-            }
-        ),
-        secret: 'secretPhrase',
-        resave: true,
-        saveUninitialized: true
-    }
-)); */
+));*/
 
 
 // Rutas
 app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
-app.use('/session', sessionRouter);
+app.use('/api/session', sessionRouter);
 app.use('/api/users', usersRouter);
 
 // Servidor de sockets

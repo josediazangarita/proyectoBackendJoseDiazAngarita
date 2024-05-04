@@ -3,12 +3,11 @@ import mongoose from "mongoose";
 const userCollection = "users";
 
 const userSchema = new mongoose.Schema({
-    first_name: String,
-    last_name: String,
-    email: {
-        type: String,
-        unique: true
-    }
+    first_name: {type: String, required: true},
+    last_name: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
+    age: {type: Number, required: true},
+    passport: {type: String, required: true}
 });
 
 const userModel = mongoose.model(userCollection, userSchema);
