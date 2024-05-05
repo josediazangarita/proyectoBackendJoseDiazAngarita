@@ -96,7 +96,7 @@ router.get("/login", (req, res) => {
         'login',
         {
             title: 'Login Ecommerce JG',
-            style: style.css,
+            style: 'style.css',
             failLogin: req.session.failLogin ?? false 
         }
     )
