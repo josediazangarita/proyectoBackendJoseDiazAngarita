@@ -90,4 +90,17 @@ router.get('/realtimeproducts', async (req, res) => {
     res.render('realTimeProducts', { title: 'Productos en Tiempo Real', style: 'style.css', products });
 });
 
+//Ruta login
+router.get("/login", (req, res) => {
+    res.render(
+        'login',
+        {
+            title: 'Login Ecommerce JG',
+            style: style.css,
+            failLogin: req.session.failLogin ?? false 
+        }
+    )
+});
+
+
 export default router;
