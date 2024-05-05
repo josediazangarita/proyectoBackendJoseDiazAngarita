@@ -13,9 +13,9 @@ import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
 import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
-import websocket from './websocket.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
+import websocket from './websocket.js';
 
 
 // Se crea una instancia de fileStore para las sesiones
@@ -67,7 +67,7 @@ app.use(cookieParser());
         store: MongoStore.create(
             {
                 mongoUrl: uri,
-                ttl: 3600
+                ttl: 1
             }
         ),
         secret: 'secretPhrase',
