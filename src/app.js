@@ -67,7 +67,7 @@ app.use(cookieParser());
         store: MongoStore.create(
             {
                 mongoUrl: uri,
-                ttl: 20
+                ttl: 3600
             }
         ),
         secret: 'secretPhrase',
@@ -75,6 +75,12 @@ app.use(cookieParser());
         saveUninitialized: true
     }
 )); 
+
+// Middleware para hacer los datos del usuario disponibles en todas las vistas
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 /*// Middleware de sesiones con filestorage
 app.use(session(
