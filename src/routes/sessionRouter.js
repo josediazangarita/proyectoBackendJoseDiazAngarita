@@ -4,6 +4,7 @@ import auth from '../middlewares/auth.js';
 
 const router = Router();
 
+//Ruta para mostrar detalles de la sesión
 router.get('/', (req, res) => {
     let username = req.session.user ? req.session.user : '';
 
@@ -16,15 +17,15 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get('/login', auth, (req, res) => {
+/*router.get('/login', auth, (req, res) => {
     res.send(`Login success ${req.session.user}!`);
-});
+});*/
 
 
-
-router.get('/logout', (req, res) => {
+//Ruta para cerrar sesión
+router.post('/logout', (req, res) => {
     req.session.destroy(error => {
-        if (!error) return res.send("Logout Success!");
+        if (!error) return res.redirect('/login');
 
         res.send({
             status: "Logout ERROR",

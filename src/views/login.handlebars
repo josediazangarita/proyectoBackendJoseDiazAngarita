@@ -1,18 +1,22 @@
-<div>
+<div class="login-container">
     <h1>Login</h1>
 
-    <form method="post" action="/api/sessions/login">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
+    <form method="post" action="/api/users/login" class="login-form">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" class="form-control">
+        </div>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
 
-        <button type="submit"> Login </button>
+        <button type="submit" class="btn">Login</button>
     </form>
-</div>
 
-<span><a href="/register" target="_self">Register</a></span>
+    <span> Aún no tienes una cuenta? <a href="/register" class="register-link">Regístrate</a></span>
+</div>
 
     {{#if failLogin}}
         <script type="text/javascript">

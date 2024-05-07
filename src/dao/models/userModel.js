@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     last_name: {type: String, minLength: 3, required: true},
     email: {type: String, minLength: 5, required: true, unique: true},
     age: {type: Number, required: true},
-    password: {type: String, minLength: 3, required: true}
+    password: {type: String, minLength: 3, required: true},
+    role: {type: String, required: true, default: 'user'}
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

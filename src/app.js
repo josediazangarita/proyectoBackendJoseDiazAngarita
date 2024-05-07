@@ -47,7 +47,10 @@ mongoose.connect(uri)
     .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
 
 //Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
-app.engine("handlebars", handlebars.engine());
+app.engine('handlebars', handlebars.engine({
+    defaultLayout: 'main',
+    partialsDir: `${__dirname}/views/partials/`
+}));
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
@@ -102,8 +105,9 @@ app.use(session(
 app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
-app.use('/api/sessions', usersRouter);
-//app.use('/api/users', usersRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/sessions', sessionRouter);
+
 
 // Servidor de sockets
 websocket(io);
