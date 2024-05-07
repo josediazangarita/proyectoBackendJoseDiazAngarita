@@ -1,6 +1,7 @@
 import Router from 'express';
 
 import userModel from '../dao/models/userModel.js';
+
 /*import {createHash, isValidPassword} from '../utils/functionUtils.js';*/
 
 const router = Router();
@@ -13,6 +14,7 @@ router.post('/register', async (req, res) => {
         res.redirect("/login");
 
     } catch (e) {
+        console.error("Error al registrar usuario:", e)
         req.session.failRegister = true;
         res.redirect("/register");
     }
@@ -61,12 +63,12 @@ router.post("/login", async (req, res) => {
         if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
             user.role = 'admin';
         } else {
-            user.role = 'usuario';  
+            user.role = 'usuario';
         }
 
         // Guardar el rol en la sesión
         req.session.user = user.toObject();
-        delete req.session.user.password;  
+        delete req.session.user.password;
         req.session.user.role = user.role;
 
         return res.redirect("/products");
@@ -76,6 +78,7 @@ router.post("/login", async (req, res) => {
         return res.redirect("/login");
     }
 });
+
 
 
 export default router;

@@ -17,10 +17,9 @@ router.get('/', (req, res) => {
     }
 });
 
-/*router.get('/login', auth, (req, res) => {
+router.get('/login', auth, (req, res) => {
     res.send(`Login success ${req.session.user}!`);
-});*/
-
+});
 
 //Ruta para cerrar sesión
 router.post('/logout', (req, res) => {

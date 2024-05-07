@@ -12,10 +12,10 @@ const store = new ProductManagerDB();
 //Ruta para la página principal
 router.get('/', (req, res) => {
     res.render(
-        'index', 
-        { 
+        'index',
+        {
             style: 'style.css',
-            user: req.session.user 
+            user: req.session.user
         });
 });
 
@@ -102,7 +102,7 @@ router.get("/login", (req, res) => {
         {
             title: 'Login Ecommerce JG',
             style: 'style.css',
-            failLogin: req.session.failLogin ?? false 
+            failLogin: req.session.failLogin ?? false
         }
     )
 });
@@ -114,7 +114,7 @@ router.get("/register", (req, res) => {
         {
             title: 'Register Ecommerce JG',
             style: 'style.css',
-            failRegister: req.session.failRegister ?? false 
+            failRegister: req.session.failRegister ?? false
         }
     )
 });
