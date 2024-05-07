@@ -5,9 +5,11 @@ import auth from '../middlewares/auth.js';
 const router = Router();
 
 router.get('/', (req, res) => {
+    let username = req.session.user ? req.session.user : '';
+
     if (req.session.counter) {
         req.session.counter++;
-        res.send(`Visitaste el sitio: ${req.session.counter} veces`);
+        res.send(`${username} Visitaste el sitio: ${req.session.counter} veces`);
     } else {
         req.session.counter = 1;
         res.send('Bienvenido al Ecommerce de JGDA!');

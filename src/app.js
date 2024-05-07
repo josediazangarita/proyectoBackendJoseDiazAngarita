@@ -67,7 +67,7 @@ app.use(cookieParser());
         store: MongoStore.create(
             {
                 mongoUrl: uri,
-                ttl: 1
+                ttl: 20
             }
         ),
         secret: 'secretPhrase',
@@ -96,8 +96,8 @@ app.use(session(
 app.use("/", viewsRouter);
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
-app.use('/api/session', sessionRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/sessions', usersRouter);
+//app.use('/api/users', usersRouter);
 
 // Servidor de sockets
 websocket(io);
