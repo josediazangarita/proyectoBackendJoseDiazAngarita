@@ -221,7 +221,7 @@ p{
 }
 
 #productForm button:hover {
-    background-color: yellowgreen;
+    background-color: #4bc2e5;
 }
 
 /* Estilos para lista de productos de realTimeProducts */
@@ -258,11 +258,123 @@ p{
 
 #productList button:hover {
     background-color: black;
-    color: #ffff;
+    color: #4bc2e5;
 }
 
 
-/*Estilos de footer*/
+/* Estilos para el contenedor del login */
+.login-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 360px;
+    margin: 50px auto;
+    text-align: center;
+    color: #fff;
+}
+
+/* Estilos para el formulario */
+.login-form .form-group {
+    margin-bottom: 15px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #38a2c2;
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #4bc2e5;
+}
+
+/* Estilos para el enlace de registro */
+.register-link {
+    color: yellow;
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+
+
+/* Estilos para el contenedor del registro */
+.register-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 360px;
+    margin: 50px auto;
+    text-align: center;
+    color: #fff;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #38a2c2;
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #4bc2e5;
+}
+
+.login-link {
+    color: yellow;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+
+
+
+/*Estilos del footer*/
 footer{
     display: flex;
     color: yellow;
@@ -350,7 +462,7 @@ footer{
     margin: 5px;
     border: none;
     border-radius: 20px;
-    background-color: #4bc2e5;
+    background-color: #38a2c2;
     color: #000;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -358,7 +470,7 @@ footer{
 }
 
 .form-category-filter select:hover, .form-category-filter button:hover {
-    background-color: #ffff;
+    background-color: #4bc2e5;
     color: #000;
 }
 
@@ -389,6 +501,13 @@ footer{
     background-color: #ffff;
     color: #000;
 }
+
+
+
+
+
+
+
 
 
 

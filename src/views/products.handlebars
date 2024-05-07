@@ -1,3 +1,14 @@
+{{#if user}}
+    <h4 class="saludoCliente">
+        <p>Bienvenido</p>
+        {{user.first_name}} {{user.last_name}}
+        <br>
+        <b>Email:</b> {{user.email}}
+        <b>Edad</b> {{user.age}}
+        <b>Rol</b> {{user.role}}
+    </h4>
+{{/if}}
+
 <form action="/products" method="GET" class="form-category-filter">
     <label for="category">Seleccione una categoría:</label>
     <select id="category" name="category">

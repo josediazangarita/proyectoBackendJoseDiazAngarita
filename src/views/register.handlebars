@@ -1,0 +1,40 @@
+<div class="register-container">
+    <h1>Register</h1>
+
+    <form method="post" action="/api/users/register" class="register-form">
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" id="first_name" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" id="last_name" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+
+        <button type="submit" class="btn">Register</button>
+    </form>
+
+    <span> Ya tienes una cuenta? <a href="/login" class="login-link">Login</a></span>
+</div>
+
+    {{#if failRegister}}
+        <script type="text/javascript">
+            alert('Register Failed!')
+        </script>
+    {{/if}}

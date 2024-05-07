@@ -11,7 +11,12 @@ const store = new ProductManagerDB();
 
 //Ruta para la página principal
 router.get('/', (req, res) => {
-    res.render('index', { style: 'style.css' });
+    res.render(
+        'index', 
+        { 
+            style: 'style.css',
+            user: req.session.user 
+        });
 });
 
 // Ruta para la página de productos para mostrar la página de productos con filtrado opcional
@@ -89,5 +94,30 @@ router.get('/realtimeproducts', async (req, res) => {
     const products = await store.getProducts(filter);
     res.render('realTimeProducts', { title: 'Productos en Tiempo Real', style: 'style.css', products });
 });
+
+//Ruta login
+router.get("/login", (req, res) => {
+    res.render(
+        'login',
+        {
+            title: 'Login Ecommerce JG',
+            style: 'style.css',
+            failLogin: req.session.failLogin ?? false 
+        }
+    )
+});
+
+//Ruta register
+router.get("/register", (req, res) => {
+    res.render(
+        'register',
+        {
+            title: 'Register Ecommerce JG',
+            style: 'style.css',
+            failRegister: req.session.failRegister ?? false 
+        }
+    )
+});
+
 
 export default router;
