@@ -2,7 +2,8 @@ import Router from 'express';
 
 import userModel from '../dao/models/userModel.js';
 
-/*import {createHash, isValidPassword} from '../utils/functionUtils.js';*/
+import { createHash } from '../utils/functionUtils.js';
+import { isValidPassword } from '../utils/functionUtils.js';
 
 const router = Router();
 
@@ -10,11 +11,24 @@ const router = Router();
 router.post('/register', async (req, res) => {
     try {
         req.session.failRegister = false;
-        await userModel.create(req.body);
+
+        if (!req.body.email || !req.body.password) {
+            throw new Error("Email and password are required.");
+        }
+
+        const newUser = {
+            first_name: req.body.first_name ?? '',
+            last_name: req.body.last_name ?? '',
+            email: req.body.email,
+            age: req.body.age ?? '',
+            password: createHash(req.body.password),
+        };
+
+        await userModel.create(newUser);
         res.redirect("/login");
 
     } catch (e) {
-        console.error("Error al registrar usuario:", e)
+        console.error("Error al registrar usuario:", e);
         req.session.failRegister = true;
         res.redirect("/register");
     }
@@ -54,9 +68,13 @@ router.post("/login", async (req, res) => {
             return res.redirect("/login");
         }
 
-        if (password !== user.password) {
+        if (!isValidPassword(user, req.body.password)) {
             req.session.failLogin = true;
             return res.redirect("/login");
+
+            /* if (password !== user.password) {
+                req.session.failLogin = true;
+                return res.redirect("/login"); */
         }
 
         // Asignar rol de admin si el correo y la contraseña coinciden con los del administrador
