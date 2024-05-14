@@ -100,6 +100,23 @@ router.post("/login", async (req, res) => {
     }
 });
 
-
+// Ruta para restaurar la contraseña de un usuario
+router.post("/restorePassword", async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            res.status(404).send("No se encontró el usuario con ese email.");
+            return;
+        }
+        user.password = createHash(newPassword);
+        await user.save();
+        //res.send("Contraseña actualizada correctamente.");
+        return res.redirect("/login");
+    } catch (e) {
+        console.error("Error al restaurar contraseña:", e);
+        res.status(500).send("Error al actualizar la contraseña.");
+    }
+});
 
 export default router;
