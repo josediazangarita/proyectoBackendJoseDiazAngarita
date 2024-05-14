@@ -309,6 +309,16 @@ p{
     background-color: #4bc2e5;
 }
 
+/* Estilos para el enlace de restaurar contraseña */
+.restore-link {
+    color: #4bc2e5;
+    text-decoration: none;
+}
+
+.restore-link:hover {
+    text-decoration: underline;
+}
+
 /* Estilos para el enlace de registro */
 .register-link {
     color: yellow;

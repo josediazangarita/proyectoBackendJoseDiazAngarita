@@ -89,6 +89,9 @@ router.post("/login", async (req, res) => {
         delete req.session.user.password;
         req.session.user.role = user.role;
 
+        delete user.password;
+        req.session.user = user;
+
         return res.redirect("/products");
     } catch (e) {
         console.error("Error de login:", e);
