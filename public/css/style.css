@@ -266,7 +266,7 @@ p{
 .login-container {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    border-radius: 8px;
+    border-radius: 50px;
     padding: 20px;
     max-width: 360px;
     margin: 50px auto;
@@ -309,6 +309,16 @@ p{
     background-color: #4bc2e5;
 }
 
+/* Estilos para el enlace de restaurar contraseña */
+.restore-link {
+    color: #4bc2e5;
+    text-decoration: none;
+}
+
+.restore-link:hover {
+    text-decoration: underline;
+}
+
 /* Estilos para el enlace de registro */
 .register-link {
     color: yellow;
@@ -325,7 +335,7 @@ p{
 .register-container {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    border-radius: 8px;
+    border-radius: 50px;
     padding: 20px;
     max-width: 360px;
     margin: 50px auto;
@@ -370,6 +380,52 @@ p{
 .login-link:hover {
     text-decoration: underline;
 }
+
+/* Estilos para el contenedor de la lista de usuarios */
+.restore-container {
+    background: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+    max-width: 360px;
+    margin: 50px auto;
+    text-align: center;
+    color: #fff;
+}
+
+.restore-form .form-restore-password {
+    margin-bottom: 15px;
+}
+
+.restore-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.restore-form input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.restore-form button {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #38a2c2;
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.restore-form button:hover {
+    background-color: #4bc2e5;
+}
+
 
 
 

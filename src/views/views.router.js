@@ -119,5 +119,13 @@ router.get("/register", (req, res) => {
     )
 });
 
+router.get("/restorePassword", (req, res) => {
+    res.render('restorePassword',
+        {
+            title: 'Restore Password Ecommerce JG',
+            style: 'style.css'
+        });
+});
+
 
 export default router;

@@ -15,7 +15,13 @@
         <button type="submit" class="btn">Login</button>
     </form>
 
-    <span> Aún no tienes una cuenta? <a href="/register" class="register-link">Regístrate</a></span>
+    <span>¿Olvidaste tu contraseña? <br> <a href="/restorePassword" class="restore-link">Restaurar contraseña</a></span>
+    <br>
+    <span> Aún no tienes una cuenta? <br> <a href="/register" class="register-link">Regístrate</a></span>
+</div>
+
+<div>
+    <a href="/api/sessions/github"><button>Iniciar sesión con Github</button></a>
 </div>
 
     {{!-- {{#if failLogin}}

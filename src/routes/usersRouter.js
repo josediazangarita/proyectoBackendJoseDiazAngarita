@@ -1,23 +1,54 @@
 import Router from 'express';
+import passport from 'passport';
+import local from 'passport-local';
 
 import userModel from '../dao/models/userModel.js';
-
-/*import {createHash, isValidPassword} from '../utils/functionUtils.js';*/
+import { createHash } from '../utils/functionUtils.js';
+import { isValidPassword } from '../utils/functionUtils.js';
 
 const router = Router();
 
-//Ruta para registrar un nuevo usuario
+/* //Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
     try {
         req.session.failRegister = false;
-        await userModel.create(req.body);
+
+        if (!req.body.email || !req.body.password) {
+            throw new Error("Email and password are required.");
+        }
+
+        const newUser = {
+            first_name: req.body.first_name ?? '',
+            last_name: req.body.last_name ?? '',
+            email: req.body.email,
+            age: req.body.age ?? '',
+            password: createHash(req.body.password),
+        };
+
+        await userModel.create(newUser);
         res.redirect("/login");
 
     } catch (e) {
-        console.error("Error al registrar usuario:", e)
+        console.error("Error al registrar usuario:", e);
         req.session.failRegister = true;
         res.redirect("/register");
     }
+}); */
+
+//Ruta para registrar un nuevo usuario con passport
+router.post(
+    '/register',
+    passport.authenticate('register', { failureRedirect: '/api/sessions/failRegister' }),
+    (req, res) => {
+        res.redirect('/login');
+    }
+);
+
+router.get('/failRegister', (req, res) => {
+    res.status(400).send({
+        status: 'Register error',
+        message: 'Failed registering user'
+    });
 });
 
 /*router.post("/login", async (req, res) => {
@@ -43,7 +74,7 @@ router.post('/register', async (req, res) => {
     }
 });*/
 
-//Ruta para loguear a un usuario
+/* //Ruta para loguear a un usuario
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -54,9 +85,13 @@ router.post("/login", async (req, res) => {
             return res.redirect("/login");
         }
 
-        if (password !== user.password) {
+        if (!isValidPassword(user, req.body.password)) {
             req.session.failLogin = true;
             return res.redirect("/login");
+
+            // if (password !== user.password) {
+            //req.session.failLogin = true;
+            //return res.redirect("/login");
         }
 
         // Asignar rol de admin si el correo y la contraseña coinciden con los del administrador
@@ -71,14 +106,65 @@ router.post("/login", async (req, res) => {
         delete req.session.user.password;
         req.session.user.role = user.role;
 
+        delete user.password;
+        req.session.user = user;
+
         return res.redirect("/products");
     } catch (e) {
         console.error("Error de login:", e);
         req.session.failLogin = true;
         return res.redirect("/login");
     }
+}); */
+
+
+//Ruta para loguear a un usuario con passport
+router.post(
+    "/login",
+    passport.authenticate('login', { failureRedirect: '/api/sessions/failLogin' }),
+    (req, res) => {
+        if (!req.user) {
+            return res.status(401).send({
+                status: 'error',
+                message: 'Error login'
+            });
+        }
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            age: req.user.age,
+        }
+        res.redirect('/products');
+    }
+);
+
+
+router.get('/failLogin', (req, res) => {
+    res.status(400).send({
+        status: 'Login error',
+        message: 'Failed login'
+    });
 });
 
 
+// Ruta para restaurar la contraseña de un usuario
+router.post("/restorePassword", async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            res.status(404).send("No se encontró el usuario con ese email.");
+            return;
+        }
+        user.password = createHash(newPassword);
+        await user.save();
+        //res.send("Contraseña actualizada correctamente.");
+        return res.redirect("/login");
+    } catch (e) {
+        console.error("Error al restaurar contraseña:", e);
+        res.status(500).send("Error al actualizar la contraseña.");
+    }
+});
 
 export default router;
