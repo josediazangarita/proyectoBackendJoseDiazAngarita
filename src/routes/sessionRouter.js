@@ -1,4 +1,5 @@
 import Router from 'express';
+import passport from 'passport';
 
 import auth from '../middlewares/auth.js';
 
@@ -31,6 +32,17 @@ router.post('/logout', (req, res) => {
             body: error
         })
     })
+});
+
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => { });
+
+router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), async (req, res) => {
+    if (req.isAuthenticated()) {
+        req.session.user = req.user;
+        res.redirect('/products');
+    } else {
+        res.redirect('/login');
+    }
 });
 
 export default router;

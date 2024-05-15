@@ -9,7 +9,7 @@ import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-import fileStore from 'session-file-store';
+//import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
@@ -106,7 +106,6 @@ app.use(session(
         saveUninitialized: true
     }
 ));*/
-
 
 // Rutas
 app.use("/", viewsRouter);
