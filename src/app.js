@@ -7,7 +7,9 @@ import mongoose from 'mongoose'
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
-//import fileStore from 'session-file-store';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
+import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
 import viewsRouter from './views/views.router.js';
@@ -23,6 +25,8 @@ import websocket from './websocket.js';
 
 // Se crea una instancia de express
 const app = express();
+
+initializePassport();
 
 // Instancia de ProductManager
 const productManager = new ProductManagerDB();
@@ -65,7 +69,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Middleware de sesiones con MongoStore
- app.use(session(
+app.use(session(
     {
         store: MongoStore.create(
             {
@@ -77,7 +81,10 @@ app.use(cookieParser());
         resave: true,
         saveUninitialized: true
     }
-)); 
+));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware para hacer los datos del usuario disponibles en todas las vistas
 app.use((req, res, next) => {

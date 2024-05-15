@@ -1,13 +1,14 @@
 import Router from 'express';
+import passport from 'passport';
+import local from 'passport-local';
 
 import userModel from '../dao/models/userModel.js';
-
 import { createHash } from '../utils/functionUtils.js';
 import { isValidPassword } from '../utils/functionUtils.js';
 
 const router = Router();
 
-//Ruta para registrar un nuevo usuario
+/* //Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
     try {
         req.session.failRegister = false;
@@ -32,6 +33,22 @@ router.post('/register', async (req, res) => {
         req.session.failRegister = true;
         res.redirect("/register");
     }
+}); */
+
+//Ruta para registrar un nuevo usuario con passport
+router.post(
+    '/register',
+    passport.authenticate('register', { failureRedirect: '/api/sessions/failRegister' }),
+    (req, res) => {
+        res.redirect('/login');
+    }
+);
+
+router.get('/failRegister', (req, res) => {
+    res.status(400).send({
+        status: 'Register error',
+        message: 'Failed registering user'
+    });
 });
 
 /*router.post("/login", async (req, res) => {
@@ -57,7 +74,7 @@ router.post('/register', async (req, res) => {
     }
 });*/
 
-//Ruta para loguear a un usuario
+/* //Ruta para loguear a un usuario
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -72,9 +89,9 @@ router.post("/login", async (req, res) => {
             req.session.failLogin = true;
             return res.redirect("/login");
 
-            /* if (password !== user.password) {
-                req.session.failLogin = true;
-                return res.redirect("/login"); */
+            // if (password !== user.password) {
+            //req.session.failLogin = true;
+            //return res.redirect("/login");
         }
 
         // Asignar rol de admin si el correo y la contraseña coinciden con los del administrador
@@ -98,7 +115,38 @@ router.post("/login", async (req, res) => {
         req.session.failLogin = true;
         return res.redirect("/login");
     }
+}); */
+
+
+//Ruta para loguear a un usuario con passport
+router.post(
+    "/login",
+    passport.authenticate('login', { failureRedirect: '/api/sessions/failLogin' }),
+    (req, res) => {
+        if (!req.user) {
+            return res.status(401).send({
+                status: 'error',
+                message: 'Error login'
+            });
+        }
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            age: req.user.age,
+        }
+        res.redirect('/products');
+    }
+);
+
+
+router.get('/failLogin', (req, res) => {
+    res.status(400).send({
+        status: 'Login error',
+        message: 'Failed login'
+    });
 });
+
 
 // Ruta para restaurar la contraseña de un usuario
 router.post("/restorePassword", async (req, res) => {
