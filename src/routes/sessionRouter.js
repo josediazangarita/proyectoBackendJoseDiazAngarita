@@ -5,7 +5,7 @@ import auth from '../middlewares/auth.js';
 
 const router = Router();
 
-//Ruta para mostrar detalles de la sesión
+// Ruta para mostrar detalles de la sesión
 router.get('/', (req, res) => {
     let username = req.session.user ? req.session.user : '';
 
@@ -18,31 +18,35 @@ router.get('/', (req, res) => {
     }
 });
 
+// Ruta para mostrar éxito de login
 router.get('/login', auth, (req, res) => {
     res.send(`Login success ${req.session.user}!`);
 });
 
-//Ruta para cerrar sesión
+// Ruta para cerrar sesión
 router.post('/logout', (req, res) => {
-    req.session.destroy(error => {
-        if (!error) return res.redirect('/login');
-
-        res.send({
-            status: "Logout ERROR",
-            body: error
-        })
-    })
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).send({ status: 'error', message: 'Logout failed' });
+        }
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            //res.send({ status: 'success', message: 'Logged out successfully' });
+            res.redirect('/login');
+        });
+    });
 });
 
-router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => { });
+// Inicio de sesión con GitHub
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), async (req, res) => {
-    if (req.isAuthenticated()) {
+router.get('/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login', session: true }),
+    (req, res) => {
         req.session.user = req.user;
+        //res.send({ status: 'success', message: 'GitHub login successful', user: req.user });
         res.redirect('/products');
-    } else {
-        res.redirect('/login');
     }
-});
+);
 
 export default router;

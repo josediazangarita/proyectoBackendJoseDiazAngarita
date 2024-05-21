@@ -3,11 +3,13 @@ import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
 
 import userModel from '../dao/models/userModel.js';
+import cartModel from '../dao/models/cartModel.js'; // Importa el modelo de carrito
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
 
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
+    // Estrategia de registro
     passport.use('register', new LocalStrategy(
         {
             passReqToCallback: true,
@@ -21,12 +23,17 @@ const initializePassport = () => {
                     console.log('User already exists');
                     return done(null, false);
                 }
+
+                // Crear un nuevo carrito para el usuario
+                const newCart = await cartModel.create({ products: [] });
+
                 const newUser = {
                     first_name,
                     last_name,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    cart: newCart._id // Asigna el ID del carrito recién creado
                 };
 
                 let result = await userModel.create(newUser);
@@ -37,13 +44,14 @@ const initializePassport = () => {
         }
     ));
 
+    // Estrategia de inicio de sesión local
     passport.use('login', new LocalStrategy(
         {
             usernameField: 'email'
         },
         async (username, password, done) => {
             try {
-                let user = await userModel.findOne({ email: username });
+                let user = await userModel.findOne({ email: username }).populate('cart');
                 if (!user) {
                     return done(new Error('User not found'), false);
                 }
@@ -57,7 +65,8 @@ const initializePassport = () => {
         }
     ));
 
-    passport.use('github', new GitHubStrategy({
+    // Estrategia de inicio de sesión con GitHub
+    passport.use(new GitHubStrategy({
         clientID: 'Iv23liYUtwMJtBY1uSl7',
         clientSecret: '6d504591a2450ec2d42a38cda243cd815639c9a2',
         callbackURL: "http://localhost:8080/api/sessions/github/callback"
@@ -68,13 +77,17 @@ const initializePassport = () => {
                 let email = profile._json.email || `${profile.username}@github.com`;
                 let user = await userModel.findOne({ email });
                 if (!user) {
+                    // Crear un nuevo carrito para el usuario
+                    const newCart = await cartModel.create({ products: [] });
+
                     const newUser = {
                         first_name: profile._json.name || profile.username || 'No first name',
                         last_name: 'No last name',
                         age: '18',
                         email: email,
                         password: createHash('defaultpassword'),
-                        githubId: profile.id
+                        githubId: profile.id,
+                        cart: newCart._id // Asigna el ID del carrito recién creado
                     };
 
                     let result = await userModel.create(newUser);
@@ -86,15 +99,18 @@ const initializePassport = () => {
                 console.error('Error obtaining access token:', error);
                 return done(error);
             }
-        }));
+        }
+    ));
 
+    // Serialización y deserialización
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });
 
     passport.deserializeUser(async (id, done) => {
         try {
-            let user = await userModel.findById(id);
+            // Poblar el campo cart al deserializar el usuario
+            let user = await userModel.findById(id).populate('cart');
             done(null, user);
         } catch (error) {
             done(error.message);
