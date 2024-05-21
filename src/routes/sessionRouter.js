@@ -49,4 +49,12 @@ router.get('/github/callback',
     }
 );
 
+// Obtener usuario actual
+router.get('/current', auth, (req, res) => {
+    res.status(200).send({
+        status: 'success',
+        user: req.session.user
+    });
+});
+
 export default router;
