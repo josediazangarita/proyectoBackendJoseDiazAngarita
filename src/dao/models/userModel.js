@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const userCollection = "users";
 
@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, minLength: 3, required: true },
     role: { type: String, required: false, default: 'user' },
     githubId: { type: String, required: false },
+    cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts', required: false }
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

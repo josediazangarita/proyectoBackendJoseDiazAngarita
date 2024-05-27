@@ -1,12 +1,80 @@
 import Router from 'express';
 import passport from 'passport';
-import local from 'passport-local';
 
 import userModel from '../dao/models/userModel.js';
-import { createHash } from '../utils/functionUtils.js';
-import { isValidPassword } from '../utils/functionUtils.js';
+import { createHash, isValidPassword } from '../utils/functionUtils.js';
 
 const router = Router();
+
+// Ruta para registrar un nuevo usuario con passport
+router.post(
+    '/register',
+    passport.authenticate('register', { failureRedirect: '/api/sessions/failRegister' }),
+    (req, res) => {
+        //res.send({ status: 'success', message: 'User registered successfully', user: req.user });
+        res.redirect('/login');
+    }
+);
+
+router.get('/failRegister', (req, res) => {
+    res.status(400).send({
+        status: 'Register error',
+        message: 'Failed registering user'
+    });
+});
+
+// Ruta para loguear a un usuario con passport
+router.post(
+    '/login',
+    passport.authenticate('login', { failureRedirect: '/api/sessions/failLogin' }),
+    (req, res) => {
+        if (!req.user) {
+            return res.status(401).send({
+                status: 'error',
+                message: 'Error login'
+            });
+        }
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            age: req.user.age,
+            role: req.user.role,
+            cart: req.user.cart
+        };
+        //res.send({ status: 'success', message: 'Login successful', user: req.session.user });
+        res.redirect('/products');
+    }
+);
+
+router.get('/failLogin', (req, res) => {
+    res.status(400).send({
+        status: 'Login error',
+        message: 'Failed login'
+    });
+});
+
+// Ruta para restaurar la contraseña de un usuario
+router.post('/restorePassword', async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            res.status(404).send("No se encontró el usuario con ese email.");
+            return;
+        }
+        user.password = createHash(newPassword);
+        await user.save();
+        return res.redirect('/login');
+    } catch (e) {
+        console.error("Error al restaurar contraseña:", e);
+        res.status(500).send("Error al actualizar la contraseña.");
+    }
+});
+
+export default router;
+
+
 
 /* //Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
@@ -35,21 +103,6 @@ router.post('/register', async (req, res) => {
     }
 }); */
 
-//Ruta para registrar un nuevo usuario con passport
-router.post(
-    '/register',
-    passport.authenticate('register', { failureRedirect: '/api/sessions/failRegister' }),
-    (req, res) => {
-        res.redirect('/login');
-    }
-);
-
-router.get('/failRegister', (req, res) => {
-    res.status(400).send({
-        status: 'Register error',
-        message: 'Failed registering user'
-    });
-});
 
 /*router.post("/login", async (req, res) => {
     try{
@@ -116,55 +169,3 @@ router.post("/login", async (req, res) => {
         return res.redirect("/login");
     }
 }); */
-
-
-//Ruta para loguear a un usuario con passport
-router.post(
-    "/login",
-    passport.authenticate('login', { failureRedirect: '/api/sessions/failLogin' }),
-    (req, res) => {
-        if (!req.user) {
-            return res.status(401).send({
-                status: 'error',
-                message: 'Error login'
-            });
-        }
-        req.session.user = {
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            email: req.user.email,
-            age: req.user.age,
-        }
-        res.redirect('/products');
-    }
-);
-
-
-router.get('/failLogin', (req, res) => {
-    res.status(400).send({
-        status: 'Login error',
-        message: 'Failed login'
-    });
-});
-
-
-// Ruta para restaurar la contraseña de un usuario
-router.post("/restorePassword", async (req, res) => {
-    try {
-        const { email, newPassword } = req.body;
-        const user = await userModel.findOne({ email });
-        if (!user) {
-            res.status(404).send("No se encontró el usuario con ese email.");
-            return;
-        }
-        user.password = createHash(newPassword);
-        await user.save();
-        //res.send("Contraseña actualizada correctamente.");
-        return res.redirect("/login");
-    } catch (e) {
-        console.error("Error al restaurar contraseña:", e);
-        res.status(500).send("Error al actualizar la contraseña.");
-    }
-});
-
-export default router;
