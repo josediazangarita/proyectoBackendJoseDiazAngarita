@@ -1,5 +1,5 @@
 import express from 'express';
-import productModel from '../dao/models/productModel.js';
+import productModel from '../models/productModel.js';
 
 //import ProductManagerFS from '../dao/productManagerFS.js';
 import ProductManagerDB from '../dao/productManagerDB.js';

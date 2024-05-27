@@ -2,7 +2,7 @@
 console.log("\nSegunda entrega Backend de José Gregorio Díaz Angarita\n")
 
 //Se importa el módulo de Mongoose para manipular archivos
-import productModel from './models/productModel.js';
+import productModel from '../models/productModel.js';
 
 export default class ProductManagerDB {
 

@@ -2,7 +2,7 @@
 import express from 'express';
 //import CartManagerFS from '../dao/cartManagerFS.js';
 import cartManagerDB from '../dao/cartManagerDB.js';
-import cartModel from '../dao/models/cartModel.js';
+import cartModel from '../models/cartModel.js';
 
 const router = express.Router();
 const cartService = new cartManagerDB();
