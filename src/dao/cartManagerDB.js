@@ -1,6 +1,4 @@
 // Clase CartsManager
-//import { readFileSync, writeFileSync } from 'fs';
-
 //Se importa el módulo de Mongoose para manipular archivos
 import cartModel from '../models/cartModel.js';
 

@@ -1,10 +1,8 @@
 import { Router } from 'express';
-//import { productManagerFS } from '../dao/productManagerFS.js';
 import ProductManagerDB from '../dao/productManagerDB.js';
 import { uploader } from '../utils/multerUtil.js';
 
 const router = Router();
-//const ProductService = new productManagerFS('products.json');
 const productService = new ProductManagerDB();
 
 /* router.get('/', async (req, res) => {

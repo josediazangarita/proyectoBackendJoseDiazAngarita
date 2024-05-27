@@ -1,6 +1,5 @@
 // Rutas de Cart
 import express from 'express';
-//import CartManagerFS from '../dao/cartManagerFS.js';
 import cartManagerDB from '../dao/cartManagerDB.js';
 import cartModel from '../models/cartModel.js';
 

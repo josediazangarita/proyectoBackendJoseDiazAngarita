@@ -9,7 +9,6 @@ import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-// import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
 import viewsRouter from './routes/views.router.js';
@@ -94,21 +93,3 @@ app.use('/api/sessions', sessionRouter);
 
 // Servidor de sockets
 websocket(io);
-
-
-
-/*// Middleware de sesiones con filestorage
-app.use(session(
-    {
-        store: new fileStorage({
-            path: './sessions',
-            ttl: 100,
-            retries: 0
-
-        }),
-        secret: 'secretPhrase',
-        resave: true,
-        saveUninitialized: true
-    }
-));*/
-

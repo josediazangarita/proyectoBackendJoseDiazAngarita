@@ -1,5 +1,3 @@
-//import { productManagerFS } from "./dao/productManagerFS.js";
-//const ProductService = new productManagerFS('products.json');
 import productManagerDB from "./dao/productManagerDB.js";
 
 const store = new productManagerDB();
