@@ -1,12 +1,12 @@
 import express from 'express';
 import productModel from '../models/productModel.js';
 
-import ProductManagerDB from '../dao/productManagerDB.js';
+import ProductService from '../services/productService.js';
 
 const router = express.Router();
 // Se crea una instancia de ProductManager
 //const store = new ProductManagerFS(); 
-const store = new ProductManagerDB();
+const store = new ProductService();
 
 //Ruta para la página principal
 router.get('/', (req, res) => {

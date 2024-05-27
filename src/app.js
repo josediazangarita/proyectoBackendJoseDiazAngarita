@@ -2,7 +2,7 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import ProductManagerDB from './dao/productManagerDB.js';
+import ProductService from './services/productService.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -25,7 +25,7 @@ const app = express();
 initializePassport();
 
 // Instancia de ProductManager
-const productManager = new ProductManagerDB();
+const productManager = new ProductService();
 
 // Se establece el puerto
 const PORT = process.env.PORT || 8080;

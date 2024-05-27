@@ -4,20 +4,10 @@ console.log("\nSegunda entrega Backend de José Gregorio Díaz Angarita\n")
 //Se importa el módulo de Mongoose para manipular archivos
 import productModel from '../models/productModel.js';
 
-export default class ProductManagerDB {
+export default class ProductService {
 
-    //Método para obtener todos los productos almacenados
-    /* async getProducts() {
-        try {
-            return await productModel.find().lean();
-        } catch (error) {
-            console.error(error.message);
-            throw new Error("Error al buscar los productos");
-        }
-    } */
-    // Se agrega filtro para obtener productos por categoría
     async getProducts(filter = {}) {
-        console.log("🚀 ~ ProductManagerDB ~ getProducts ~ filter:", filter)
+        console.log("🚀 ~ ProductService ~ getProducts ~ filter:", filter)
         try {
             return await productModel.find(filter).lean();
         } catch (error) {
