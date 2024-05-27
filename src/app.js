@@ -12,7 +12,7 @@ import initializePassport from './config/passport.config.js';
 // import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
-import viewsRouter from './views/views.router.js';
+import viewsRouter from './routes/views.router.js';
 import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
