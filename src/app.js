@@ -3,29 +3,26 @@ import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import ProductManagerDB from './dao/productManagerDB.js';
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-//import fileStore from 'session-file-store';
+// import fileStore from 'session-file-store';
 
 import __dirname from './utils.js';
-import viewsRouter from './views/views.router.js';
+import viewsRouter from './routes/views.router.js';
 import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
 import websocket from './websocket.js';
 
-
-// Se crea una instancia de fileStore para las sesiones
-//const fileStorage = fileStore(session);
-
 // Se crea una instancia de express
 const app = express();
 
+// Inicializar Passport
 initializePassport();
 
 // Instancia de ProductManager
@@ -50,7 +47,7 @@ mongoose.connect(uri)
     .then(() => console.log('Conectado a MongoDB Atlas'))
     .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
 
-//Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
+// Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine('handlebars', handlebars.engine({
     defaultLayout: 'main',
     partialsDir: `${__dirname}/views/partials/`
@@ -58,7 +55,7 @@ app.engine('handlebars', handlebars.engine({
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
-//Establecemos el servidor estático de archivos
+// Establecemos el servidor estático de archivos
 app.use(express.static(`${__dirname}/../public`));
 
 // Middleware para parsear JSON y URL-encoded
@@ -69,19 +66,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Middleware de sesiones con MongoStore
-app.use(session(
-    {
-        store: MongoStore.create(
-            {
-                mongoUrl: uri,
-                ttl: 3600
-            }
-        ),
-        secret: 'secretPhrase',
-        resave: true,
-        saveUninitialized: true
-    }
-));
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: uri,
+        ttl: 3600
+    }),
+    secret: 'Amanemisa',
+    resave: true,
+    saveUninitialized: true
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -91,6 +84,18 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
 });
+
+// Rutas
+app.use("/", viewsRouter);
+app.use('/api/products', productRoutes);
+app.use('/api/carts', cartRoutes);
+app.use('/api/users', usersRouter);
+app.use('/api/sessions', sessionRouter);
+
+// Servidor de sockets
+websocket(io);
+
+
 
 /*// Middleware de sesiones con filestorage
 app.use(session(
@@ -106,15 +111,4 @@ app.use(session(
         saveUninitialized: true
     }
 ));*/
-
-// Rutas
-app.use("/", viewsRouter);
-app.use('/api/products', productRoutes);
-app.use('/api/carts', cartRoutes);
-app.use('/api/users', usersRouter);
-app.use('/api/sessions', sessionRouter);
-
-
-// Servidor de sockets
-websocket(io);
 

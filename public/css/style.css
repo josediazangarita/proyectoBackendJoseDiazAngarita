@@ -372,6 +372,19 @@ p{
     background-color: #4bc2e5;
 }
 
+.btn-github {
+    background-color: #161b22;
+    color: #fff;
+}
+
+.btn-github:hover {
+    background-color: black;
+}
+
+.btn-github i {
+    margin-right: 10px;
+}
+
 .login-link {
     color: yellow;
     text-decoration: none;
