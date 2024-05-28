@@ -4,16 +4,15 @@ import { uploader } from '../utils/multerUtil.js';
 
 const router = Router();
 
-/* router.get('/', async (req, res) => {
-    const result = await store.getProducts();
+router.get('/', ProductController.getProducts);
+router.get('/:pid', ProductController.getProductByID);
+router.post('/', uploader.array('thumbnails', 3), ProductController.addProduct);
+router.put('/:pid', uploader.array('thumbnails', 3), ProductController.updateProduct);
+router.delete('/:pid', ProductController.deleteProduct);
 
-    res.send({
-        status: 'success',
-        payload: result
-    });
-}); */
+export default router;
 
-//Filtro por categoría
+/* //Filtro por categoría
 router.get('/', ProductController.getProducts, async (req, res) => {
     try {
         let filter = {};
@@ -111,4 +110,17 @@ router.delete('/:pid', ProductController.deleteProduct, async (req, res) => {
     }
 });
 
-export default router;
+export default router; */
+
+
+
+
+
+/* router.get('/', async (req, res) => {
+    const result = await store.getProducts();
+
+    res.send({
+        status: 'success',
+        payload: result
+    });
+}); */

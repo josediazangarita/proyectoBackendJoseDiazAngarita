@@ -2,6 +2,7 @@ import Router from 'express';
 import passport from 'passport';
 
 import auth from '../middlewares/auth.js';
+import UserController from '../controllers/userController.js';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.get('/login', auth, (req, res) => {
 });
 
 // Ruta para cerrar sesión
-router.post('/logout', (req, res) => {
+router.post('/logout', UserController.logoutUser, (req, res) => {
     req.logout((err) => {
         if (err) {
             return res.status(500).send({ status: 'error', message: 'Logout failed' });
