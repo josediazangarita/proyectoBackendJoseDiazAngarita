@@ -40,13 +40,7 @@ const UserController = {
             res.status(500).send('Error logging in user');
         }
     },
-    logoutUser: async (req, res) => {
-        req.logout();
-        req.session.destroy(() => {
-            res.clearCookie('connect.sid');
-            res.redirect('/login');
-        });
-    },
+
     restorePassword: async (req, res) => {
         try {
             const { email, newPassword } = req.body;
@@ -62,6 +56,15 @@ const UserController = {
             res.status(500).send('Error restoring password');
         }
     }
+};
+
+export const logoutUser = (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error al cerrar sesión' });
+        }
+        res.redirect('/login');
+    });
 };
 
 export default UserController;

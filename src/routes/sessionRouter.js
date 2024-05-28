@@ -2,7 +2,7 @@ import Router from 'express';
 import passport from 'passport';
 
 import auth from '../middlewares/auth.js';
-import UserController from '../controllers/userController.js';
+import { logoutUser } from '../controllers/userController.js';
 
 const router = Router();
 
@@ -25,18 +25,7 @@ router.get('/login', auth, (req, res) => {
 });
 
 // Ruta para cerrar sesión
-router.post('/logout', UserController.logoutUser, (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return res.status(500).send({ status: 'error', message: 'Logout failed' });
-        }
-        req.session.destroy(() => {
-            res.clearCookie('connect.sid');
-            //res.send({ status: 'success', message: 'Logged out successfully' });
-            res.redirect('/login');
-        });
-    });
-});
+router.post('/logout', logoutUser);
 
 // Inicio de sesión con GitHub
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
