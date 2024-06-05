@@ -106,6 +106,10 @@ io.on('connection', socket => {
     // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
     socket.on('login', user => {
         socket.emit('messageLogs', messages);
+
+        // Emitir mensaje a todos los demás usuarios sobre la nueva conexión
+        socket.broadcast.emit('userConnected', user);
+        console.log(`User ${user} connected`);
     });
 
     socket.on('message', data => {

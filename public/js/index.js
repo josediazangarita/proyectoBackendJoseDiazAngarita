@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         allowOutsideClick: false,
     }).then(result => {
         user = result.value;
-        //Emitir evento de login
         socket.emit('login', user);
     });
 
@@ -50,6 +49,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
     socket.on('messageLogs', data => {
         let messages = data.map(message => `<div><strong>${message.user}:</strong> ${message.message}</div>`);
         messageLogs.innerHTML = messages.join('');
+    });
+
+    // Escuchar el evento 'userConnected' y mostrar una alerta
+    socket.on('userConnected', newUser => {
+        Swal.fire({
+            icon: 'info',
+            title: 'Nuevo usuario conectado',
+            text: `${newUser} se ha unido al chat`,
+            toast: true,
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 10000,
+            timerProgressBar: true,
+        });
     });
 
 
