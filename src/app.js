@@ -2,14 +2,14 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import ProductManagerDB from './dao/productManagerDB.js';
+import ProductService from './services/productService.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-// import fileStore from 'session-file-store';
+import dotenv from 'dotenv';
 
 import __dirname from './utils.js';
 import viewsRouter from './routes/views.router.js';
@@ -22,11 +22,14 @@ import websocket from './websocket.js';
 // Se crea una instancia de express
 const app = express();
 
+//Configuración de variables de entorno
+dotenv.config();
+
 // Inicializar Passport
 initializePassport();
 
 // Instancia de ProductManager
-const productManager = new ProductManagerDB();
+const productManager = new ProductService();
 
 // Se establece el puerto
 const PORT = process.env.PORT || 8080;
@@ -42,10 +45,9 @@ httpServer.listen(PORT, () => {
 const io = new Server(httpServer);
 
 // Conexión a MongoDB
-const uri = "mongodb+srv://jgda:jgda@cluster0.abjsbjo.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.connect(uri)
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Conectado a MongoDB Atlas'))
-    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err));
+    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err.message));
 
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine('handlebars', handlebars.engine({
@@ -68,10 +70,10 @@ app.use(cookieParser());
 // Middleware de sesiones con MongoStore
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: uri,
+        mongoUrl: process.env.MONGODB_URI,
         ttl: 3600
     }),
-    secret: 'Amanemisa',
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
 }));
@@ -95,20 +97,23 @@ app.use('/api/sessions', sessionRouter);
 // Servidor de sockets
 websocket(io);
 
+//Chat con sockets
+let messages = [];
 
+io.on('connection', socket => {
+    console.log('Usuario conectado');
 
-/*// Middleware de sesiones con filestorage
-app.use(session(
-    {
-        store: new fileStorage({
-            path: './sessions',
-            ttl: 100,
-            retries: 0
+    // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
+    socket.on('login', user => {
+        socket.emit('messageLogs', messages);
 
-        }),
-        secret: 'secretPhrase',
-        resave: true,
-        saveUninitialized: true
-    }
-));*/
+        // Emitir mensaje a todos los demás usuarios sobre la nueva conexión
+        socket.broadcast.emit('userConnected', user);
+        console.log(`User ${user} connected`);
+    });
 
+    socket.on('message', data => {
+        messages.push(data);
+        io.emit('messageLogs', messages);
+    });
+});

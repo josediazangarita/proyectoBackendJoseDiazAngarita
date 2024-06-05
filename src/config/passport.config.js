@@ -2,8 +2,8 @@ import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
 
-import userModel from '../dao/models/userModel.js';
-import cartModel from '../dao/models/cartModel.js'; // Importa el modelo de carrito
+import userModel from '../models/userModel.js';
+import cartModel from '../models/cartModel.js';
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
 
 const LocalStrategy = local.Strategy;
