@@ -1,6 +1,57 @@
+/* const { default: Swal } = require("sweetalert2"); */
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
     // Conectar al servidor de sockets
     const socket = io();
+
+    let user;
+    let chatBox = document.getElementById('chatBox');
+    let sendButton = document.getElementById('sendButton');
+    let messageLogs = document.getElementById('messageLogs');
+
+    //Alerta de bienvenida con sweetalert2
+    Swal.fire({
+        title: 'Bienvenido',
+        input: "text",
+        text: 'Ingresa un nombre de usuario para identificarte en el chat',
+        inputValidator: (value) => {
+            return !value && '¡Necesitas un nombre de usuario para continuar!';
+        },
+        allowOutsideClick: false,
+    }).then(result => {
+        user = result.value;
+        //Emitir evento de login
+        socket.emit('login', user);
+    });
+
+    sendButton.addEventListener('click', () => {
+        sendMessage();
+    });
+
+    //Chat
+    chatBox.addEventListener('keyup', evt => {
+        if (evt.key === "Enter") {
+            if (chatBox.value.trim().length > 0) {
+                socket.emit('message', { user: user, message: chatBox.value });
+                chatBox.value = '';
+            }
+        }
+    });
+
+    function sendMessage() {
+        if (chatBox.value.trim().length > 0) {
+            socket.emit('message', { user: user, message: chatBox.value });
+            chatBox.value = '';
+        }
+    }
+
+    //Sockets listeners
+    socket.on('messageLogs', data => {
+        let messages = data.map(message => `<div><strong>${message.user}:</strong> ${message.message}</div>`);
+        messageLogs.innerHTML = messages.join('');
+    });
+
 
     socket.on('connect', () => {
         console.log('Conectado al servidor de sockets');

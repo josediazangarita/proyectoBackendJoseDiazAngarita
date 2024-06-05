@@ -96,3 +96,20 @@ app.use('/api/sessions', sessionRouter);
 
 // Servidor de sockets
 websocket(io);
+
+//Chat con sockets
+let messages = [];
+
+io.on('connection', socket => {
+    console.log('Usuario conectado');
+
+    // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
+    socket.on('login', user => {
+        socket.emit('messageLogs', messages);
+    });
+
+    socket.on('message', data => {
+        messages.push(data);
+        io.emit('messageLogs', messages);
+    });
+});
