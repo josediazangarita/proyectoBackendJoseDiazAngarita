@@ -1,6 +1,7 @@
 import Router from 'express';
 import passport from 'passport';
 
+<<<<<<< HEAD
 import userModel from '../models/userModel.js';
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
 import UserController from '../controllers/userController.js';
@@ -17,6 +18,17 @@ export default router;
 router.post(
     '/register',
     passport.authenticate('register', UserController.registerUser, { failureRedirect: '/api/sessions/failRegister' }),
+=======
+import userModel from '../dao/models/userModel.js';
+import { createHash, isValidPassword } from '../utils/functionUtils.js';
+
+const router = Router();
+
+// Ruta para registrar un nuevo usuario con passport
+router.post(
+    '/register',
+    passport.authenticate('register', { failureRedirect: '/api/sessions/failRegister' }),
+>>>>>>> main
     (req, res) => {
         //res.send({ status: 'success', message: 'User registered successfully', user: req.user });
         res.redirect('/login');
@@ -33,7 +45,11 @@ router.get('/failRegister', (req, res) => {
 // Ruta para loguear a un usuario con passport
 router.post(
     '/login',
+<<<<<<< HEAD
     passport.authenticate('login', UserController.loginUser, { failureRedirect: '/api/sessions/failLogin' }),
+=======
+    passport.authenticate('login', { failureRedirect: '/api/sessions/failLogin' }),
+>>>>>>> main
     (req, res) => {
         if (!req.user) {
             return res.status(401).send({
@@ -62,7 +78,11 @@ router.get('/failLogin', (req, res) => {
 });
 
 // Ruta para restaurar la contraseña de un usuario
+<<<<<<< HEAD
 router.post('/restorePassword', UserController.restorePassword, async (req, res) => {
+=======
+router.post('/restorePassword', async (req, res) => {
+>>>>>>> main
     try {
         const { email, newPassword } = req.body;
         const user = await userModel.findOne({ email });
@@ -79,7 +99,11 @@ router.post('/restorePassword', UserController.restorePassword, async (req, res)
     }
 });
 
+<<<<<<< HEAD
 export default router; */
+=======
+export default router;
+>>>>>>> main
 
 
 

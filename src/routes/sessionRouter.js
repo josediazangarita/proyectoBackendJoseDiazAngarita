@@ -25,11 +25,30 @@ router.get('/login', auth, (req, res) => {
 });
 
 // Ruta para cerrar sesión
+<<<<<<< HEAD
 router.post('/logout', logoutUser);
 
 // Inicio de sesión con GitHub
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
+=======
+router.post('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).send({ status: 'error', message: 'Logout failed' });
+        }
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            //res.send({ status: 'success', message: 'Logged out successfully' });
+            res.redirect('/login');
+        });
+    });
+});
+
+// Inicio de sesión con GitHub
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+>>>>>>> main
 router.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/login', session: true }),
     (req, res) => {

@@ -2,14 +2,22 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+<<<<<<< HEAD
 import ProductService from './services/productService.js';
+=======
+import ProductManagerDB from './dao/productManagerDB.js';
+>>>>>>> main
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
+<<<<<<< HEAD
 import dotenv from 'dotenv';
+=======
+// import fileStore from 'session-file-store';
+>>>>>>> main
 
 import __dirname from './utils.js';
 import viewsRouter from './routes/views.router.js';
@@ -22,9 +30,12 @@ import websocket from './websocket.js';
 // Se crea una instancia de express
 const app = express();
 
+<<<<<<< HEAD
 //Configuración de variables de entorno
 dotenv.config();
 
+=======
+>>>>>>> main
 // Inicializar Passport
 initializePassport();
 
@@ -70,10 +81,17 @@ app.use(cookieParser());
 // Middleware de sesiones con MongoStore
 app.use(session({
     store: MongoStore.create({
+<<<<<<< HEAD
         mongoUrl: process.env.MONGODB_URI,
         ttl: 3600
     }),
     secret: process.env.SESSION_SECRET,
+=======
+        mongoUrl: uri,
+        ttl: 3600
+    }),
+    secret: 'Amanemisa',
+>>>>>>> main
     resave: true,
     saveUninitialized: true
 }));
@@ -97,6 +115,7 @@ app.use('/api/sessions', sessionRouter);
 // Servidor de sockets
 websocket(io);
 
+<<<<<<< HEAD
 //Chat con sockets
 let messages = [];
 
@@ -117,3 +136,22 @@ io.on('connection', socket => {
         io.emit('messageLogs', messages);
     });
 });
+=======
+
+
+/*// Middleware de sesiones con filestorage
+app.use(session(
+    {
+        store: new fileStorage({
+            path: './sessions',
+            ttl: 100,
+            retries: 0
+
+        }),
+        secret: 'secretPhrase',
+        resave: true,
+        saveUninitialized: true
+    }
+));*/
+
+>>>>>>> main
