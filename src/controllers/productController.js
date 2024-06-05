@@ -1,19 +1,8 @@
-import { Router } from 'express';
-import * as ProductController from '../controllers/productController.js';
-import { uploader } from '../utils/multerUtil.js';
+import ProductService from '../services/productService.js';
 
-const router = Router();
+const productService = new ProductService();
 
-router.get('/', ProductController.getProducts);
-router.get('/:pid', ProductController.getProductByID);
-router.post('/', uploader.array('thumbnails', 3), ProductController.addProduct);
-router.put('/:pid', uploader.array('thumbnails', 3), ProductController.updateProduct);
-router.delete('/:pid', ProductController.deleteProduct);
-
-export default router;
-
-/* //Filtro por categoría
-router.get('/', ProductController.getProducts, async (req, res) => {
+export const getProducts = async (req, res) => {
     try {
         let filter = {};
         if (req.query.category) {
@@ -30,10 +19,9 @@ router.get('/', ProductController.getProducts, async (req, res) => {
             message: error.toString()
         });
     }
-});
+};
 
-router.get('/:pid', ProductController.getProductByID, async (req, res) => {
-
+export const getProductByID = async (req, res) => {
     try {
         const result = await productService.getProductByID(req.params.pid);
         res.send({
@@ -46,10 +34,9 @@ router.get('/:pid', ProductController.getProductByID, async (req, res) => {
             message: error.message
         });
     }
-});
+};
 
-router.post('/', uploader.array('thumbnails', 3), ProductController.addProduct, async (req, res) => {
-
+export const addProduct = async (req, res) => {
     if (req.files) {
         req.body.thumbnails = [];
         req.files.forEach((file) => {
@@ -69,10 +56,9 @@ router.post('/', uploader.array('thumbnails', 3), ProductController.addProduct, 
             message: error.message
         });
     }
-});
+};
 
-router.put('/:pid', uploader.array('thumbnails', 3), ProductController.updateProduct, async (req, res) => {
-
+export const updateProduct = async (req, res) => {
     if (req.files) {
         req.body.thumbnails = [];
         req.files.forEach((file) => {
@@ -92,10 +78,9 @@ router.put('/:pid', uploader.array('thumbnails', 3), ProductController.updatePro
             message: error.message
         });
     }
-});
+};
 
-router.delete('/:pid', ProductController.deleteProduct, async (req, res) => {
-
+export const deleteProduct = async (req, res) => {
     try {
         const result = await productService.deleteProduct(req.params.pid);
         res.send({
@@ -108,19 +93,4 @@ router.delete('/:pid', ProductController.deleteProduct, async (req, res) => {
             message: error.message
         });
     }
-});
-
-export default router; */
-
-
-
-
-
-/* router.get('/', async (req, res) => {
-    const result = await store.getProducts();
-
-    res.send({
-        status: 'success',
-        payload: result
-    });
-}); */
+};

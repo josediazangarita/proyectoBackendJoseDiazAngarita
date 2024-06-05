@@ -1,13 +1,12 @@
 import express from 'express';
-import productModel from '../dao/models/productModel.js';
+import productModel from '../models/productModel.js';
 
-//import ProductManagerFS from '../dao/productManagerFS.js';
-import ProductManagerDB from '../dao/productManagerDB.js';
+import ProductService from '../services/productService.js';
 
 const router = express.Router();
 // Se crea una instancia de ProductManager
 //const store = new ProductManagerFS(); 
-const store = new ProductManagerDB();
+const store = new ProductService();
 
 //Ruta para la página principal
 router.get('/', (req, res) => {
@@ -19,7 +18,6 @@ router.get('/', (req, res) => {
         });
 });
 
-// Ruta para la página de productos para mostrar la página de productos con filtrado opcional
 // Ruta para la página de productos para mostrar la página de productos con filtrado opcional
 router.get('/products', async (req, res) => {
     console.log("🚀 ~ router.get ~ req:", req);
@@ -49,7 +47,7 @@ router.get('/products', async (req, res) => {
             page,
             limit,
             lean: true,
-            sort: sortOptions // Incluye las opciones de ordenamiento en la configuración de paginación
+            sort: sortOptions
         };
         const result = await productModel.paginate(filter, options);
         console.log("🚀 ~ router.get ~ result:", result)
