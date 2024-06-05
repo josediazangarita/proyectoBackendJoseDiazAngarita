@@ -17,6 +17,7 @@ export default router;
 router.post(
     '/register',
     passport.authenticate('register', UserController.registerUser, { failureRedirect: '/api/sessions/failRegister' }),
+
     (req, res) => {
         //res.send({ status: 'success', message: 'User registered successfully', user: req.user });
         res.redirect('/login');
@@ -34,6 +35,7 @@ router.get('/failRegister', (req, res) => {
 router.post(
     '/login',
     passport.authenticate('login', UserController.loginUser, { failureRedirect: '/api/sessions/failLogin' }),
+
     (req, res) => {
         if (!req.user) {
             return res.status(401).send({
@@ -63,6 +65,7 @@ router.get('/failLogin', (req, res) => {
 
 // Ruta para restaurar la contraseña de un usuario
 router.post('/restorePassword', UserController.restorePassword, async (req, res) => {
+
     try {
         const { email, newPassword } = req.body;
         const user = await userModel.findOne({ email });
@@ -80,7 +83,6 @@ router.post('/restorePassword', UserController.restorePassword, async (req, res)
 });
 
 export default router; */
-
 
 
 /* //Ruta para registrar un nuevo usuario

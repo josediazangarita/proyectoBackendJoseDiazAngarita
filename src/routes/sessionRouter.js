@@ -27,17 +27,9 @@ router.get('/login', auth, (req, res) => {
 // Ruta para cerrar sesión
 router.post('/logout', logoutUser);
 
+
 // Inicio de sesión con GitHub
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
-
-router.get('/github/callback',
-    passport.authenticate('github', { failureRedirect: '/login', session: true }),
-    (req, res) => {
-        req.session.user = req.user;
-        //res.send({ status: 'success', message: 'GitHub login successful', user: req.user });
-        res.redirect('/products');
-    }
-);
 
 // Obtener usuario actual
 router.get('/current', auth, (req, res) => {

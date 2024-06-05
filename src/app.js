@@ -3,6 +3,7 @@ import handlebars from "express-handlebars";
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import ProductService from './services/productService.js';
+
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -74,6 +75,7 @@ app.use(session({
         ttl: 3600
     }),
     secret: process.env.SESSION_SECRET,
+
     resave: true,
     saveUninitialized: true
 }));
@@ -117,3 +119,4 @@ io.on('connection', socket => {
         io.emit('messageLogs', messages);
     });
 });
+

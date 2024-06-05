@@ -4,6 +4,7 @@ import GitHubStrategy from 'passport-github2';
 // Import custom modules
 import userModel from '../models/userModel.js';
 import cartModel from '../models/cartModel.js';
+
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
 
 const LocalStrategy = local.Strategy;
