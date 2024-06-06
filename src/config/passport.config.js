@@ -67,8 +67,8 @@ const initializePassport = () => {
 
     // Estrategia de inicio de sesión con GitHub
     passport.use(new GitHubStrategy({
-        clientID: 'Iv23liYUtwMJtBY1uSl7',
-        clientSecret: '6d504591a2450ec2d42a38cda243cd815639c9a2',
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: "http://localhost:8080/api/sessions/github/callback"
     },
         async (accessToken, refreshToken, profile, done) => {
