@@ -3,8 +3,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Fredoka', sans-serif; }
+    font-family: 'Ubuntu Sans', sans-serif;
+ }
+
+ /*Fuente*/
+ .ubuntu-sans-font {
+   font-family: "Ubuntu Sans", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 300;
+   font-style: normal;
+   font-variation-settings:
+     "wdth" 100;
+ }
   
+  
+
 /* Estilos generales */
 body {
 display: flex;
@@ -12,7 +25,8 @@ flex-direction: column;
 margin-top: 80px;
 background-color: #001524;
 min-height: 100vh;
-background-image: url(../img/wallpaper.jpg);
+background-image: url(../img/wallpaper-balls-3d.jpg);
+/*background-image: linear-gradient(to top, #09203f 0%, #537895 100%);*/
 background-size: cover;
 background-position: center;
 min-height: calc(100vh - 80px);
