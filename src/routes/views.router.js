@@ -39,7 +39,7 @@ router.get('/products', async (req, res) => {
         sortOptions.price = 1; // Por defecto ordena ascendente
     }
 
-    const limit = 10;
+    const limit = 9;
     const baseURL = "http://localhost:8080/products";
 
     try {

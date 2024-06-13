@@ -165,8 +165,9 @@ p{
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
 }
 
@@ -176,6 +177,7 @@ p{
     backdrop-filter: blur(20px);
     border-radius: 8px;
     overflow: hidden;
+    width: 240px;
     z-index: 1;
 }
 
