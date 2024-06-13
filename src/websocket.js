@@ -1,6 +1,6 @@
-import productManagerDB from "./services/productService.js";
+import productService from "./services/productService.js";
 
-const store = new productManagerDB();
+const store = new productService();
 
 export default (io) => {
     io.on("connection", async socket => {
