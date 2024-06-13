@@ -125,5 +125,15 @@ router.get("/restorePassword", (req, res) => {
         });
 });
 
+// Ruta para la vista de chat
+router.get('/chat', (req, res) => {
+    res.render(
+        'chat',
+        {
+            style: 'style.css',
+            user: req.session.user
+        });
+});
+
 
 export default router;
