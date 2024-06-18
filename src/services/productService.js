@@ -1,13 +1,9 @@
-//Script del desafío entregable dos del curso Backend de Coderhouse
-console.log("\nSegunda entrega Backend de José Gregorio Díaz Angarita\n")
-
 //Se importa el módulo de Mongoose para manipular archivos
 import productModel from '../models/productModel.js';
 
 export default class ProductService {
 
     async getProducts(filter = {}) {
-        console.log("🚀 ~ ProductService ~ getProducts ~ filter:", filter)
         try {
             return await productModel.find(filter).lean();
         } catch (error) {

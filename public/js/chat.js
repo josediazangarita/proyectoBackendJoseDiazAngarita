@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     socket.on('connect', () => {
-        console.log('Conectado al servidor de sockets');
+        console.log('Cliente conectado al chat de sockets');
     });
 
     socket.on('statusError', data => {

@@ -46,7 +46,7 @@ const io = new Server(httpServer);
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Conectado a MongoDB Atlas'))
+    .then(() => console.log('Servidor conectado a MongoDB Atlas'))
     .catch(err => console.error('Error al conectar a MongoDB Atlas:', err.message));
 
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
@@ -101,7 +101,7 @@ websocket(io);
 let messages = [];
 
 io.on('connection', socket => {
-    console.log('Usuario conectado');
+    console.log('Servidor conectado a sockets');
 
     // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
     socket.on('login', user => {
@@ -109,7 +109,7 @@ io.on('connection', socket => {
 
         // Emitir mensaje a todos los demás usuarios sobre la nueva conexión
         socket.broadcast.emit('userConnected', user);
-        console.log(`User ${user} connected`);
+        console.log(`Usuario ${user} conectado al chat de sockets`);
     });
 
     socket.on('message', data => {

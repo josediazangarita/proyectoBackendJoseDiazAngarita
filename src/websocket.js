@@ -4,7 +4,7 @@ const store = new productService();
 
 export default (io) => {
     io.on("connection", async socket => {
-        console.log('Cliente socket conectado');
+        console.log('Cliente conectado a socket');
         // Enviar la lista de productos al cliente cuando se conecta
         const products = await store.getProducts();
         socket.emit('productList', products);
