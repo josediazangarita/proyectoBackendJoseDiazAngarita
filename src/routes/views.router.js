@@ -20,8 +20,6 @@ router.get('/', (req, res) => {
 
 // Ruta para la página de productos para mostrar la página de productos con filtrado opcional
 router.get('/products', async (req, res) => {
-    console.log("🚀 ~ router.get ~ req:", req);
-
     let { category, sort = 'asc', page = 1 } = req.query;
     page = parseInt(page);
     if (isNaN(page) || page < 1) page = 1;
@@ -50,7 +48,6 @@ router.get('/products', async (req, res) => {
             sort: sortOptions
         };
         const result = await productModel.paginate(filter, options);
-        console.log("🚀 ~ router.get ~ result:", result)
 
         // Construir enlaces de paginación
         const queryParams = new URLSearchParams(req.query);
