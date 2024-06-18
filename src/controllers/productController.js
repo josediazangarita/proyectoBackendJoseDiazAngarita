@@ -1,96 +1,58 @@
-import ProductService from '../services/productService.js';
+// Importa la implementación de DAO deseada
+import ProductMongo from '../dao/mongoDB/productMongo.js'; // Cambiar aquí por productMemory.js para cambiar la persistencia a FileSystem
 
-const productService = new ProductService();
+const productDao = new ProductMongo();  //Cambiar ProductMemory a ProductMongo
 
 export const getProducts = async (req, res) => {
     try {
-        let filter = {};
-        if (req.query.category) {
-            filter.category = req.query.category;
-        }
-        const result = await productService.getProducts(filter);
-        res.send({
-            status: 'success',
-            payload: result
-        });
+        const filter = req.query.category ? { category: req.query.category } : {};
+        const result = await productDao.getProducts(filter);
+        res.send({ status: 'success', payload: result });
     } catch (error) {
-        res.status(500).send({
-            status: 'error',
-            message: error.toString()
-        });
+        res.status(500).send({ status: 'error', message: error.toString() });
     }
 };
 
 export const getProductByID = async (req, res) => {
     try {
-        const result = await productService.getProductByID(req.params.pid);
-        res.send({
-            status: 'success',
-            payload: result
-        });
+        const result = await productDao.getProductByID(req.params.pid);
+        res.send({ status: 'success', payload: result });
     } catch (error) {
-        res.status(400).send({
-            status: 'error',
-            message: error.message
-        });
+        res.status(400).send({ status: 'error', message: error.message });
     }
 };
 
 export const addProduct = async (req, res) => {
     if (req.files) {
-        req.body.thumbnails = [];
-        req.files.forEach((file) => {
-            req.body.thumbnails.push(file.filename);
-        });
+        req.body.thumbnails = req.files.map(file => file.filename);
     }
 
     try {
-        const result = await productService.addProduct(req.body);
-        res.send({
-            status: 'success',
-            payload: result
-        });
+        const result = await productDao.addProduct(req.body);
+        res.send({ status: 'success', payload: result });
     } catch (error) {
-        res.status(400).send({
-            status: 'error',
-            message: error.message
-        });
+        res.status(400).send({ status: 'error', message: error.message });
     }
 };
 
 export const updateProduct = async (req, res) => {
     if (req.files) {
-        req.body.thumbnails = [];
-        req.files.forEach((file) => {
-            req.body.thumbnails.push(file.filename);
-        });
+        req.body.thumbnails = req.files.map(file => file.filename);
     }
 
     try {
-        const result = await productService.updateProduct(req.params.pid, req.body);
-        res.send({
-            status: 'success',
-            payload: result
-        });
+        const result = await productDao.updateProduct(req.params.pid, req.body);
+        res.send({ status: 'success', payload: result });
     } catch (error) {
-        res.status(400).send({
-            status: 'error',
-            message: error.message
-        });
+        res.status(400).send({ status: 'error', message: error.message });
     }
 };
 
 export const deleteProduct = async (req, res) => {
     try {
-        const result = await productService.deleteProduct(req.params.pid);
-        res.send({
-            status: 'success',
-            payload: result
-        });
+        const result = await productDao.deleteProduct(req.params.pid);
+        res.send({ status: 'success', payload: result });
     } catch (error) {
-        res.status(400).send({
-            status: 'error',
-            message: error.message
-        });
+        res.status(400).send({ status: 'error', message: error.message });
     }
 };

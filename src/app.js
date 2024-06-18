@@ -18,6 +18,7 @@ import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
 import websocket from './websocket.js';
+import { getProducts, getProductByID, addProduct, updateProduct, deleteProduct } from './controllers/productController.js';
 
 // Se crea una instancia de express
 const app = express();

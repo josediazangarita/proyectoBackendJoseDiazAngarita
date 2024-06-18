@@ -89,5 +89,14 @@
     "thumbnails": [],
     "status": true,
     "id": 10
+  },
+  {
+    "title": "Producto 11",
+    "description": "descripción del producto 11",
+    "price": 1100,
+    "thumbnail": "imagen11.jpg",
+    "code": "0011",
+    "stock": 1100,
+    "id": 11
   }
 ]
