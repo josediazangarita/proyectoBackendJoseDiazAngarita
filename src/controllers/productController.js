@@ -1,7 +1,8 @@
-// Importa la implementación de DAO deseada
-import ProductMongo from '../dao/mongoDB/productMongo.js'; // Cambiar aquí por productMemory.js para cambiar la persistencia a FileSystem
+let productDao;
 
-const productDao = new ProductMongo();  //Cambiar ProductMemory a ProductMongo
+export const setProductDao = (dao) => {
+    productDao = dao;
+};
 
 export const getProducts = async (req, res) => {
     try {
