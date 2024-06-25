@@ -1,14 +1,13 @@
-let productDao;
+import ProductDTO from '../dto/productDTO.js';
+import ProductService from '../services/productService.js';
 
-export const setProductDao = (dao) => {
-    productDao = dao;
-};
+const productService = new ProductService();
 
 export const getProducts = async (req, res) => {
     try {
         const filter = req.query.category ? { category: req.query.category } : {};
-        const result = await productDao.getProducts(filter);
-        res.send({ status: 'success', payload: result });
+        const products = await productService.getProducts(filter);
+        res.send({ status: 'success', payload: products });
     } catch (error) {
         res.status(500).send({ status: 'error', message: error.toString() });
     }
@@ -16,34 +15,26 @@ export const getProducts = async (req, res) => {
 
 export const getProductByID = async (req, res) => {
     try {
-        const result = await productDao.getProductByID(req.params.pid);
-        res.send({ status: 'success', payload: result });
+        const product = await productService.getProductByID(req.params.pid);
+        res.send({ status: 'success', payload: product });
     } catch (error) {
         res.status(400).send({ status: 'error', message: error.message });
     }
 };
 
 export const addProduct = async (req, res) => {
-    if (req.files) {
-        req.body.thumbnails = req.files.map(file => file.filename);
-    }
-
     try {
-        const result = await productDao.addProduct(req.body);
-        res.send({ status: 'success', payload: result });
+        const product = await productService.addProduct(req.body);
+        res.send({ status: 'success', payload: product });
     } catch (error) {
         res.status(400).send({ status: 'error', message: error.message });
     }
 };
 
 export const updateProduct = async (req, res) => {
-    if (req.files) {
-        req.body.thumbnails = req.files.map(file => file.filename);
-    }
-
     try {
-        const result = await productDao.updateProduct(req.params.pid, req.body);
-        res.send({ status: 'success', payload: result });
+        const product = await productService.updateProduct(req.params.pid, req.body);
+        res.send({ status: 'success', payload: product });
     } catch (error) {
         res.status(400).send({ status: 'error', message: error.message });
     }
@@ -51,8 +42,8 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
-        const result = await productDao.deleteProduct(req.params.pid);
-        res.send({ status: 'success', payload: result });
+        await productService.deleteProduct(req.params.pid);
+        res.send({ status: 'success', message: 'Producto eliminado correctamente' });
     } catch (error) {
         res.status(400).send({ status: 'error', message: error.message });
     }

@@ -6,7 +6,9 @@
     "thumbnail": "imagen1.jpg",
     "code": "001",
     "stock": 100,
-    "id": 1
+    "category": "PC",
+    "status": true,
+    "_id": 1
   },
   {
     "title": "Producto 2",
@@ -15,7 +17,9 @@
     "thumbnail": "imagen2.jpg",
     "code": "002",
     "stock": 200,
-    "id": 2
+    "category": "PC",
+    "status": true,
+    "_id": 2
   },
   {
     "title": "Producto 3",
@@ -24,7 +28,9 @@
     "thumbnail": "imagen3.jpg",
     "code": "003",
     "stock": 300,
-    "id": 3
+    "category": "PC",
+    "status": true,
+    "_id": 3
   },
   {
     "title": "Producto 4",
@@ -33,7 +39,9 @@
     "thumbnail": "imagen4.jpg",
     "code": "004",
     "stock": 200,
-    "id": 4
+    "category": "PC",
+    "status": true,
+    "_id": 4
   },
   {
     "title": "Producto 5",
@@ -42,7 +50,9 @@
     "thumbnail": "imagen5.jpg",
     "code": "005",
     "stock": 6000,
-    "id": 5
+    "category": "PC",
+    "status": true,
+    "_id": 5
   },
   {
     "title": "Producto 6",
@@ -51,7 +61,9 @@
     "thumbnail": "imagen6.jpg",
     "code": "006",
     "stock": 600,
-    "id": 6
+    "category": "PC",
+    "status": true,
+    "_id": 6
   },
   {
     "title": "Producto 7",
@@ -60,7 +72,9 @@
     "thumbnail": "imagen7.jpg",
     "code": "007",
     "stock": 700,
-    "id": 7
+    "category": "PC",
+    "status": true,
+    "_id": 7
   },
   {
     "title": "Producto 8",
@@ -69,7 +83,9 @@
     "thumbnail": "imagen8.jpg",
     "code": "008",
     "stock": 800,
-    "id": 8
+    "category": "PC",
+    "status": true,
+    "_id": 8
   },
   {
     "title": "Producto 9",
@@ -78,7 +94,9 @@
     "thumbnail": "imagen9.jpg",
     "code": "009",
     "stock": 900,
-    "id": 9
+    "category": "PC",
+    "status": true,
+    "_id": 9
   },
   {
     "title": "Producto 10",
@@ -88,7 +106,7 @@
     "stock": 100,
     "thumbnails": [],
     "status": true,
-    "id": 10
+    "_id": 10
   },
   {
     "title": "Producto 11",
@@ -97,6 +115,8 @@
     "thumbnail": "imagen11.jpg",
     "code": "0011",
     "stock": 1100,
-    "id": 11
+    "category": "PC",
+    "status": true,
+    "_id": 11
   }
 ]
