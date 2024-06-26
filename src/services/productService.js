@@ -1,65 +1,57 @@
-//Se importa el módulo de Mongoose para manipular archivos
+import ProductDTO from '../dto/productDTO.js';
 import productModel from '../models/productModel.js';
 
 export default class ProductService {
-
     async getProducts(filter = {}) {
         try {
-            return await productModel.find(filter).lean();
+            const products = await productModel.find(filter).lean();
+            return products.map(product => new ProductDTO(product));
         } catch (error) {
             console.error("Error en getProducts:", error.message);
             throw new Error("Error al buscar los productos");
         }
     }
 
-    //Método para obtener un producto almacenado por su ID
     async getProductByID(pid) {
-        const product = await productModel.findOne({ _id: pid });
-
-        if (!product) throw new Error(`El producto ${pid} no existe!`);
-
-        return product;
+        try {
+            const product = await productModel.findOne({ _id: pid });
+            if (!product) throw new Error(`El producto ${pid} no existe!`);
+            return new ProductDTO(product);
+        } catch (error) {
+            console.error("Error en getProductByID:", error.message);
+            throw new Error(error.message);
+        }
     }
 
-    //Método para agregar productos
     async addProduct(product) {
-        const { title, description, code, price, stock, category, thumbnails } = product;
-
-        if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Error al crear el producto');
-        }
-
         try {
-            const result = await productModel.create({ title, description, code, price, stock, category, thumbnails: thumbnails ?? [] });
-            return result;
+            const result = await productModel.create(product);
+            return new ProductDTO(result.toObject());
         } catch (error) {
-            console.error(error.message);
-            throw new Error('Error al crear el producto');
+            console.error("Error en addProduct:", error.message);
+            throw new Error("Error al agregar el producto");
         }
     }
 
     async updateProduct(pid, productUpdate) {
         try {
-            const result = await productModel.updateOne({ _id: pid }, productUpdate);
-
-            return result;
+            const result = await productModel.findByIdAndUpdate(pid, productUpdate, { new: true });
+            if (!result) throw new Error(`El producto ${pid} no existe!`);
+            return new ProductDTO(result.toObject());
         } catch (error) {
-            console.error(error.message);
-            throw new Error('Error al actualizar el producto');
+            console.error("Error en updateProduct:", error.message);
+            throw new Error("Error al actualizar el producto");
         }
     }
 
-    // Método para eliminar producto
     async deleteProduct(pid) {
         try {
-            const result = await productModel.deleteOne({ _id: pid });
-
-            if (result.deletedCount === 0) throw new Error(`El producto ${pid} no existe!`);
-
-            return result;
+            const result = await productModel.findByIdAndDelete(pid);
+            if (!result) throw new Error(`El producto ${pid} no existe!`);
+            return true;
         } catch (error) {
-            console.error(error.message);
-            throw new Error(`Error al eliminar el producto ${pid}`);
+            console.error("Error en deleteProduct:", error.message);
+            throw new Error("Error al eliminar el producto");
         }
     }
 }

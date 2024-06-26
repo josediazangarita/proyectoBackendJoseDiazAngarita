@@ -18,7 +18,6 @@ import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
 import websocket from './websocket.js';
-import { setProductDao } from './controllers/productController.js';
 import ProductMongo from './dao/mongoDB/productMongo.js';
 import ProductMemory from './dao/memory/productMemory.js';
 
@@ -63,8 +62,6 @@ switch (daoType) {
         console.error('DAO no especificado. Agrege mongo o memory luego de npm start para definir la persistencia');
         process.exit(1); // Salir con un código de error
 }
-
-setProductDao(productDao);
 
 // Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
 if (daoType === 'mongo') {

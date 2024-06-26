@@ -1,50 +1,86 @@
 import fs from 'fs/promises';
 import path from 'path';
+import ProductDTO from '../../dto/productDTO.js';
 
 const filePath = path.resolve('src/data/products.json');
 
 export default class ProductMemory {
     async getProducts(filter) {
-        const data = await fs.readFile(filePath, 'utf-8');
-        const products = JSON.parse(data);
-        return products.filter(product => Object.keys(filter).every(key => product[key] === filter[key]));
+        try {
+            const data = await fs.readFile(filePath, 'utf-8');
+            const products = JSON.parse(data);
+            const filteredProducts = products.filter(product => {
+                for (const key in filter) {
+                    if (product[key] !== filter[key]) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            return filteredProducts.map(product => new ProductDTO(product));
+        } catch (error) {
+            console.error("Error en getProducts:", error.message);
+            throw new Error("Error al obtener los productos desde la memoria");
+        }
     }
 
     async getProductByID(id) {
-        const data = await fs.readFile(filePath, 'utf-8');
-        const products = JSON.parse(data);
-        return products.find(product => product.id === id);
+        try {
+            const data = await fs.readFile(filePath, 'utf-8');
+            const products = JSON.parse(data);
+            const product = products.find(product => product.id === id);
+            if (!product) throw new Error(`El producto ${id} no existe!`);
+            return new ProductDTO(product);
+        } catch (error) {
+            console.error("Error en getProductByID:", error.message);
+            throw new Error(error.message);
+        }
     }
 
     async addProduct(product) {
-        const data = await fs.readFile(filePath, 'utf-8');
-        const products = JSON.parse(data);
-        products.push(product);
-        await fs.writeFile(filePath, JSON.stringify(products, null, 2));
-        return product;
+        try {
+            const data = await fs.readFile(filePath, 'utf-8');
+            const products = JSON.parse(data);
+            products.push(product);
+            await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+            return new ProductDTO(product);
+        } catch (error) {
+            console.error("Error en addProduct:", error.message);
+            throw new Error("Error al agregar el producto");
+        }
     }
 
     async updateProduct(id, productUpdate) {
-        const data = await fs.readFile(filePath, 'utf-8');
-        const products = JSON.parse(data);
-        const index = products.findIndex(product => product.id === id);
-        if (index !== -1) {
-            products[index] = { ...products[index], ...productUpdate };
-            await fs.writeFile(filePath, JSON.stringify(products, null, 2));
-            return products[index];
+        try {
+            const data = await fs.readFile(filePath, 'utf-8');
+            let products = JSON.parse(data);
+            const index = products.findIndex(product => product.id === id);
+            if (index !== -1) {
+                products[index] = { ...products[index], ...productUpdate };
+                await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+                return new ProductDTO(products[index]);
+            }
+            throw new Error(`Producto con id ${id} no encontrado`);
+        } catch (error) {
+            console.error("Error en updateProduct:", error.message);
+            throw new Error("Error al actualizar el producto");
         }
-        throw new Error(`Product with id ${id} not found`);
     }
 
     async deleteProduct(id) {
-        const data = await fs.readFile(filePath, 'utf-8');
-        let products = JSON.parse(data);
-        const initialLength = products.length;
-        products = products.filter(product => product.id !== id);
-        if (products.length < initialLength) {
-            await fs.writeFile(filePath, JSON.stringify(products, null, 2));
-            return true;
+        try {
+            const data = await fs.readFile(filePath, 'utf-8');
+            let products = JSON.parse(data);
+            const initialLength = products.length;
+            products = products.filter(product => product.id !== id);
+            if (products.length < initialLength) {
+                await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+                return true;
+            }
+            throw new Error(`Producto con id ${id} no encontrado`);
+        } catch (error) {
+            console.error("Error en deleteProduct:", error.message);
+            throw new Error("Error al eliminar el producto");
         }
-        throw new Error(`Product with id ${id} not found`);
     }
 }
