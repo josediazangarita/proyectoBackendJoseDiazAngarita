@@ -5,7 +5,7 @@ import { uploader } from '../utils/multerUtil.js';
 const router = Router();
 
 router.get('/', ProductController.getProducts);
-router.get('/:pid', ProductController.getProductByID);
+router.get('/:pid', ProductController.getProductById);
 router.post('/', uploader.array('thumbnails', 3), ProductController.addProduct);
 router.put('/:pid', uploader.array('thumbnails', 3), ProductController.updateProduct);
 router.delete('/:pid', ProductController.deleteProduct);
