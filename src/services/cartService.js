@@ -1,62 +1,50 @@
-import CartModel from '../models/cartModel.js';
+import CartMongo from '../dao/mongoDB/cartMongo.js';
+import CartDTO from '../dto/cartDTO.js';
 
 class CartService {
+    constructor() {
+        this.cartDAO = new CartMongo();
+    }
+
+    async createCart() {
+        const newCart = await this.cartDAO.createCart();
+        return new CartDTO(newCart);
+    }
+
+    async getAllCarts() {
+        const carts = await this.cartDAO.getAllCarts();
+        return carts.map(cart => new CartDTO(cart));
+    }
+
+    async getCartById(cartId) {
+        const cart = await this.cartDAO.getCartById(cartId);
+        if (!cart) throw new Error(`Cart with id ${cartId} not found`);
+        return new CartDTO(cart);
+    }
+
     async addProductToCart(cartId, productId, quantity) {
-        const cart = await CartModel.findById(cartId);
-
-        if (!cart) {
-            throw new Error(`Cart with id ${cartId} not found`);
-        }
-
-        cart.products.push({ product: productId, quantity });
-        await cart.save();
-
-        return cart;
+        const updatedCart = await this.cartDAO.addProductToCart(cartId, productId, quantity);
+        return new CartDTO(updatedCart);
     }
 
     async removeProductFromCart(cartId, productId) {
-        const cart = await CartModel.findById(cartId);
+        const updatedCart = await this.cartDAO.removeProductFromCart(cartId, productId);
+        return new CartDTO(updatedCart);
+    }
 
-        if (!cart) {
-            throw new Error(`Cart with id ${cartId} not found`);
-        }
-
-        cart.products = cart.products.filter(item => item.product != productId);
-        await cart.save();
-
-        return cart;
+    async updateCart(cartId, products) {
+        const updatedCart = await this.cartDAO.updateCart(cartId, products);
+        return new CartDTO(updatedCart);
     }
 
     async updateProductQuantityInCart(cartId, productId, quantity) {
-        const cart = await CartModel.findById(cartId);
-
-        if (!cart) {
-            throw new Error(`Cart with id ${cartId} not found`);
-        }
-
-        const product = cart.products.find(item => item.product == productId);
-
-        if (!product) {
-            throw new Error(`Product with id ${productId} not found in cart`);
-        }
-
-        product.quantity = quantity;
-        await cart.save();
-
-        return cart;
+        const updatedCart = await this.cartDAO.updateProductQuantityInCart(cartId, productId, quantity);
+        return new CartDTO(updatedCart);
     }
 
     async clearCart(cartId) {
-        const cart = await CartModel.findById(cartId);
-
-        if (!cart) {
-            throw new Error(`Cart with id ${cartId} not found`);
-        }
-
-        cart.products = [];
-        await cart.save();
-
-        return cart;
+        const clearedCart = await this.cartDAO.clearCart(cartId);
+        return new CartDTO(clearedCart);
     }
 }
 
