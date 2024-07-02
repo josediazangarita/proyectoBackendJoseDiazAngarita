@@ -39,9 +39,6 @@ const httpServer = createServer(app);
 // Servidor de sockets
 const io = new Server(httpServer);
 
-// Instancia de ProductManager
-const productManager = new ProductService();
-
 httpServer.listen(PORT, () => {
     console.log(`Servidor activo en el puerto ${PORT}`);
 });
@@ -62,6 +59,10 @@ switch (daoType) {
         console.error('DAO no especificado. Agrege mongo o memory luego de npm start para definir la persistencia');
         process.exit(1); // Salir con un código de error
 }
+
+// Instancia de ProductService
+const productService = new ProductService(productDao);
+console.log(productService);
 
 // Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
 if (daoType === 'mongo') {
