@@ -1,15 +1,12 @@
-import Router from 'express';
-import passport from 'passport';
-// Import custom modules
-import userModel from '../models/userModel.js';
-import { createHash, isValidPassword } from '../utils/functionUtils.js';
-import UserController from '../controllers/userController.js';
+import { Router } from 'express';
+import UserController, { logoutUser } from '../controllers/userController.js';
 
 const router = Router();
 
 router.post('/register', UserController.registerUser);
 router.post('/login', UserController.loginUser);
 router.post('/restorePassword', UserController.restorePassword);
+router.get('/logout', logoutUser);
 
 export default router;
 

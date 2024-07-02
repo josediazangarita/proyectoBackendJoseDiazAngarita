@@ -1,13 +1,24 @@
-import userModel from '../models/userModel.js';
+import UserDAO from '../dao/mongoDB/userMongo.js';
+import UserDTO from '../dto/userDTO.js';
 
-const UserService = {
-    getUserByEmail: async (email) => {
-        return userModel.findOne({ email });
-    },
-    createUser: async (userData) => {
-        const newUser = new userModel(userData);
-        return newUser.save();
-    }
-};
+const userDAO = new UserDAO();
+class UserService {
+  async getUserByEmail(email) {
+    const user = await userDAO.findUserByEmail(email);
+    if (!user) return null;
+    return new UserDTO(user);
+  }
+
+  async createUser(userData) {
+    const newUser = await userDAO.createUser(userData);
+    return new UserDTO(newUser.toObject());
+  }
+
+  async updateUserPassword(email, newPassword) {
+    const user = await userDAO.updateUserPassword(email, newPassword);
+    if (!user) return null;
+    return new UserDTO(user.toObject());
+  }
+}
 
 export default UserService;
