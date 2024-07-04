@@ -38,8 +38,8 @@ class UserController {
         cart: user.cart,
       };
       console.log('User session set:', req.session.user);
-      //res.redirect('/products');
-      res.json({ message: 'Login successful', user: req.session.user });
+      res.redirect('/products');
+      //res.json({ message: 'Login successful', user: req.session.user });
     } catch (error) {
       console.error('Error logging in user:', error);
       res.status(500).send('Error logging in user');
