@@ -17,7 +17,7 @@ export default class ProductMongo {
     try {
       const product = await productModel.findById(id);
       if (!product) throw new Error(`El producto ${id} no existe!`);
-      return product.toObject();
+      return product;
     } catch (error) {
       console.error(`Error en getProductById: ${error.message}`);
       throw new Error(error.message);
