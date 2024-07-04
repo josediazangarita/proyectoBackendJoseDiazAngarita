@@ -3,6 +3,7 @@ import passport from 'passport';
 // Import custom modules
 import auth from '../middlewares/auth.js';
 import { logoutUser } from '../controllers/userController.js';
+import UserDTO from '../dto/userDTO.js'
 
 const router = Router();
 
@@ -40,10 +41,29 @@ router.get('/github/callback',
 
 // Obtener usuario actual
 router.get('/current', auth, (req, res) => {
-    res.status(200).send({
-        status: 'success',
-        user: req.session.user
-    });
+    console.log("Datos de usuario en la sesión:", req.session.user);
+
+    if (req.session.user) {
+        // Crear un nuevo UserDTO con los datos del usuario de la sesión
+        const userData = new UserDTO({
+            first_name: req.session.user.firstName,
+            last_name: req.session.user.lastName,
+            email: req.session.user.email,
+            //age: req.session.user.age,
+            //role: req.session.user.role,
+        });
+        console.log(userData);
+
+        res.status(200).send({
+            status: 'success',
+            user: userData
+        });
+    } else {
+        res.status(401).send({
+            status: 'fail',
+            message: 'No user session found'
+        });
+    }
 });
 
 export default router;
