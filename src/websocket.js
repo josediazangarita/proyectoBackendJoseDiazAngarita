@@ -1,4 +1,5 @@
 import productService from "./services/productService.js";
+import UserDTO from './dto/userDTO.js';
 
 const store = new productService();
 let messages = [];  // Definir messages aquí
@@ -28,15 +29,18 @@ export default (io) => {
         // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
         socket.on('login', () => {
             let user = socket.handshake.session.user;
+
             if (!user) {
-                user = { name: 'Visitante', role: 'guest' };
+                user = new UserDTO({ _id: null, first_name: 'Visitante', last_name: '', email: '', age: null, password: '', role: 'guest', githubId: null, cart: null });
                 socket.handshake.session.user = user;
                 socket.handshake.session.save();
+                console.log('Usuario asignado como Visitante'); // Log para verificar si se asignó Visitante
             }
+
             socket.emit('messageLogs', messages);
-            socket.user = user; // Guardar usuario en el socket
-            console.log(`Usuario ${user.name} conectado al chat de sockets con rol ${user.role}`);
-            socket.broadcast.emit('userConnected', user.name);
+            socket.user = user;
+            console.log(`Usuario ${user.firstName} conectado al chat de sockets con rol ${user.role}`);
+            socket.broadcast.emit('userConnected', user.firstName);
         });
 
         socket.on('message', data => {
