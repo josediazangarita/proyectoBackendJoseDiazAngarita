@@ -50,7 +50,7 @@ router.get('/current', auth, (req, res) => {
             last_name: req.session.user.lastName,
             email: req.session.user.email,
             //age: req.session.user.age,
-            //role: req.session.user.role,
+            role: req.session.user.role,
         });
         console.log(userData);
 
