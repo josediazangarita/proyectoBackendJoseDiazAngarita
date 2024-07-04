@@ -4,11 +4,11 @@ import productModel from '../models/productModel.js';
 import ProductService from '../services/productService.js';
 import auth from '../middlewares/auth.js';
 import { isAdmin } from '../middlewares/authorization.js';
+import TicketService from '../services/ticketService.js';
 
 const router = express.Router();
-// Se crea una instancia de ProductManager
-//const store = new ProductManagerFS(); 
 const store = new ProductService();
+const ticketService = new TicketService();
 
 //Ruta para la página principal
 router.get('/', (req, res) => {
@@ -132,6 +132,18 @@ router.get('/chat', (req, res) => {
             style: 'style.css',
             user: req.session.user
         });
+});
+
+// Ruta para la vista de tickets
+router.get('/tickets', async (req, res) => {
+    try {
+        const tickets = await ticketService.getAllTickets();
+        res.render('tickets', 
+            { style: 'style.css',
+              tickets });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los Tickets', error });
+    }
 });
 
 

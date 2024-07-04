@@ -89,7 +89,12 @@ mongoose.connect(process.env.MONGODB_URI)
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine('handlebars', handlebars.engine({
     defaultLayout: 'main',
-    partialsDir: `${__dirname}/views/partials/`
+    partialsDir: `${__dirname}/views/partials/`,
+    // Permitir a handlebars mostrar prototipos (código Ticket)
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true
+    }
 }));
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
