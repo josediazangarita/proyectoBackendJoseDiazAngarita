@@ -2,6 +2,8 @@ import express from 'express';
 import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
+import auth from '../middlewares/auth.js';
+import { isAdmin } from '../middlewares/authorization.js';
 
 const router = express.Router();
 // Se crea una instancia de ProductManager
@@ -81,13 +83,13 @@ router.get('/products', async (req, res) => {
 
 
 // Ruta para la página de productos en tiempo real
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/realtimeproducts', auth, isAdmin, async (req, res) => {
     let filter = {};
     if (req.query.category && req.query.category !== '') {
         filter.category = req.query.category;
     }
     const products = await store.getProducts(filter);
-    res.render('realTimeProducts', { title: 'Productos en Tiempo Real', style: 'style.css', products });
+    res.render('realTimeProducts', { user: req.session.user, title: 'Productos en Tiempo Real', style: 'style.css', products });
 });
 
 //Ruta login

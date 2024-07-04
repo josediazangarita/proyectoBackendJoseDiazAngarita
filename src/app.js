@@ -20,6 +20,7 @@ import sessionRouter from './routes/sessionRouter.js';
 import websocket from './websocket.js';
 import ProductMongo from './dao/mongoDB/productMongo.js';
 import ProductMemory from './dao/memory/productMemory.js';
+import './utils/handlebarsHelper.js';
 
 //Configuración de variables de entorno
 dotenv.config();
