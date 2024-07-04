@@ -18,9 +18,9 @@ import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
 import websocket from './websocket.js';
-
-// Se crea una instancia de express
-const app = express();
+import ProductMongo from './dao/mongoDB/productMongo.js';
+import ProductMemory from './dao/memory/productMemory.js';
+import './utils/handlebarsHelper.js';
 
 //Configuración de variables de entorno
 dotenv.config();
@@ -28,26 +28,49 @@ dotenv.config();
 // Inicializar Passport
 initializePassport();
 
-// Instancia de ProductManager
-const productManager = new ProductService();
-
 // Se establece el puerto
 const PORT = process.env.PORT || 8080;
 
+// Se crea una instancia de express
+const app = express();
+
 // Servidor HTTP y escucha del puerto
 const httpServer = createServer(app);
+
+// Servidor de sockets
+const io = new Server(httpServer);
 
 httpServer.listen(PORT, () => {
     console.log(`Servidor activo en el puerto ${PORT}`);
 });
 
-// Servidor de sockets
-const io = new Server(httpServer);
+const daoType = process.argv[2];
 
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Conectado a MongoDB Atlas'))
-    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err.message));
+let productDao;
+switch (daoType) {
+    case 'mongo':
+        productDao = new ProductMongo();
+        console.log('Usando persistencia MongoDB');
+        break;
+    case 'memory':
+        productDao = new ProductMemory();
+        console.log('Usando persistencia FileSystem');
+        break;
+    default:
+        console.error('DAO no especificado. Agrege mongo o memory luego de npm start para definir la persistencia');
+        process.exit(1); // Salir con un código de error
+}
+
+// Instancia de ProductService
+const productService = new ProductService(productDao);
+console.log(productService);
+
+// Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
+if (daoType === 'mongo') {
+    mongoose.connect(process.env.MONGODB_URI)
+        .then(() => console.log('Servidor conectado a MongoDB Atlas'))
+        .catch(err => console.error('Error al conectar a MongoDB Atlas:', err.message));
+}
 
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine('handlebars', handlebars.engine({
@@ -101,7 +124,7 @@ websocket(io);
 let messages = [];
 
 io.on('connection', socket => {
-    console.log('Usuario conectado');
+    console.log('Servidor conectado a sockets');
 
     // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
     socket.on('login', user => {
@@ -109,7 +132,7 @@ io.on('connection', socket => {
 
         // Emitir mensaje a todos los demás usuarios sobre la nueva conexión
         socket.broadcast.emit('userConnected', user);
-        console.log(`User ${user} connected`);
+        console.log(`Usuario ${user} conectado al chat de sockets`);
     });
 
     socket.on('message', data => {

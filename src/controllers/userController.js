@@ -1,70 +1,73 @@
-import userModel from '../models/userModel.js';
+import UserService from '../services/userService.js';
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
 
-const UserController = {
-    registerUser: async (req, res) => {
-        try {
-            const { first_name, last_name, email, age, password } = req.body;
-            const newUser = new userModel({
-                first_name,
-                last_name,
-                email,
-                age,
-                password: createHash(password)
-            });
-            await newUser.save();
-            res.redirect('/login');
-        } catch (error) {
-            console.error('Error registering user:', error);
-            res.status(500).send('Error registering user');
-        }
-    },
-    loginUser: async (req, res) => {
-        try {
-            const { email, password } = req.body;
-            const user = await userModel.findOne({ email });
-            if (!user || !isValidPassword(user, password)) {
-                return res.status(401).send('Invalid email or password');
-            }
-            req.session.user = {
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                age: user.age,
-                role: user.role,
-                cart: user.cart
-            };
-            res.redirect('/products');
-        } catch (error) {
-            console.error('Error logging in user:', error);
-            res.status(500).send('Error logging in user');
-        }
-    },
+const userService = new UserService();
 
-    restorePassword: async (req, res) => {
-        try {
-            const { email, newPassword } = req.body;
-            const user = await userModel.findOne({ email });
-            if (!user) {
-                return res.status(404).send("User not found with that email.");
-            }
-            user.password = createHash(newPassword);
-            await user.save();
-            return res.redirect('/login');
-        } catch (error) {
-            console.error('Error restoring password:', error);
-            res.status(500).send('Error restoring password');
-        }
+class UserController {
+  async registerUser(req, res) {
+    try {
+      const { first_name, last_name, email, age, password } = req.body;
+      const newUser = await userService.createUser({
+        first_name,
+        last_name,
+        email,
+        age,
+        password: createHash(password),
+      });
+      res.redirect('/login');
+    } catch (error) {
+      console.error('Error registering user:', error);
+      res.status(500).send('Error registering user');
     }
-};
+  }
+
+  async loginUser(req, res) {
+    try {
+      const { email, password } = req.body;
+      const user = await userService.getUserByEmail(email);
+      if (!user || !isValidPassword(user, password)) {
+        return res.status(401).send('Invalid email or password');
+      }
+
+      req.session.user = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        age: user.age,
+        role: user.role,
+        cart: user.cart,
+      };
+      console.log('User session set:', req.session.user);
+      res.redirect('/products');
+      //res.json({ message: 'Login successful', user: req.session.user });
+    } catch (error) {
+      console.error('Error logging in user:', error);
+      res.status(500).send('Error logging in user');
+    }
+  }
+
+  async restorePassword(req, res) {
+    try {
+      const { email, newPassword } = req.body;
+      const user = await userService.updateUserPassword(email, createHash(newPassword));
+      if (!user) {
+        return res.status(404).send('User not found with that email.');
+      }
+      res.redirect('/login');
+    } catch (error) {
+      console.error('Error restoring password:', error);
+      res.status(500).send('Error restoring password');
+    }
+  }
+}
 
 export const logoutUser = (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Error al cerrar sesión' });
-        }
-        res.redirect('/login');
-    });
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error al cerrar sesión' });
+    }
+    res.redirect('/login');
+  });
 };
 
-export default UserController;
+export default new UserController();

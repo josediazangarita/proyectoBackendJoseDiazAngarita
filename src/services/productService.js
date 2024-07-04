@@ -1,69 +1,61 @@
-//Script del desafío entregable dos del curso Backend de Coderhouse
-console.log("\nSegunda entrega Backend de José Gregorio Díaz Angarita\n")
+import ProductDTO from '../dto/productDTO.js';
+import ProductMongo from '../dao/mongoDB/productMongo.js';
 
-//Se importa el módulo de Mongoose para manipular archivos
-import productModel from '../models/productModel.js';
+const productDAO = new ProductMongo();
 
 export default class ProductService {
+  constructor(productDao) {
+    this.productDao = productDao;
+  }
 
-    async getProducts(filter = {}) {
-        console.log("🚀 ~ ProductService ~ getProducts ~ filter:", filter)
-        try {
-            return await productModel.find(filter).lean();
-        } catch (error) {
-            console.error("Error en getProducts:", error.message);
-            throw new Error("Error al buscar los productos");
-        }
+  async getProducts(filter = {}) {
+    try {
+      const products = await productDAO.getProducts(filter);
+      return products.map((product) => new ProductDTO(product));
+    } catch (error) {
+      console.error(`Error en getProducts: ${error.message}`);
+      throw error;
     }
+  }
 
-    //Método para obtener un producto almacenado por su ID
-    async getProductByID(pid) {
-        const product = await productModel.findOne({ _id: pid });
-
-        if (!product) throw new Error(`El producto ${pid} no existe!`);
-
-        return product;
+  async getProductById(id) {
+    try {
+      const product = await productDAO.getProductById(id);
+      if (!product) throw new Error(`El producto ${id} no existe!`);
+      return new ProductDTO(product);
+    } catch (error) {
+      console.error(`Error en getProductById: ${error.message}`);
+      throw error;
     }
+  }
 
-    //Método para agregar productos
-    async addProduct(product) {
-        const { title, description, code, price, stock, category, thumbnails } = product;
-
-        if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Error al crear el producto');
-        }
-
-        try {
-            const result = await productModel.create({ title, description, code, price, stock, category, thumbnails: thumbnails ?? [] });
-            return result;
-        } catch (error) {
-            console.error(error.message);
-            throw new Error('Error al crear el producto');
-        }
+  async addProduct(product) {
+    try {
+      const newProduct = await productDAO.addProduct(product);
+      return new ProductDTO(newProduct);
+    } catch (error) {
+      console.error(`Error en addProduct: ${error.message}`);
+      throw error;
     }
+  }
 
-    async updateProduct(pid, productUpdate) {
-        try {
-            const result = await productModel.updateOne({ _id: pid }, productUpdate);
-
-            return result;
-        } catch (error) {
-            console.error(error.message);
-            throw new Error('Error al actualizar el producto');
-        }
+  async updateProduct(id, productUpdate) {
+    try {
+      const updatedProduct = await productDAO.updateProduct(id, productUpdate);
+      return new ProductDTO(updatedProduct);
+    } catch (error) {
+      console.error(`Error en updateProduct: ${error.message}`);
+      throw error;
     }
+  }
 
-    // Método para eliminar producto
-    async deleteProduct(pid) {
-        try {
-            const result = await productModel.deleteOne({ _id: pid });
-
-            if (result.deletedCount === 0) throw new Error(`El producto ${pid} no existe!`);
-
-            return result;
-        } catch (error) {
-            console.error(error.message);
-            throw new Error(`Error al eliminar el producto ${pid}`);
-        }
+  async deleteProduct(id) {
+    try {
+      await productDAO.deleteProduct(id);
+      return true;
+    } catch (error) {
+      console.error(`Error en deleteProduct: ${error.message}`);
+      throw error;
     }
+  }
 }

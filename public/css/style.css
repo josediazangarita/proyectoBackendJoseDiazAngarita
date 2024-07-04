@@ -3,8 +3,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Fredoka', sans-serif; }
+    font-family: 'Ubuntu Sans', sans-serif;
+ }
+
+ /*Fuente*/
+ .ubuntu-sans-font {
+   font-family: "Ubuntu Sans", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 300;
+   font-style: normal;
+   font-variation-settings:
+     "wdth" 100;
+ }
   
+  
+
 /* Estilos generales */
 body {
 display: flex;
@@ -12,7 +25,8 @@ flex-direction: column;
 margin-top: 80px;
 background-color: #001524;
 min-height: 100vh;
-background-image: url(../img/wallpaper.jpg);
+background-image: url(../img/wallpaper-balls-3d.jpg);
+/*background-image: linear-gradient(to top, #09203f 0%, #537895 100%);*/
 background-size: cover;
 background-position: center;
 min-height: calc(100vh - 80px);
@@ -88,13 +102,27 @@ h1{
     color: #4bc2e5;
     font-size: 2.5rem;
 
-}
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+    margin: 50px auto;
+    text-align: center;
+    }
 
 h2{
     text-align: center;
     margin-bottom: 25px;
     color: yellow;
     font-size: 2rem;
+
+    
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+    margin: 50px auto;
+    text-align: center;
 }
 
 h3{
@@ -109,6 +137,14 @@ h3{
     color: #ffff;
     text-align: center;
     font-size: 2rem;
+
+    
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+    margin: 50px auto;
+    text-align: center;
 }
 
 .messageHome{
@@ -129,17 +165,19 @@ p{
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
 }
 
 .card {
     border: 1px solid #ddd;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(50px);
+    backdrop-filter: blur(20px);
     border-radius: 8px;
     overflow: hidden;
+    width: 240px;
     z-index: 1;
 }
 
@@ -149,7 +187,7 @@ p{
     padding: 10px;
     font-size: 1.5em;
     text-align: center;
-    color: #4bc2e5;
+    color: yellow;
 }
 
 .card-body {
@@ -577,15 +615,12 @@ footer{
     align-items: center;
     flex-direction: column;
     color:aliceblue;
+
+    
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 50px;
+    padding: 20px;
+    margin: 50px auto;
+    text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-

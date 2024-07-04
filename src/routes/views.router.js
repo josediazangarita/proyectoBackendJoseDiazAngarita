@@ -2,6 +2,8 @@ import express from 'express';
 import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
+import auth from '../middlewares/auth.js';
+import { isAdmin } from '../middlewares/authorization.js';
 
 const router = express.Router();
 // Se crea una instancia de ProductManager
@@ -20,8 +22,6 @@ router.get('/', (req, res) => {
 
 // Ruta para la página de productos para mostrar la página de productos con filtrado opcional
 router.get('/products', async (req, res) => {
-    console.log("🚀 ~ router.get ~ req:", req);
-
     let { category, sort = 'asc', page = 1 } = req.query;
     page = parseInt(page);
     if (isNaN(page) || page < 1) page = 1;
@@ -39,7 +39,7 @@ router.get('/products', async (req, res) => {
         sortOptions.price = 1; // Por defecto ordena ascendente
     }
 
-    const limit = 10;
+    const limit = 9;
     const baseURL = "http://localhost:8080/products";
 
     try {
@@ -50,7 +50,6 @@ router.get('/products', async (req, res) => {
             sort: sortOptions
         };
         const result = await productModel.paginate(filter, options);
-        console.log("🚀 ~ router.get ~ result:", result)
 
         // Construir enlaces de paginación
         const queryParams = new URLSearchParams(req.query);
@@ -84,13 +83,13 @@ router.get('/products', async (req, res) => {
 
 
 // Ruta para la página de productos en tiempo real
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/realtimeproducts', auth, isAdmin, async (req, res) => {
     let filter = {};
     if (req.query.category && req.query.category !== '') {
         filter.category = req.query.category;
     }
     const products = await store.getProducts(filter);
-    res.render('realTimeProducts', { title: 'Productos en Tiempo Real', style: 'style.css', products });
+    res.render('realTimeProducts', { user: req.session.user, title: 'Productos en Tiempo Real', style: 'style.css', products });
 });
 
 //Ruta login
@@ -122,6 +121,16 @@ router.get("/restorePassword", (req, res) => {
         {
             title: 'Restore Password Ecommerce JG',
             style: 'style.css'
+        });
+});
+
+// Ruta para la vista de chat
+router.get('/chat', (req, res) => {
+    res.render(
+        'chat',
+        {
+            style: 'style.css',
+            user: req.session.user
         });
 });
 

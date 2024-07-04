@@ -21,7 +21,7 @@ const initializePassport = () => {
                 let user = await userModel.findOne({ email: username });
                 if (user) {
                     console.log('User already exists');
-                    return done(null, false);
+                    return done(null, false, { message: 'El usuario ya existe'});
                 }
 
                 // Crear un nuevo carrito para el usuario
@@ -51,24 +51,33 @@ const initializePassport = () => {
         },
         async (username, password, done) => {
             try {
-                let user = await userModel.findOne({ email: username }).populate('cart');
+                // Aquí se asegura de que la contraseña esté incluida en la consulta
+                let user = await userModel.findOne({ email: username }).select('+password').populate('cart');
+                console.log('User:', user);
+                
                 if (!user) {
                     return done(new Error('User not found'), false);
                 }
+                if (!user.password) {
+                    return done(new Error('User password is missing'), false);
+                }
+                
                 if (!isValidPassword(user, password)) {
                     return done(null, false, { message: 'Incorrect password' });
                 }
                 return done(null, user);
             } catch (error) {
+                console.error('Error in login strategy:', error);
                 return done(error);
             }
         }
     ));
+    
 
     // Estrategia de inicio de sesión con GitHub
     passport.use(new GitHubStrategy({
-        clientID: 'Iv23liYUtwMJtBY1uSl7',
-        clientSecret: '6d504591a2450ec2d42a38cda243cd815639c9a2',
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: "http://localhost:8080/api/sessions/github/callback"
     },
         async (accessToken, refreshToken, profile, done) => {
@@ -119,5 +128,3 @@ const initializePassport = () => {
 }
 
 export default initializePassport;
-
-
