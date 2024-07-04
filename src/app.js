@@ -10,43 +10,58 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import dotenv from 'dotenv';
-//Import custom module
 import __dirname from './utils.js';
+import sharedsession from "express-socket.io-session";
+// Custom modules
 import viewsRouter from './routes/views.router.js';
 import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
 import websocket from './websocket.js';
+import ProductMongo from './dao/mongoDB/productMongo.js';
+import ProductMemory from './dao/memory/productMemory.js';
+import './utils/handlebarsHelper.js';
 
-// Se crea una instancia de express
-const app = express();
-
-//Configuración de variables de entorno
+// Configuración de variables de entorno
 dotenv.config();
 
 // Inicializar Passport
 initializePassport();
 
-// Instancia de ProductManager
-const productManager = new ProductService();
-
 // Se establece el puerto
 const PORT = process.env.PORT || 8080;
+
+// Se crea una instancia de express
+const app = express();
 
 // Servidor HTTP y escucha del puerto
 const httpServer = createServer(app);
 
-httpServer.listen(PORT, () => {
-    console.log(`Servidor activo en el puerto ${PORT}`);
-});
-
 // Servidor de sockets
 const io = new Server(httpServer);
 
-// Conexión a MongoDB
+// Configuración de sesión
+const sessionMiddleware = session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 3600
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+});
+
+app.use(sessionMiddleware);
+
+// Compartir sesión con socket.io
+io.use(sharedsession(sessionMiddleware, {
+    autoSave: true
+}));
+
+// Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Conectado a MongoDB Atlas'))
+    .then(() => console.log('Servidor conectado a MongoDB Atlas'))
     .catch(err => console.error('Error al conectar a MongoDB Atlas:', err.message));
 
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
@@ -67,17 +82,6 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware de cookies
 app.use(cookieParser());
 
-// Middleware de sesiones con MongoStore
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
-        ttl: 3600
-    }),
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true
-}));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -97,23 +101,6 @@ app.use('/api/sessions', sessionRouter);
 // Servidor de sockets
 websocket(io);
 
-//Chat con sockets
-let messages = [];
-
-io.on('connection', socket => {
-    console.log('Usuario conectado');
-
-    // Evento para recibir el nombre de usuario e inmediatamente enviar los logs del chat
-    socket.on('login', user => {
-        socket.emit('messageLogs', messages);
-
-        // Emitir mensaje a todos los demás usuarios sobre la nueva conexión
-        socket.broadcast.emit('userConnected', user);
-        console.log(`User ${user} connected`);
-    });
-
-    socket.on('message', data => {
-        messages.push(data);
-        io.emit('messageLogs', messages);
-    });
+httpServer.listen(PORT, () => {
+    console.log(`Servidor activo en el puerto ${PORT}`);
 });

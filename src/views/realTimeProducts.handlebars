@@ -12,7 +12,16 @@
 
     <h2> Lista de productos actualizada </h2>
     <ul id="productList">
-        <!-- Los productos se agregarán aquí de forma dinámica -->
+        {{#each products}}
+            <li>
+                <h3>{{this.title}}</h3>
+                <hr>
+                <p>Categoria: {{this.category}}</p>
+                <p>Descripción: {{this.description}}</p>
+                <p>Precio: $ {{this.price}}</p>
+                <button id="button-delete" onclick="deleteProduct({{this.id}})">Eliminar</button>
+            </li>
+        {{/each}}
     </ul>
 
     <script src="/socket.io/socket.io.js"></script>
