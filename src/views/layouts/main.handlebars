@@ -29,7 +29,11 @@
                         <a href="/realtimeproducts">Modificar productos</a>
                     {{/eq}}
                 {{/if}}
-                <a href="/chat">Chat</a>
+                {{#if user}}
+                {{#eq user.role 'user'}}
+                    <a href="/chat">Chat</a>
+                {{/eq}}
+                {{/if}}
                 {{>loginButton}}
             </nav>
             <div class="menu-toggle">

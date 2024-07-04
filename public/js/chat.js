@@ -1,24 +1,12 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const socket = io();
 
-    let user;
     let chatBox = document.getElementById('chatBox');
     let sendButton = document.getElementById('sendButton');
     let messageLogs = document.getElementById('messageLogs');
 
-    // Alerta de bienvenida con sweetalert2
-    Swal.fire({
-        title: 'Bienvenido',
-        input: "text",
-        text: 'Ingresa un nombre de usuario para identificarte en el chat',
-        inputValidator: (value) => {
-            return !value && '¡Necesitas un nombre de usuario para continuar!';
-        },
-        allowOutsideClick: false,
-    }).then(result => {
-        user = result.value;
-        socket.emit('login', user);
-    });
+    // Emitir el evento de login al conectar
+    socket.emit('login');
 
     sendButton.addEventListener('click', () => {
         sendMessage();
@@ -27,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     chatBox.addEventListener('keyup', evt => {
         if (evt.key === "Enter") {
             if (chatBox.value.trim().length > 0) {
-                socket.emit('message', { user: user, message: chatBox.value });
+                socket.emit('message', { message: chatBox.value });
                 chatBox.value = '';
             }
         }
@@ -35,7 +23,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function sendMessage() {
         if (chatBox.value.trim().length > 0) {
-            socket.emit('message', { user: user, message: chatBox.value });
+            socket.emit('message', { message: chatBox.value });
             chatBox.value = '';
         }
     }
