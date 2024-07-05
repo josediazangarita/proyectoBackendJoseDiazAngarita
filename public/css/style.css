@@ -615,8 +615,6 @@ footer{
     align-items: center;
     flex-direction: column;
     color:aliceblue;
-
-    
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
     border-radius: 50px;
@@ -640,6 +638,7 @@ li {
     color:yellow;
     width: 300px;
 
+
     
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
@@ -647,4 +646,3 @@ li {
     padding: 20px;
     margin: 50px auto;
     text-align: center;
-}

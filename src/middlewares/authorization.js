@@ -6,7 +6,6 @@ const isAdmin = (req, res, next) => {
   return res.status(403).send('Acceso denegado. Solo administradores pueden realizar esta acción.');
 };
 
-
 const isUser = (req, res, next) => {
   console.log("🚀 ~ isUser ~ isUser:", isUser)
   console.log('User session:', req.session.user);

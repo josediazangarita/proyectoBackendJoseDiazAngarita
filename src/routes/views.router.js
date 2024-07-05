@@ -146,5 +146,4 @@ router.get('/tickets', async (req, res) => {
     }
 });
 
-
 export default router;
