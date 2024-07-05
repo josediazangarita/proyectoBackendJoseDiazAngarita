@@ -92,13 +92,13 @@ export const purchaseCart = async (req, res) => {
         const userId = req.session.user.id;
         const purchaserEmail = req.session.user.email;
         
-        const unavailableProducts = await cartService.purchaseCart(cartId, userId,  purchaserEmail);
+        const result = await cartService.purchaseCart(cartId, userId,  purchaserEmail);
         
-        if (unavailableProducts.length > 0) {
-            return res.status(200).json({ message: 'Compra completada parcialmente', unavailableProducts });
+        if (result.unavailableProducts) {
+            return res.status(200).json(result);
         }
 
-        res.status(200).json({ message: 'Compra completada con éxito' });
+        res.status(200).json(result);
     } catch (error) {
         console.error('Error al finalizar la compra:', error);
         res.status(500).json({ message: 'Error al finalizar la compra', error });

@@ -6,6 +6,7 @@ class TicketService {
     }
 
     async createTicket(ticketData) {
+        console.log('Creando ticket:', ticketData);
         return await this.ticketMongo.create(ticketData);
     }
 
