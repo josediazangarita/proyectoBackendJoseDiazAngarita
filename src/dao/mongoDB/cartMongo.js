@@ -11,7 +11,7 @@ class CartMongo {
     }
 
     async getCartById(cartId) {
-        return await CartModel.findById(cartId).lean();
+        return await CartModel.findById(cartId);
     }
 
     async addProductToCart(cartId, productId, quantity) {

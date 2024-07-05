@@ -18,6 +18,7 @@ import productRoutes from './routes/productsRouters.js';
 import cartRoutes from './routes/cartRoutes.js';
 import usersRouter from './routes/usersRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
+import ticketRoutes from './routes/ticketRoutes.js';
 import websocket from './websocket.js';
 import ProductMongo from './dao/mongoDB/productMongo.js';
 import ProductMemory from './dao/memory/productMemory.js';
@@ -59,6 +60,27 @@ io.use(sharedsession(sessionMiddleware, {
     autoSave: true
 }));
 
+const daoType = process.argv[2];
+
+let productDao;
+switch (daoType) {
+    case 'mongo':
+        productDao = new ProductMongo();
+        console.log('Usando persistencia MongoDB');
+        break;
+    case 'memory':
+        productDao = new ProductMemory();
+        console.log('Usando persistencia FileSystem');
+        break;
+    default:
+        console.error('DAO no especificado. Agrege mongo o memory luego de npm start para definir la persistencia');
+        process.exit(1); // Salir con un código de error
+}
+
+// Instancia de ProductService
+const productService = new ProductService(productDao);
+console.log(productService);
+
 // Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Servidor conectado a MongoDB Atlas'))
@@ -67,7 +89,12 @@ mongoose.connect(process.env.MONGODB_URI)
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine('handlebars', handlebars.engine({
     defaultLayout: 'main',
-    partialsDir: `${__dirname}/views/partials/`
+    partialsDir: `${__dirname}/views/partials/`,
+    // Permitir a handlebars mostrar prototipos (código Ticket)
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true
+    }
 }));
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
@@ -97,6 +124,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 app.use('/api/users', usersRouter);
 app.use('/api/sessions', sessionRouter);
+app.use('/api/tickets', ticketRoutes);
 
 // Servidor de sockets
 websocket(io);

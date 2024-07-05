@@ -7,6 +7,11 @@ class UserController {
   async registerUser(req, res) {
     try {
       const { first_name, last_name, email, age, password } = req.body;
+
+      if (age < 18) {
+        return res.status(400).send('No se permite el registro de usuarios menores de 18 años.');
+      }
+
       const newUser = await userService.createUser({
         first_name,
         last_name,

@@ -85,3 +85,22 @@ export const clearCart = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const purchaseCart = async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const userId = req.session.user.id;
+        const purchaserEmail = req.session.user.email;
+        
+        const result = await cartService.purchaseCart(cartId, userId,  purchaserEmail);
+        
+        if (result.unavailableProducts) {
+            return res.status(200).json(result);
+        }
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error al finalizar la compra:', error);
+        res.status(500).json({ message: 'Error al finalizar la compra', error });
+    }
+};

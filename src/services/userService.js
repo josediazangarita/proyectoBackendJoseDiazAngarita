@@ -1,7 +1,9 @@
 import UserDAO from '../dao/mongoDB/userMongo.js';
 import UserDTO from '../dto/userDTO.js';
+import CartMongo from '../dao/mongoDB/cartMongo.js';
 
 const userDAO = new UserDAO();
+const cartMongo = new CartMongo;
 class UserService {
 
   determineUserRole(email) {
@@ -16,9 +18,11 @@ class UserService {
 
   async createUser(userData) {
     const role = this.determineUserRole(userData.email);
+    const newCart = await cartMongo.createCart();
     const newUser = await userDAO.createUser({
       ...userData,
-      role
+      role,
+      cart: newCart._id
     });
     
     return new UserDTO(newUser.toObject());
