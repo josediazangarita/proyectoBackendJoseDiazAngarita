@@ -134,6 +134,16 @@ router.get('/chat', (req, res) => {
         });
 });
 
+//Ruta para la vista del carrito de compras
+router.get('/cart', (req, res) => {
+    res.render(
+        'cart',
+        {
+            style: 'style.css',
+            user: req.session.user
+        });
+});
+
 // Ruta para la vista de tickets
 router.get('/tickets', async (req, res) => {
     try {
