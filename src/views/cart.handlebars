@@ -1,1 +1,18 @@
 <h2>Esta es la vista del carrito de compras</h2>
+
+<h3>Tu carrito de compras</h3>
+{{#if cart.products.length}}
+    <ul>
+        {{#each cart.products}}
+        <li>
+            <span>{{this.product.name}} - ${{this.product.price}} x {{this.quantity}}</span>
+            <button class="remove-from-cart-btn" data-product-id="{{this.product._id}}">Eliminar</button>
+            <input type="number" class="update-quantity" data-product-id="{{this.product._id}}" value="{{this.quantity}}" min="1">
+        </li>
+        {{/each}}
+    </ul>
+    <p>Monto total: ${{totalAmount}}</p>
+    <button id="finalize-purchase-btn">Completar la compra</button>
+{{else}}
+    <p>Tu carrito está vacío</p>
+{{/if}}
