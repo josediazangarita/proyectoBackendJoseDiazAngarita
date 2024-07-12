@@ -1,0 +1,11 @@
+<div class="ticket-container">
+    <h1>Ticket de Compra</h1>
+    <li>
+        <p><strong>Código <br></strong> {{ticket.code}}</p>
+        <p><strong>Fecha de Compra <br></strong> {{ticket.purchaseDatetime}}</p>
+        <p><strong>Monto Total <br></strong> ${{ticket.amount}}</p>
+        <p><strong>Comprador <br></strong> {{ticket.purchaser}}</p>
+    </li>
+    <button onclick="window.print()" class="btn-ticket-print">Imprimir</button>
+    <a href="/products">Volver a comprar</a>
+</div>

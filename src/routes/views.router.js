@@ -3,11 +3,14 @@ import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
 import auth from '../middlewares/auth.js';
-import { isAdmin } from '../middlewares/authorization.js';
+import { isUser, isAdmin } from '../middlewares/authorization.js';
+import CartService from '../services/cartService.js'
 import TicketService from '../services/ticketService.js';
+import ProductDTO from '../dto/productDTO.js';
 
 const router = express.Router();
 const store = new ProductService();
+const cartService = new CartService();
 const ticketService = new TicketService();
 
 //Ruta para la página principal
@@ -134,17 +137,40 @@ router.get('/chat', (req, res) => {
         });
 });
 
-//Ruta para la vista del carrito de compras
-router.get('/cart', (req, res) => {
-    res.render(
-        'cart',
-        {
-            style: 'style.css',
+// Ruta para la vista del carrito
+router.get('/cart', isUser, async (req, res) => {
+    try {
+        const cartId = req.session.user.cart;
+        const cart = await cartService.getCartById(cartId);
+        if (!cart) return res.status(404).send('Carrito no encontrado');
+
+        let totalAmount = 0;
+        cart.products.forEach(item => {
+            if (item.product && item.product.price) {
+                totalAmount += item.product.price * item.quantity;
+            }
+        });
+
+        // Verificar los datos que se están pasando a la vista
+        console.log('Datos pasados a la vista del carrito:', {
+            cart,
+            totalAmount,
             user: req.session.user
         });
+
+        res.render('cart', {
+            cart,
+            totalAmount,
+            user: req.session.user,
+            style: 'style.css'
+        });
+    } catch (error) {
+        console.error('Error al renderizar la vista del carrito:', error);
+        res.status(500).send('Error al renderizar la vista del carrito');
+    }
 });
 
-// Ruta para la vista de tickets
+// Ruta para la vista de todos los tickets (admin)
 router.get('/tickets', async (req, res) => {
     try {
         const tickets = await ticketService.getAllTickets();
@@ -156,5 +182,26 @@ router.get('/tickets', async (req, res) => {
     }
 });
 
+// Ruta para mostrar el ticket de la compra (cliente)
+// Ruta para mostrar un ticket individual
+router.get('/ticket/:tid', isUser, async (req, res) => {
+    try {
+        const ticketId = req.params.tid;
+        const ticket = await ticketService.getTicketById(ticketId);
+
+        if (!ticket) {
+            return res.status(404).send('Ticket no encontrado');
+        }
+
+        res.render('ticket', {
+            ticket,
+            user: req.session.user,
+            style: 'style.css'
+        });
+    } catch (error) {
+        console.error('Error al renderizar la vista del ticket:', error);
+        res.status(500).send('Error al renderizar la vista del ticket');
+    }
+});
 
 export default router;

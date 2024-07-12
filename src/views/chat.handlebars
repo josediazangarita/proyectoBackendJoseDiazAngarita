@@ -1,3 +1,7 @@
+{{#if user}}
+        <input type="hidden" id="cart-id" value="{{user.cart}}">
+    {{/if}}
+
 <div class="chat">
     <h3>Chat del Ecommerce de JGDA</h3>
     <input id="chatBox" placeholder="Escribe tu mensaje..." />
@@ -8,3 +12,4 @@
 <script src="/js/chat.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/productClient.js"></script>

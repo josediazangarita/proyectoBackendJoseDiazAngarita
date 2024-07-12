@@ -1,5 +1,6 @@
 import CartMongo from '../dao/mongoDB/cartMongo.js';
 import CartDTO from '../dto/cartDTO.js';
+import ProductDTO from '../dto/productDTO.js';
 import ProductMongo from '../dao/mongoDB/productMongo.js'
 import TicketService from './ticketService.js';
 import TicketDTO from '../dto/ticketDTO.js';
@@ -25,6 +26,16 @@ class CartService {
     async getCartById(cartId) {
         const cart = await this.cartDAO.getCartById(cartId);
         if (!cart) throw new Error(`Cart with id ${cartId} not found`);
+
+        for (let item of cart.products) {
+            const product = await this.productDAO.getProductById(item.product);
+            if (product) {
+                console.log('Producto encontrado:', product);
+                item.product = new ProductDTO(product);
+            } else {
+                console.log('Producto no encontrado para el ID:', item.product);
+            }
+        }
         return new CartDTO(cart);
     }
 
@@ -61,7 +72,6 @@ class CartService {
         const purchaseDetails = [];
         let totalAmount = 0;
     
-        // Primero verificar la disponibilidad de todos los productos
         for (const cartItem of cart.products) {
             try {
                 const product = await this.productDAO.getProductById(cartItem.product);
@@ -77,33 +87,30 @@ class CartService {
             }
         }
     
-        // Si no hay productos disponibles para la compra, retornar un error
         if (purchaseDetails.length === 0) {
             return { message: 'No se pudo completar la compra. Todos los productos están fuera de stock', unavailableProducts };
         }
     
-        // Procesar la compra de productos con suficiente stock
         for (const purchaseItem of purchaseDetails) {
             const product = await this.productDAO.getProductById(purchaseItem.product);
             product.stock -= purchaseItem.quantity;
             await product.save();
         }
     
-        // Crear un ticket para la compra utilizando el DTO del Ticket
         const ticketData = new TicketDTO({
-            code: uuidv4(), // Generar un código único
+            code: uuidv4(), 
             purchase_datetime: new Date(),
             amount: totalAmount,
             purchaser: purchaserEmail
         });
     
-        await ticketService.createTicket(ticketData);
+        const createdTicket = await ticketService.createTicket(ticketData);
+        console.log('Ticket creado:', createdTicket);
     
-        // Actualizar el carrito con los productos no comprados
         cart.products = unavailableProducts;
         await cart.save();
     
-        return { message: 'Compra completada con éxito', unavailableProducts };
+        return { message: 'Compra completada con éxito', ticket: createdTicket, unavailableProducts };
     }
 }
 
