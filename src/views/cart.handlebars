@@ -1,0 +1,34 @@
+<div cart-container>
+    <h2>Esta es la vista del carrito de compras</h2>
+
+    <h3>Tu carrito de compras</h3>
+
+    {{#if user}}
+        <input type="hidden" id="cart-id" value="{{user.cart}}">
+    {{/if}}
+
+    {{#if cart.products.length}}
+        <ul id="cartList">
+            {{#each cart.products}}
+                <li>
+                    <h3>{{this.product.title}}</h3>
+                    <p>Precio: ${{this.product.price}}</p>
+                    <p>Cantidad: {{this.quantity}}</p>
+                    <button class="remove-from-cart-btn" data-product-id="{{this.product._id}}">Eliminar</button>
+                </li>
+            {{/each}}
+        </ul>
+        <p id="totalAmount">Total: ${{totalAmount}}</p>
+        <div class="container-btn-purchase">
+            <button id="checkout-btn" class="btn-purchase">Finalizar Compra</button>
+        </div>
+        
+    {{else}}
+        <p>Tu carrito está vacío</p>
+    {{/if}}
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/productClient.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

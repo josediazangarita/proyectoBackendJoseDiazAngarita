@@ -38,6 +38,19 @@ class TicketController {
         }
     };
 
+    getTicketById = async (req, res) => {
+        const { tid } = req.params;
+        try {
+            const ticket = await this.ticketService.getTicketById(tid);
+            if (!ticket) {
+                return res.status(404).json({ message: 'Ticket no encontrado' });
+            }
+            res.status(200).json(ticket);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    };
+
     deleteTicket = async (req, res) => {
         try {
             await this.ticketService.deleteTicket(req.params.id);

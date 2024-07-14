@@ -11,8 +11,14 @@ class TicketMongo {
         return await Ticket.find();
     }
 
-    async findById(id) {
-        return await Ticket.findById(id);
+    async getTicketById(ticketId) {
+        try {
+            const ticket = await Ticket.findById(ticketId).lean();
+            return ticket;
+        } catch (error) {
+            console.error(`Error en getTicketById: ${error.message}`);
+            throw new Error(error.message);
+        }
     }
 
     async update(id, ticketData) {

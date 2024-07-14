@@ -12,6 +12,7 @@ import initializePassport from './config/passport.config.js';
 import dotenv from 'dotenv';
 import __dirname from './utils.js';
 import sharedsession from "express-socket.io-session";
+//import nodemailer from 'nodemailer'
 // Custom modules
 import viewsRouter from './routes/views.router.js';
 import productRoutes from './routes/productsRouters.js';
@@ -125,6 +126,29 @@ app.use('/api/carts', cartRoutes);
 app.use('/api/users', usersRouter);
 app.use('/api/sessions', sessionRouter);
 app.use('/api/tickets', ticketRoutes);
+
+//Cuenta gmail
+/*app.get('/mail', async(req,res)=>{
+    let result = await transport.sendMail({
+        from: 'Coder test <josediazangarita@gmail.com>',
+        to:'Correo de prueba',
+        html: `
+        <div>
+            <h1> Esto es un test </h1>
+        </div>
+        `,
+        attachments:[]
+    })
+})
+
+const transport =nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth:{
+        user:'josediazangarita@gmail.com',
+        pass:'nzaf zdwj kzbb fegd'
+    }
+})*/
 
 // Servidor de sockets
 websocket(io);

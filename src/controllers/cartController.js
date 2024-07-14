@@ -92,7 +92,7 @@ export const purchaseCart = async (req, res) => {
         const userId = req.session.user.id;
         const purchaserEmail = req.session.user.email;
         
-        const result = await cartService.purchaseCart(cartId, userId,  purchaserEmail);
+        const result = await cartService.purchaseCart(cartId, userId, purchaserEmail);
         
         if (result.unavailableProducts) {
             return res.status(200).json(result);

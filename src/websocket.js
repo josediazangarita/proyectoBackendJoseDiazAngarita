@@ -1,8 +1,11 @@
 import productService from "./services/productService.js";
+import CartService from './services/cartService.js';
 import UserDTO from './dto/userDTO.js';
 
+
 const store = new productService();
-let messages = [];  // Definir messages aquí
+const cartService = new CartService();
+let messages = []; 
 
 export default (io) => {
     io.on("connection", async socket => {
@@ -50,6 +53,30 @@ export default (io) => {
                 io.emit('messageLogs', messages);
             } else {
                 socket.emit('statusError', 'Acceso denegado. Solo usuarios registrados pueden enviar mensajes.');
+            }
+        });
+
+        // Manejar la adición de productos al carrito desde sockets
+        socket.on("addToCart", async ({ cartId, productId }) => {
+            try {
+                const updatedCart = await cartService.addProductToCart(cartId, productId, 1); // Puedes ajustar la cantidad según sea necesario
+                socket.emit('cartUpdated', updatedCart);
+                io.emit('cartUpdated', updatedCart); // Emitir a todos los clientes conectados para actualizar el contador
+            } catch (error) {
+                console.error('Error al agregar producto al carrito:', error);
+                socket.emit('cartError', { message: 'Error al agregar producto al carrito', error });
+            }
+        });
+
+        // Manejar la eliminación de productos del carrito desde sockets
+        socket.on("removeFromCart", async ({ cartId, productId }) => {
+            try {
+                const updatedCart = await cartService.removeProductFromCart(cartId, productId);
+                socket.emit('cartUpdated', updatedCart);
+                io.emit('cartUpdated', updatedCart); // Emitir a todos los clientes conectados para actualizar el contador
+            } catch (error) {
+                console.error('Error al eliminar producto del carrito:', error);
+                socket.emit('cartError', { message: 'Error al eliminar producto del carrito', error });
             }
         });
     });

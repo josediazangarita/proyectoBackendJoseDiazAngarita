@@ -15,7 +15,7 @@ export default class ProductMongo {
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id);
+      const product = await productModel.findById(id); // Eliminado .lean()
       if (!product) throw new Error(`El producto ${id} no existe!`);
       return product;
     } catch (error) {

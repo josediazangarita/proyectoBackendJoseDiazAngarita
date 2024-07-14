@@ -33,6 +33,11 @@
 </form>
 
 <!-- Mostrar los productos -->
+
+    {{#if user}}
+        <input type="hidden" id="cart-id" value="{{user.cart}}">
+    {{/if}}
+
 <div class="grid-container">
     <h2>Lista de productos</h2>
     {{#if products.length}}
@@ -53,6 +58,7 @@
                 <p>Código: {{this.code}}</p>
                 <p>Precio: {{this.price}}</p>
                 <p>Stock: {{this.stock}}</p>
+                <button class="add-to-cart-btn" data-product-id="{{this._id}}">Agregar al carrito</button>
             </div>
         </div>
         {{/each}}
@@ -73,4 +79,5 @@
     {{/if}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
-{{!-- <script src="/js/index.js"></script> --}}
+<script src="/js/productClient.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

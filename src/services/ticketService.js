@@ -1,4 +1,5 @@
 import TicketMongo from '../dao/mongoDB/ticketMongo.js';
+import TicketDTO from '../dto/ticketDTO.js'
 
 class TicketService {
     constructor() {
@@ -6,16 +7,19 @@ class TicketService {
     }
 
     async createTicket(ticketData) {
-        console.log('Creando ticket:', ticketData);
-        return await this.ticketMongo.create(ticketData);
+        const createdTicket = await this.ticketMongo.create(ticketData);
+        console.log('Ticket creado en DB:', createdTicket);
+        return new TicketDTO(createdTicket);
     }
 
     async getAllTickets() {
         return await this.ticketMongo.findAll();
     }
 
-    async getTicketById(id) {
-        return await this.ticketMongo.findById(id);
+    async getTicketById(ticketId) {
+        const ticket = await this.ticketMongo.getTicketById(ticketId);
+        if (!ticket) throw new Error(`Ticket con id ${ticketId} no encontrado`);
+        return new TicketDTO(ticket);
     }
 
     async updateTicket(id, ticketData) {
