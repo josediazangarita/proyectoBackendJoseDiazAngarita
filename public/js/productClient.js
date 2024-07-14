@@ -14,7 +14,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function updateCartCounter(count) {
         const cartCount = document.getElementById('cart-count');
         if (cartCount) {
-            cartCount.textContent = count;
+            if (count > 0) {
+                cartCount.textContent = count;
+                cartCount.style.display = 'inline'; 
+            } else {
+                cartCount.style.display = 'none'; 
+            }
         }
     }
 
