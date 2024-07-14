@@ -24,6 +24,7 @@ import websocket from './websocket.js';
 import ProductMongo from './dao/mongoDB/productMongo.js';
 import ProductMemory from './dao/memory/productMemory.js';
 import './utils/handlebarsHelper.js';
+import mockingRouter from './routes/mockingRouter.js'
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -126,6 +127,7 @@ app.use('/api/carts', cartRoutes);
 app.use('/api/users', usersRouter);
 app.use('/api/sessions', sessionRouter);
 app.use('/api/tickets', ticketRoutes);
+app.use('/api/testing', mockingRouter);
 
 //Cuenta gmail
 /*app.get('/mail', async(req,res)=>{
