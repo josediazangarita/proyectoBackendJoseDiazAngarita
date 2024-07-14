@@ -112,26 +112,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
-    // Función para actualizar la vista del carrito
-    function updateCartView(cart) {
-        const cartList = document.getElementById('cartList');
-        const totalAmountElement = document.getElementById('totalAmount');
-        cartList.innerHTML = '';
-        let totalAmount = 0;
+    // Función para obtener los datos completos de los productos
+    async function fetchProductDetails(productId) {
+        const response = await fetch(`/api/products/${productId}`);
+        const data = await response.json();
+        return data.payload;
+    }
 
-        cart.products.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <h3>${item.product.title}</h3>
-                <p>Precio: $${item.product.price}</p>
-                <p>Cantidad: ${item.quantity}</p>
-                <button class="remove-from-cart-btn" data-product-id="${item.product._id}">Eliminar</button>
-            `;
-            cartList.appendChild(listItem);
-            totalAmount += item.product.price * item.quantity;
-        });
+    // Función para actualizar la vista del carrito con datos completos
+async function updateCartView(cart) {
+    const cartList = document.getElementById('cartList');
+    const totalAmountElement = document.getElementById('totalAmount');
+    cartList.innerHTML = '';
+    let totalAmount = 0;
 
-        totalAmountElement.textContent = `Total: $${totalAmount}`;
+    for (const item of cart.products) {
+        const productDetails = await fetchProductDetails(item.product);
+        console.log('Product data:', productDetails);
+
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <h3>${productDetails.title}</h3>
+            <p>Precio: $${productDetails.price}</p>
+            <p>Cantidad: ${item.quantity}</p>
+            <button class="remove-from-cart-btn" data-product-id="${item.product}">Eliminar</button>
+        `;
+        cartList.appendChild(listItem);
+        totalAmount += productDetails.price * item.quantity;
+    }
+
+    totalAmountElement.textContent = `Total: $${totalAmount}`;
 
         // Asignar eventos de clic para los nuevos botones de eliminar producto
         cartList.querySelectorAll('.remove-from-cart-btn').forEach(button => {
