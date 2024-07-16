@@ -9,53 +9,27 @@ export default class ProductService {
   }
 
   async getProducts(filter = {}) {
-    try {
       const products = await productDAO.getProducts(filter);
       return products.map((product) => new ProductDTO(product));
-    } catch (error) {
-      console.error(`Error en getProducts: ${error.message}`);
-      throw error;
-    }
-  }
+    } 
 
-  async getProductById(id) {
-    try {
+    async getProductById(id) {
       const product = await productDAO.getProductById(id);
-      if (!product) throw new Error(`El producto ${id} no existe!`);
       return new ProductDTO(product);
-    } catch (error) {
-      console.error(`Error en getProductById: ${error.message}`);
-      throw error;
     }
-  }
 
-  async addProduct(product) {
-    try {
+    async addProduct(product) {
       const newProduct = await productDAO.addProduct(product);
       return new ProductDTO(newProduct);
-    } catch (error) {
-      console.error(`Error en addProduct: ${error.message}`);
-      throw error;
     }
-  }
 
-  async updateProduct(id, productUpdate) {
-    try {
+    async updateProduct(id, productUpdate) {
       const updatedProduct = await productDAO.updateProduct(id, productUpdate);
       return new ProductDTO(updatedProduct);
-    } catch (error) {
-      console.error(`Error en updateProduct: ${error.message}`);
-      throw error;
     }
-  }
 
-  async deleteProduct(id) {
-    try {
+    async deleteProduct(id) {
       await productDAO.deleteProduct(id);
       return true;
-    } catch (error) {
-      console.error(`Error en deleteProduct: ${error.message}`);
-      throw error;
     }
-  }
 }

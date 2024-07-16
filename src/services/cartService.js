@@ -88,7 +88,7 @@ class CartService {
         }
     
         if (purchaseDetails.length === 0) {
-            return { message: 'No se pudo completar la compra. Todos los productos están fuera de stock', unavailableProducts };
+            return { message: 'No se pudo completar la compra. Algunos productos están fuera de stock', unavailableProducts };
         }
     
         for (const purchaseItem of purchaseDetails) {

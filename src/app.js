@@ -25,6 +25,9 @@ import ProductMongo from './dao/mongoDB/productMongo.js';
 import ProductMemory from './dao/memory/productMemory.js';
 import './utils/handlebarsHelper.js';
 import mockingRouter from './routes/mockingRouter.js'
+import errorMiddleware from './middlewares/errorMiddleware.js';
+import errorRouter from './routes/errorRouter.js';
+
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -128,6 +131,10 @@ app.use('/api/users', usersRouter);
 app.use('/api/sessions', sessionRouter);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/testing', mockingRouter);
+app.use('/', errorRouter);
+
+//middleware de manejo de errores
+app.use(errorMiddleware);
 
 //Cuenta gmail
 /*app.get('/mail', async(req,res)=>{
