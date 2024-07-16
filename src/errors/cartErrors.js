@@ -4,18 +4,18 @@ import { generateCartErrorInfo } from './generateCartErrorInfo.js';
 
 export class CartNotFoundError extends CustomError {
     constructor(cartId) {
-        super('CartNotFoundError', `Cart with ID ${cartId} not found`, `Cart with ID ${cartId} does not exist`, EErrors.ROUTING_ERROR);
+        super('CartNotFoundError', `El carrito con el ID ${cartId} no se encontró`, `El carrito con el ID ${cartId} no existe`, EErrors.ROUTING_ERROR);
     }
 }
 
 export class InvalidCartError extends CustomError {
     constructor(cart) {
-        super('InvalidCartError', generateCartErrorInfo(cart), 'Invalid cart data', EErrors.VALIDATION_ERROR);
+        super('InvalidCartError', generateCartErrorInfo(cart), 'Datos del carrito inválidos', EErrors.VALIDATION_ERROR);
     }
 }
 
 export class CartDatabaseError extends CustomError {
     constructor(cause) {
-        super('CartDatabaseError', cause, 'An error occurred while interacting with the cart database', EErrors.DATABASE_ERROR);
+        super('CartDatabaseError', cause, 'Ocurrió un error al obtener o interactuar el carrito con la base de datos', EErrors.DATABASE_ERROR);
     }
 }

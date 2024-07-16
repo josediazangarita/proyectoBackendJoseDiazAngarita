@@ -10,13 +10,16 @@ export const getProducts = async (req, res, next) => {
         const products = await productService.getProducts(filter);
         res.send({ status: 'success', payload: products });
     } catch (error) {
-        next(new ProductDatabaseError(null, error.message));
+        next(new ProductDatabaseError(error.message));
     }
 };
 
 export const getProductById = async (req, res, next) => {
     try {
         const product = await productService.getProductById(req.params.pid);
+        if (!product){
+            throw new ProductNotFoundError(req.params.pid);
+        }
         res.send({ status: 'success', payload: product });
     } catch (error) {
         next(error);
@@ -28,7 +31,7 @@ export const addProduct = async (req, res, next) => {
         const product = await productService.addProduct(req.body);
         res.send({ status: 'success', payload: product });
     } catch (error) {
-        next(error);
+        next(new InvalidProductError(req.body));
     }
 };
 
@@ -37,12 +40,10 @@ export const updateProduct = async (req, res, next) => {
         const product = await productService.updateProduct(req.params.pid, req.body);
         res.send({ status: 'success', payload: product });
     } catch (error) {
-        if (error instanceof ProductNotFoundError) {
-            return next(error);
-        } else if (error instanceof InvalidProductError) {
-            return next(error);
+        if (error.name === 'ValidationError') {
+            next(new InvalidProductError(req.body));
         } else {
-            return next(new ProductDatabaseError(req.body, error.message));
+            next(new ProductDatabaseError(error.message));
         }
     }
 };

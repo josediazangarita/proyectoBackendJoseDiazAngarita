@@ -9,20 +9,21 @@ export default class ProductMongo {
       const products = await productModel.find(filter).lean();
       return products;
     } catch (error) {
-      throw new ProductDatabaseError(null, 'Error al buscar los productos', error);
+      throw new ProductDatabaseError('Error al buscar los productos', error);
     }
   }
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id);
+      const product = await productModel.findById(id); // Eliminado .lean()
       if (!product) throw new ProductNotFoundError(id);
       return product;
     } catch (error) {
       if (error.name === 'CastError' && error.kind === 'ObjectId') {
         throw new ProductNotFoundError(id);
+      } else {
+        throw new ProductDatabaseError('Error al buscar el producto', error);
       }
-      throw new ProductDatabaseError(null, 'Error al buscar el producto', error);
     }
   }
 
@@ -31,12 +32,7 @@ export default class ProductMongo {
       const result = await productModel.create(product);
       return result.toObject();
     } catch (error) {
-      if (error.name === 'ValidationError') {
-        const errorInfo = generateProductErrorInfo(product);
-        throw new InvalidProductError(errorInfo);
-      } else {
-        throw new ProductDatabaseError(product, `Error al agregar el producto: ${error.message}`, error);
-      }
+      throw new ProductDatabaseError('Error al agregar el producto', error);
     }
   }
 
@@ -46,13 +42,12 @@ export default class ProductMongo {
       if (!result) throw new ProductNotFoundError(id);
       return result.toObject();
     } catch (error) {
-      if (error.name === 'ValidationError') {
-        const errorInfo = generateProductErrorInfo(productUpdate);
-        throw new InvalidProductError(errorInfo);
-      } else if (error.name === 'CastError' && error.kind === 'ObjectId') {
+      if (error.name === 'CastError' && error.kind === 'ObjectId') {
         throw new ProductNotFoundError(id);
+      } else if (error.name === 'ValidationError') {
+        throw new InvalidProductError(productUpdate, error);
       } else {
-        throw new ProductDatabaseError(productUpdate, `Error al actualizar el producto: ${error.message}`, error);
+        throw new ProductDatabaseError('Error al actualizar el producto', error);
       }
     }
   }
@@ -63,7 +58,7 @@ export default class ProductMongo {
       if (!result) throw new ProductNotFoundError(id);
       return true;
     } catch (error) {
-      throw new ProductDatabaseError(null, 'Error al eliminar el producto', error);
+      throw new ProductDatabaseError('Error al eliminar el producto', error);
     }
   }
 }
