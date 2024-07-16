@@ -1,0 +1,15 @@
+<div class="error-container">
+        <h1>Oops! Algo salió mal</h1>
+        <p>Ocurrió un error:</p>
+        <p>{{message}}</p>
+        <p>Por favor inténtalo de nuevo o contáctanos si el problema persiste</p>
+        {{#if details}}
+                <p>{{details}}</p>
+        {{/if}}
+        {{#if previousUrl}}
+            <a href="{{previousUrl}}">Volver atrás</a>
+        {{/if}}
+    <a href="/login">Loguearse</a>
+    <a href="/register">Registrarse</a>
+    <a href="/products">Volver a la tienda</a>
+    </div>

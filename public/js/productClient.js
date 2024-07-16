@@ -99,6 +99,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     }).then(() => {
                         window.location.href = `/ticket/${data.ticket._id}`;
                     });
+                } else if (data.status === 'partial') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: data.message,
+                        html: `
+                            <p>Los siguientes productos no están disponibles en la cantidad solicitada:</p>
+                            <ul>
+                                ${data.unavailableProducts.map(product => `<li>${product.product.name} (solicitado: ${product.quantity}, disponible: ${product.availableStock})</li>`).join('')}
+                            </ul>
+                        `,
+                    });
                 } else {
                     Swal.fire({
                         icon: 'info',
@@ -125,28 +136,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     // Función para actualizar la vista del carrito con datos completos
-async function updateCartView(cart) {
-    const cartList = document.getElementById('cartList');
-    const totalAmountElement = document.getElementById('totalAmount');
-    cartList.innerHTML = '';
-    let totalAmount = 0;
+    async function updateCartView(cart) {
+        const cartList = document.getElementById('cartList');
+        const totalAmountElement = document.getElementById('totalAmount');
+        cartList.innerHTML = '';
+        let totalAmount = 0;
 
-    for (const item of cart.products) {
-        const productDetails = await fetchProductDetails(item.product);
-        console.log('Product data:', productDetails);
+        for (const item of cart.products) {
+            const productDetails = await fetchProductDetails(item.product);
+            console.log('Product data:', productDetails);
 
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <h3>${productDetails.title}</h3>
-            <p>Precio: $${productDetails.price}</p>
-            <p>Cantidad: ${item.quantity}</p>
-            <button class="remove-from-cart-btn" data-product-id="${item.product}">Eliminar</button>
-        `;
-        cartList.appendChild(listItem);
-        totalAmount += productDetails.price * item.quantity;
-    }
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <h3>${productDetails.title}</h3>
+                <p>Precio: $${productDetails.price}</p>
+                <p>Cantidad: ${item.quantity}</p>
+                <button class="remove-from-cart-btn" data-product-id="${item.product}">Eliminar</button>
+            `;
+            cartList.appendChild(listItem);
+            totalAmount += productDetails.price * item.quantity;
+        }
 
-    totalAmountElement.textContent = `Total: $${totalAmount}`;
+        totalAmountElement.textContent = `Total: $${totalAmount}`;
 
         // Asignar eventos de clic para los nuevos botones de eliminar producto
         cartList.querySelectorAll('.remove-from-cart-btn').forEach(button => {

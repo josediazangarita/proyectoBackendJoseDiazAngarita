@@ -1,18 +1,24 @@
 import UserService from '../services/userService.js';
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
+import { generateUserErrorInfo } from '../errors/generateUserErrorInfo.js';
+import { UserNotFoundError, InvalidUserError, AuthenticationError, UnderageUserError} from '../errors/userErrors.js';
 
 const userService = new UserService();
 
 class UserController {
-  async registerUser(req, res) {
+  async registerUser(req, res, next) {
     try {
       const { first_name, last_name, email, age, password } = req.body;
 
-      if (age < 18) {
-        return res.status(400).send('No se permite el registro de usuarios menores de 18 años.');
+      if (!first_name || !last_name || !email || !password) {
+        throw new InvalidUserError(generateUserErrorInfo(req.body));
       }
 
-      const newUser = await userService.createUser({
+      if (age < 18) {
+        throw new UnderageUserError(age);
+      }
+
+      await userService.createUser({
         first_name,
         last_name,
         email,
@@ -21,17 +27,16 @@ class UserController {
       });
       res.redirect('/login');
     } catch (error) {
-      console.error('Error registering user:', error);
-      res.status(500).send('Error registering user');
+      next(error);
     }
   }
 
-  async loginUser(req, res) {
+  async loginUser(req, res, next) {
     try {
       const { email, password } = req.body;
       const user = await userService.getUserByEmail(email);
       if (!user || !isValidPassword(user, password)) {
-        return res.status(401).send('Invalid email or password');
+        throw new AuthenticationError('Invalid email or password');
       }
 
       req.session.user = {
@@ -42,36 +47,35 @@ class UserController {
         role: user.role,
         cart: user.cart,
       };
-      console.log('User session set:', req.session.user);
-      res.redirect('/products');
-      //res.json({ message: 'Login successful', user: req.session.user });
+      res.redirect('/products')
     } catch (error) {
-      console.error('Error logging in user:', error);
-      res.status(500).send('Error logging in user');
+      next(error);
     }
   }
 
-  async restorePassword(req, res) {
+  async restorePassword(req, res, next) {
     try {
       const { email, newPassword } = req.body;
+      if (!newPassword) {
+        throw new InvalidUserError(req.body);
+      }
       const user = await userService.updateUserPassword(email, createHash(newPassword));
       if (!user) {
-        return res.status(404).send('User not found with that email.');
+        throw new UserNotFoundError(email);
       }
-      res.redirect('/login');
+      res.status(200).json({ status: 'success', message: 'Password restored successfully' });
     } catch (error) {
-      console.error('Error restoring password:', error);
-      res.status(500).send('Error restoring password');
+      next(error);
     }
   }
 }
 
-export const logoutUser = (req, res) => {
+export const logoutUser = (req, res, next) => {
   req.logout((err) => {
     if (err) {
-      return res.status(500).json({ message: 'Error al cerrar sesión' });
+      return next(new AuthenticationError('Error al cerrar sesión'));
     }
-    res.redirect('/login');
+    res.redirect('/')
   });
 };
 

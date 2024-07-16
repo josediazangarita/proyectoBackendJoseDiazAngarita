@@ -781,3 +781,14 @@ li {
 .btn-purchase:hover {
     background-color: yellowgreen;
 }
+
+.error-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+    max-width: 360px;
+    margin: 50px auto;
+    text-align: center;
+    color: #fff;
+}
