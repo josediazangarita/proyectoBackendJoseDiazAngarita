@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     const cartId = cartIdElement.value;
-    console.log(`Cart ID: ${cartId}`);
 
     // Función para actualizar el contador del carrito
     function updateCartCounter(count) {
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
         button.addEventListener('click', () => {
             const productId = button.dataset.productId;
-            console.log(`Product ID: ${productId}`);
 
             fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: 'POST',
@@ -38,7 +36,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Producto agregado al carrito:', data);
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto agregado al carrito',
@@ -57,14 +54,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
         button.addEventListener('click', () => {
             const productId = button.dataset.productId;
-            console.log(`Remove Product ID: ${productId}`);
 
             fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Producto eliminado del carrito:', data);
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto eliminado del carrito',
@@ -72,7 +67,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     timer: 1500
                 });
                 updateCartCounter(data.products.length);
-                updateCartView(data); // Actualizar la vista del carrito
+                updateCartView(data);
             })
             .catch(error => {
                 console.error('Error al eliminar producto del carrito:', error);
@@ -83,13 +78,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const checkoutButton = document.getElementById('checkout-btn');
     if (checkoutButton) {
         checkoutButton.addEventListener('click', () => {
-            console.log('Finalizar compra');
             fetch(`/api/carts/${cartId}/purchase`, {
                 method: 'POST'
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Compra finalizada:', data);
                 if (data.ticket && data.ticket._id) {
                     Swal.fire({
                         icon: 'success',
@@ -144,8 +137,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         for (const item of cart.products) {
             const productDetails = await fetchProductDetails(item.product);
-            console.log('Product data:', productDetails);
-
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <h3>${productDetails.title}</h3>
@@ -163,14 +154,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         cartList.querySelectorAll('.remove-from-cart-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const productId = button.dataset.productId;
-                console.log(`Remove Product ID: ${productId}`);
-
                 fetch(`/api/carts/${cartId}/products/${productId}`, {
                     method: 'DELETE'
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Producto eliminado del carrito:', data);
                     Swal.fire({
                         icon: 'success',
                         title: 'Producto eliminado del carrito',

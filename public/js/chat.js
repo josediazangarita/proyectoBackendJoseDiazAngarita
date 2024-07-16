@@ -48,11 +48,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     socket.on('connect', () => {
-        console.log('Cliente conectado al chat de sockets');
     });
 
     socket.on('statusError', data => {
-        console.log(data);
         alert(data);
     });
 });

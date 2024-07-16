@@ -319,3 +319,4 @@
 {"cause":"El carrito con el ID dfsdfsdfsd no se encontró","level":"error","message":"El carrito con el ID dfsdfsdfsd no existe","name":"CartNotFoundError","service":"user-service","timestamp":"2024-07-16T20:59:02.996Z"}
 {"cause":"Error al obtener el carrito","level":"error","message":"Ocurrió un error al obtener o interactuar el carrito con la base de datos","name":"CartDatabaseError","service":"user-service","timestamp":"2024-07-16T20:59:24.164Z"}
 {"cause":"Error al obtener el carrito","level":"error","message":"Ocurrió un error al obtener o interactuar el carrito con la base de datos","name":"CartDatabaseError","service":"user-service","timestamp":"2024-07-16T21:01:02.654Z"}
+{"cause":"Invalid email or password","level":"error","message":"Autenticación fallida. Usuario y/o contraseña inválidos","name":"AuthenticationError","service":"user-service","timestamp":"2024-07-16T22:23:04.515Z"}

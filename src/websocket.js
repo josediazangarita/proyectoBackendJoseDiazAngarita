@@ -9,7 +9,6 @@ let messages = [];
 
 export default (io) => {
     io.on("connection", async socket => {
-        console.log('Cliente conectado a socket');
         // Enviar la lista de productos al cliente cuando se conecta
         const products = await store.getProducts();
         socket.emit('productList', products);
@@ -37,12 +36,10 @@ export default (io) => {
                 user = new UserDTO({ _id: null, first_name: 'Visitante', last_name: '', email: '', age: null, password: '', role: 'guest', githubId: null, cart: null });
                 socket.handshake.session.user = user;
                 socket.handshake.session.save();
-                console.log('Usuario asignado como Visitante'); // Log para verificar si se asignó Visitante
             }
 
             socket.emit('messageLogs', messages);
             socket.user = user;
-            console.log(`Usuario ${user.firstName} conectado al chat de sockets con rol ${user.role}`);
             socket.broadcast.emit('userConnected', user.firstName);
         });
 

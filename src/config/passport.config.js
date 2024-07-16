@@ -20,7 +20,6 @@ const initializePassport = () => {
             try {
                 let user = await userModel.findOne({ email: username });
                 if (user) {
-                    console.log('User already exists');
                     return done(null, false, { message: 'El usuario ya existe'});
                 }
 
@@ -53,7 +52,6 @@ const initializePassport = () => {
             try {
                 // Aquí se asegura de que la contraseña esté incluida en la consulta
                 let user = await userModel.findOne({ email: username }).select('+password').populate('cart');
-                console.log('User:', user);
                 
                 if (!user) {
                     return done(new Error('User not found'), false);
@@ -82,7 +80,6 @@ const initializePassport = () => {
     },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                console.log(profile);
                 let email = profile._json.email || `${profile.username}@github.com`;
                 let user = await userModel.findOne({ email });
                 if (!user) {

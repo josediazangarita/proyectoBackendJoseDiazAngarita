@@ -1,5 +1,4 @@
 const isAdmin = (req, res, next) => {
-  console.log("🚀 ~ isAdmin ~ isAdmin:", isAdmin)
   if (req.session.user && req.session.user.role === 'admin') {
     return next();
   }
@@ -8,9 +7,6 @@ const isAdmin = (req, res, next) => {
 
 
 const isUser = (req, res, next) => {
-  console.log("🚀 ~ isUser ~ isUser:", isUser)
-  console.log('User session:', req.session.user);
-
   if (req.session.user && req.session.user.role === 'user') {
     return next();
   }

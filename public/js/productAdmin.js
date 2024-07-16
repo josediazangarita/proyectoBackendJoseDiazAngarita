@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Eliminar';
             deleteButton.addEventListener('click', () => {
-                console.log('Clic en botón de eliminar:', product._id);
                 socket.emit('deleteProduct', product._id);
             });
 
@@ -54,7 +53,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Eliminar';
         deleteButton.addEventListener('click', () => {
-            console.log('Clic en botón de eliminar:', newProduct._id);
             socket.emit('deleteProduct', newProduct._id);
         });
 

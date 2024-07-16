@@ -30,10 +30,9 @@ class CartService {
         for (let item of cart.products) {
             const product = await this.productDAO.getProductById(item.product);
             if (product) {
-                console.log('Producto encontrado:', product);
                 item.product = new ProductDTO(product);
             } else {
-                console.log('Producto no encontrado para el ID:', item.product);
+                throw new Error(`Product with id ${item.product} not found`);
             }
         }
         return new CartDTO(cart);
@@ -105,7 +104,6 @@ class CartService {
         });
     
         const createdTicket = await ticketService.createTicket(ticketData);
-        console.log('Ticket creado:', createdTicket);
     
         cart.products = unavailableProducts;
         await cart.save();

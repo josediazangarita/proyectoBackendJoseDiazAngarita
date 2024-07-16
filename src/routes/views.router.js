@@ -151,13 +151,6 @@ router.get('/cart', isUser, async (req, res) => {
             }
         });
 
-        // Verificar los datos que se están pasando a la vista
-        console.log('Datos pasados a la vista del carrito:', {
-            cart,
-            totalAmount,
-            user: req.session.user
-        });
-
         res.render('cart', {
             cart,
             totalAmount,
