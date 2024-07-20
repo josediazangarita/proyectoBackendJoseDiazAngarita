@@ -1,3 +1,1 @@
-{"cause":"Invalid email or password","level":"error","message":"Autenticación fallida. Usuario y/o contraseña inválidos","name":"AuthenticationError","service":"user-service","timestamp":"2024-07-20T20:15:22.017Z"}
-{"cause":"Invalid email or password","level":"error","message":"Autenticación fallida. Usuario y/o contraseña inválidos","name":"AuthenticationError","service":"user-service","timestamp":"2024-07-20T20:18:54.150Z"}
-{"cause":"Invalid email or password","level":"error","message":"Autenticación fallida. Usuario y/o contraseña inválidos","name":"AuthenticationError","service":"user-service","timestamp":"2024-07-20T20:19:03.162Z"}
+{"level":"error","message":"Error log - aplicación iniciada","service":"user-service","timestamp":"2024-07-20T23:10:40.352Z"}

@@ -27,7 +27,15 @@ import './utils/handlebarsHelper.js';
 import mockingRouter from './routes/mockingRouter.js'
 import errorMiddleware from './middlewares/errorMiddleware.js';
 import errorRouter from './routes/errorRouter.js';
+import logger from './logs/logger.js';
 
+// Log directo para prueba
+logger.debug('Debug log - aplicación iniciada');
+logger.http('http log - aplicación iniciada');
+logger.info('Info log - aplicación iniciada');
+logger.warn('Warning log - aplicación iniciada');
+logger.error('Error log - aplicación iniciada');
+//logger.fatal('fatal log - aplicación iniciada');
 
 // Configuración de variables de entorno
 dotenv.config();
