@@ -1,4 +1,8 @@
 import { createLogger, format, transports } from 'winston';
+import path from 'path';
+
+// Crear las rutas para los archivos de log dentro de src/logs
+const logDirectory = path.resolve('src/logs');
 
 const logger = createLogger({
     level: 'info',
@@ -10,8 +14,8 @@ const logger = createLogger({
     ),
     defaultMeta: { service: 'user-service' },
     transports: [
-        new transports.File({ filename: 'error.log', level: 'error' }),
-        new transports.File({ filename: 'combined.log' }),
+        new transports.File({ filename: path.join(logDirectory, 'error.log'), level: 'error' }),
+        new transports.File({ filename: path.join(logDirectory, 'combined.log') }),
     ],
 });
 
