@@ -1,5 +1,0 @@
-{"level":"debug","message":"Debug log - aplicación iniciada","service":"user-service","timestamp":"2024-07-20T23:10:40.349Z"}
-{"level":"http","message":"http log - aplicación iniciada","service":"user-service","timestamp":"2024-07-20T23:10:40.351Z"}
-{"level":"info","message":"Info log - aplicación iniciada","service":"user-service","timestamp":"2024-07-20T23:10:40.352Z"}
-{"level":"warn","message":"Warning log - aplicación iniciada","service":"user-service","timestamp":"2024-07-20T23:10:40.352Z"}
-{"level":"error","message":"Error log - aplicación iniciada","service":"user-service","timestamp":"2024-07-20T23:10:40.352Z"}

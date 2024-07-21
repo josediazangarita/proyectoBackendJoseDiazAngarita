@@ -33,9 +33,9 @@ import logger from './logs/logger.js';
 logger.debug('Debug log - aplicación iniciada');
 logger.http('http log - aplicación iniciada');
 logger.info('Info log - aplicación iniciada');
-logger.warn('Warning log - aplicación iniciada');
+logger.warning('Warning log - aplicación iniciada');
 logger.error('Error log - aplicación iniciada');
-//logger.fatal('fatal log - aplicación iniciada');
+logger.fatal('fatal log - aplicación iniciada');
 
 // Configuración de variables de entorno
 dotenv.config();
