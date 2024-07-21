@@ -1,7 +1,8 @@
 import UserService from '../services/userService.js';
 import { createHash, isValidPassword } from '../utils/functionUtils.js';
 import { generateUserErrorInfo } from '../errors/generateUserErrorInfo.js';
-import { UserNotFoundError, InvalidUserError, AuthenticationError, UnderageUserError} from '../errors/userErrors.js';
+import { UserNotFoundError, InvalidUserError, AuthenticationError, UnderageUserError } from '../errors/userErrors.js';
+import logger from '../logs/logger.js';
 
 const userService = new UserService();
 
@@ -25,8 +26,10 @@ class UserController {
         age,
         password: createHash(password),
       });
+      logger.info('User registered successfully', { email });
       res.redirect('/login');
     } catch (error) {
+      logger.error('Error registering user', { error: error.message, stack: error.stack });
       next(error);
     }
   }
@@ -47,8 +50,10 @@ class UserController {
         role: user.role,
         cart: user.cart,
       };
-      res.redirect('/products')
+      logger.info('User logged in', { email });
+      res.redirect('/products');
     } catch (error) {
+      logger.error('Error logging in user', { error: error.message, stack: error.stack });
       next(error);
     }
   }
@@ -63,8 +68,10 @@ class UserController {
       if (!user) {
         throw new UserNotFoundError(email);
       }
+      logger.info('Password restored successfully', { email });
       res.status(200).json({ status: 'success', message: 'Password restored successfully' });
     } catch (error) {
+      logger.error('Error restoring password', { error: error.message, stack: error.stack });
       next(error);
     }
   }
@@ -73,9 +80,11 @@ class UserController {
 export const logoutUser = (req, res, next) => {
   req.logout((err) => {
     if (err) {
+      logger.error('Error logging out user', { error: err.message, stack: err.stack });
       return next(new AuthenticationError('Error al cerrar sesión'));
     }
-    res.redirect('/')
+    logger.info('User logged out');
+    res.redirect('/');
   });
 };
 

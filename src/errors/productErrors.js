@@ -4,13 +4,13 @@ import { generateProductErrorInfo } from './generateProductErrorInfo.js';
 
 export class ProductNotFoundError extends CustomError {
     constructor(productId) {
-        super('ProductNotFoundError', `El producto con el ID ${productId} no se encontró`, `El producto con el ID ${productId} no existe`, EErrors.ROUTING_ERROR);
+        super('ProductNotFoundError', `The product with ID ${productId} was not found`, `The product with ID ${productId} does not exist`, EErrors.ROUTING_ERROR);
     }
 }
 
 export class InvalidProductError extends CustomError {
     constructor(product) {
-        super('InvalidProductError', generateProductErrorInfo(product), 'Datos del producto inválidos', EErrors.VALIDATION_ERROR);
+        super('InvalidProductError', generateProductErrorInfo(product), 'Invalid product data', EErrors.VALIDATION_ERROR);
     }
 }
 

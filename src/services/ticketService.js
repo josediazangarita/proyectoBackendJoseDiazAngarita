@@ -8,7 +8,6 @@ class TicketService {
 
     async createTicket(ticketData) {
         const createdTicket = await this.ticketMongo.create(ticketData);
-        console.log('Ticket creado en DB:', createdTicket);
         return new TicketDTO(createdTicket);
     }
 

@@ -1,0 +1,29 @@
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:36:01.518Z"}
+{"level":"info","message":"Fetched all tickets","service":"user-service","timestamp":"2024-07-21T04:36:08.676Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:40:20.846Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Product added to cart","productId":"6696ea20ac7611400543a9b2","quantity":1,"service":"user-service","timestamp":"2024-07-21T04:40:22.785Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:40:25.529Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-07-21T04:40:26.817Z","unavailableProducts":[]}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-07-21T04:41:12.350Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-07-21T04:41:12.357Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:41:12.939Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:41:18.718Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:41:52.227Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Product added to cart","productId":"6696ea20ac7611400543a9b2","quantity":1,"service":"user-service","timestamp":"2024-07-21T04:41:55.984Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:41:59.423Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-07-21T04:42:01.147Z","unavailableProducts":[]}
+{"level":"info","message":"Fetched all tickets","service":"user-service","timestamp":"2024-07-21T04:42:24.811Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-07-21T04:42:35.357Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-07-21T04:42:35.365Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:42:35.889Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:44:04.606Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Product added to cart","productId":"6693429b46ebe98e62659f83","quantity":1,"service":"user-service","timestamp":"2024-07-21T04:44:07.693Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Product added to cart","productId":"6696ea20ac7611400543a9b2","quantity":1,"service":"user-service","timestamp":"2024-07-21T04:44:10.340Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Product added to cart","productId":"6696ea3bac7611400543a9b4","quantity":1,"service":"user-service","timestamp":"2024-07-21T04:44:13.183Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:44:16.670Z"}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-07-21T04:44:21.564Z","unavailableProducts":[{"_id":"669c921782cb8cd0a3eb0cae","product":{"__v":0,"_id":"6693429b46ebe98e62659f83","category":"Nintendo","code":"010","description":"descripción producto 10","price":100,"status":true,"stock":0,"thumbnails":[],"title":"Producto 10"},"quantity":1}]}
+{"cartId":"6686ceff9ea2a48f3e0fbb29","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-07-21T04:44:29.043Z"}
+{"level":"info","message":"User logged out","service":"user-service","timestamp":"2024-07-21T04:44:43.412Z"}
+{"email":"jgda@coder.com","level":"info","message":"User logged in","service":"user-service","timestamp":"2024-07-21T04:44:50.834Z"}
+{"level":"info","message":"Fetched all carts","service":"user-service","timestamp":"2024-07-21T04:44:51.110Z"}
+{"level":"info","message":"User logged out","service":"user-service","timestamp":"2024-07-21T04:45:09.111Z"}
