@@ -113,7 +113,7 @@ export const purchaseCart = async (req, res, next) => {
     const result = await cartService.purchaseCart(cartId, userId, purchaserEmail);
 
     if (result.unavailableProducts) {
-      logger.warn('Purchase completed with unavailable products', { cartId, unavailableProducts: result.unavailableProducts });
+      logger.warning('Purchase completed with unavailable products', { cartId, unavailableProducts: result.unavailableProducts });
       return res.status(200).json(result);
     }
 
