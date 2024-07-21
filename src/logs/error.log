@@ -1,0 +1,2 @@
+{"level":"error","message":"Error log - aplicación iniciada","service":"user-service","timestamp":"2024-07-21T01:34:31.977Z"}
+{"level":"fatal","message":"fatal log - aplicación iniciada","service":"user-service","timestamp":"2024-07-21T01:34:31.977Z"}
