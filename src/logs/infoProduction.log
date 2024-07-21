@@ -1,4 +1,37 @@
-{"level":"info","message":"Info log - aplicación iniciada","service":"user-service","timestamp":"2024-07-21T01:34:31.977Z"}
-{"level":"warning","message":"Warning log - aplicación iniciada","service":"user-service","timestamp":"2024-07-21T01:34:31.977Z"}
-{"level":"error","message":"Error log - aplicación iniciada","service":"user-service","timestamp":"2024-07-21T01:34:31.977Z"}
-{"level":"fatal","message":"fatal log - aplicación iniciada","service":"user-service","timestamp":"2024-07-21T01:34:31.977Z"}
+{"level":"info","message":"Info log - /loggertest endpoint","service":"user-service","timestamp":"2024-07-21T03:10:45.537Z"}
+{"level":"warning","message":"Warning log - /loggertest endpoint","service":"user-service","timestamp":"2024-07-21T03:10:45.537Z"}
+{"level":"error","message":"Error log - /loggertest endpoint","service":"user-service","timestamp":"2024-07-21T03:10:45.538Z"}
+{"level":"fatal","message":"Fatal log - /loggertest endpoint","service":"user-service","timestamp":"2024-07-21T03:10:45.538Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:13:40.670Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:13:40.677Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:13:41.244Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:14:40.471Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:14:40.478Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:14:40.894Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:15:13.280Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:15:13.288Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:15:13.737Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:15:37.030Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:15:37.037Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:15:37.447Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:16:05.268Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:16:05.276Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:16:05.787Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:16:42.898Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:16:42.905Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:16:43.345Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:17:23.833Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:17:23.841Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:17:24.351Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:18:08.307Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:18:08.315Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:18:08.842Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:18:39.102Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:18:39.110Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:18:39.627Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-07-21T04:20:42.576Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-07-21T04:20:42.584Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:20:43.132Z"}
+{"level":"info","message":"Usando persistencia MongoDB","service":"user-service","timestamp":"2024-07-21T04:21:09.043Z"}
+{"level":"info","message":"Servidor activo en el puerto 8080","service":"user-service","timestamp":"2024-07-21T04:21:09.051Z"}
+{"level":"info","message":"Servidor conectado a MongoDB Atlas","service":"user-service","timestamp":"2024-07-21T04:21:09.460Z"}

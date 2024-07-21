@@ -28,14 +28,7 @@ import mockingRouter from './routes/mockingRouter.js'
 import errorMiddleware from './middlewares/errorMiddleware.js';
 import errorRouter from './routes/errorRouter.js';
 import logger from './logs/logger.js';
-
-// Log directo para prueba
-logger.debug('Debug log - aplicación iniciada');
-logger.http('http log - aplicación iniciada');
-logger.info('Info log - aplicación iniciada');
-logger.warning('Warning log - aplicación iniciada');
-logger.error('Error log - aplicación iniciada');
-logger.fatal('fatal log - aplicación iniciada');
+import loggerTest from './routes/loggerTest.js';
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -79,25 +72,25 @@ let productDao;
 switch (daoType) {
     case 'mongo':
         productDao = new ProductMongo();
-        console.log('Usando persistencia MongoDB');
+        logger.info('Using MongoDB persistence');
         break;
     case 'memory':
         productDao = new ProductMemory();
-        console.log('Usando persistencia FileSystem');
+        logger.info('Using FileSystem persistence');
         break;
     default:
-        console.error('DAO no especificado. Agrege mongo o memory luego de npm start para definir la persistencia');
-        process.exit(1); // Salir con un código de error
+        logger.error('DAO not specified. Add mongo or memory after npm start to define persistence');
+        process.exit(1);
 }
 
 // Instancia de ProductService
 const productService = new ProductService(productDao);
-console.log(productService);
+logger.debug(`ProductService instance created: ${productService}`);
 
 // Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Servidor conectado a MongoDB Atlas'))
-    .catch(err => console.error('Error al conectar a MongoDB Atlas:', err.message));
+    .then(() => logger.info('Server connected to MongoDB Atlas'))
+    .catch(err => logger.error('Error connecting to MongoDB Atlas:', err.message));
 
 // Inicializamos el motor de plantillas handlebars, ruta de vistas y motor de renderizado
 app.engine('handlebars', handlebars.engine({
@@ -140,6 +133,7 @@ app.use('/api/sessions', sessionRouter);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/testing', mockingRouter);
 app.use('/', errorRouter);
+app.use(loggerTest);
 
 //middleware de manejo de errores
 app.use(errorMiddleware);
@@ -171,5 +165,5 @@ const transport =nodemailer.createTransport({
 websocket(io);
 
 httpServer.listen(PORT, () => {
-    console.log(`Servidor activo en el puerto ${PORT}`);
+    logger.info(`Server active on port ${PORT}`);
 });

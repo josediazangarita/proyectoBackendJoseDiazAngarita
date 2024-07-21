@@ -4,18 +4,18 @@ import { generateTicketErrorInfo } from './generateTicketErrorInfo.js';
 
 export class TicketNotFoundError extends CustomError {
     constructor(ticketId) {
-        super('TicketNotFoundError', `El ticket con el ID ${ticketId} no se encontró`, `El ticket con el ID ${ticketId} no existe`, EErrors.ROUTING_ERROR);
+        super('TicketNotFoundError', `The ticket with ID ${ticketId} was not found`, `The ticket with ID ${ticketId} does not exist`, EErrors.ROUTING_ERROR);
     }
 }
 
 export class InvalidTicketError extends CustomError {
     constructor(ticket) {
-        super('InvalidTicketError', generateTicketErrorInfo(ticket), 'Datos de ticket inválidos', EErrors.VALIDATION_ERROR);
+        super('InvalidTicketError', generateTicketErrorInfo(ticket), 'Invalid ticket data', EErrors.VALIDATION_ERROR);
     }
 }
 
 export class TicketDatabaseError extends CustomError {
     constructor(cause) {
-        super('TicketDatabaseError', cause, 'Ocurrió un error con el ticket en la base de datos', EErrors.DATABASE_ERROR);
+        super('TicketDatabaseError', cause, 'An error occurred with the ticket in the database', EErrors.DATABASE_ERROR);
     }
 }
