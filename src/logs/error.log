@@ -1,2 +1,0 @@
-{"level":"error","message":"Error log - /loggertest endpoint","service":"user-service","timestamp":"2024-07-21T03:10:45.538Z"}
-{"level":"fatal","message":"Fatal log - /loggertest endpoint","service":"user-service","timestamp":"2024-07-21T03:10:45.538Z"}
