@@ -63,33 +63,33 @@ class UserController {
 
   async sendPasswordResetEmail(req, res, next) {
     try {
-      const { email } = req.body;
-      const user = await userService.getUserByEmail(email);
-      if (!user) {
-        throw new UserNotFoundError(email);
-      }
+        const { email } = req.body;
+        const user = await userService.getUserByEmail(email);
+        if (!user) {
+            throw new UserNotFoundError(email);
+        }
 
-      const token = crypto.randomBytes(32).toString('hex');
-      const expiration = Date.now() + 3600000; // 1 hour
-      await userService.savePasswordResetToken(email, token, expiration);
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiration = Date.now() + 3600000; // 1 hour
+        await userService.savePasswordResetToken(email, token, expiration);
 
-      const resetLink = `${req.protocol}://${req.get('host')}/reset-password/${token}`;
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: 'Password Reset',
-        html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password. This link will expire in 1 hour.</p>`,
-      };
+        const resetLink = `${req.protocol}://${req.get('host')}/reset-password/${token}`;
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: user.email,
+            subject: 'Password Reset',
+            html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password. This link will expire in 1 hour.</p>`,
+        };
 
-      await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
 
-      logger.info('Password reset email sent', { email: user.email });
-      res.status(200).send('Password reset email sent');
+        logger.info('Password reset email sent', { email: user.email });
+        res.status(200).json({ message: 'Password reset email sent' });
     } catch (error) {
-      logger.error('Error sending password reset email', { error: error.message, stack: error.stack });
-      next(error);
+        logger.error('Error sending password reset email', { error: error.message, stack: error.stack });
+        res.status(500).json({ message: 'Error sending password reset email' });
     }
-  }
+}
 
   async renderPasswordResetForm(req, res, next) {
     try {
@@ -109,36 +109,38 @@ class UserController {
 
   async resetPassword(req, res, next) {
     try {
-      const { token } = req.params;
-      const { password } = req.body;
+        const { token } = req.params;
+        const { password } = req.body;
 
-      const user = await userService.findByPasswordResetToken(token);
-      if (!user || user.resetPasswordExpires < Date.now()) {
-        return res.status(400).send('Password reset token is invalid or has expired.');
-      }
+        const user = await userService.findByPasswordResetToken(token);
+        if (!user || user.resetPasswordExpires < Date.now()) {
+            return res.redirect('/reset-password-expired');
+        }
 
-      const isSamePassword = await isValidPassword(user, password);
-      if (isSamePassword) {
-        return res.status(400).send('New password must be different from the old password.');
-      }
+        const isSamePassword = await isValidPassword(user, password);
+        if (isSamePassword) {
+            return res.status(400).json({ message: 'La nueva contraseña debe ser diferente de la antigua.' });
+        }
 
-      const updatedUser = await userModel.findById(user.id);
-      if (!updatedUser) {
-        throw new UserNotFoundError(user.email);
-      }
+        const updatedUser = await userModel.findById(user.id);
+        if (!updatedUser) {
+            throw new UserNotFoundError(user.email);
+        }
 
-      updatedUser.password = await userService.hashPassword(password);
-      updatedUser.resetPasswordToken = undefined;
-      updatedUser.resetPasswordExpires = undefined;
-      await updatedUser.save();
+        updatedUser.password = await userService.hashPassword(password);
+        updatedUser.resetPasswordToken = undefined;
+        updatedUser.resetPasswordExpires = undefined;
+        await updatedUser.save();
 
-      logger.info('Password reset successfully', { email: user.email });
-      res.status(200).send('Password reset successfully');
+        logger.info('Password reset successfully', { email: user.email });
+        return res.status(200).json({ message: 'Password reset successfully' });
     } catch (error) {
-      logger.error('Error resetting password', { error: error.message, stack: error.stack });
-      next(error);
+        logger.error('Error resetting password', { error: error.message, stack: error.stack });
+        next(error);
     }
-  }
+}
+
+
 }
 
 export const logoutUser = (req, res, next) => {

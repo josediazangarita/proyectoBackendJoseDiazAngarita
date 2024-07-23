@@ -204,4 +204,12 @@ router.get('/ticket/:tid', isUser, async (req, res) => {
     }
 });
 
+router.get('/reset-password-expired', (req, res) => {
+    res.render('passwordResetExpired', {
+        title: 'Token Expirado',
+        style: 'style.css'
+    });
+});
+
+
 export default router;
