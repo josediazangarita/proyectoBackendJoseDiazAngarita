@@ -119,12 +119,19 @@ router.get("/register", (req, res) => {
     )
 });
 
-router.get("/restorePassword", (req, res) => {
-    res.render('restorePassword',
-        {
-            title: 'Restore Password Ecommerce JG',
-            style: 'style.css'
-        });
+router.get('/restorePassword', (req, res) => {
+    res.render('passwordResetRequest', {
+        title: 'Restore Password Ecommerce JG',
+        style: 'style.css'
+    });
+});
+
+router.get('/reset-password/:token', (req, res) => {
+    res.render('passwordReset', {
+        title: 'Reset Password Ecommerce JG',
+        style: 'style.css',
+        token: req.params.token
+    });
 });
 
 // Ruta para la vista de chat

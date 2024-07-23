@@ -5,7 +5,9 @@ const router = Router();
 
 router.post('/register', UserController.registerUser);
 router.post('/login', UserController.loginUser);
-router.post('/restorePassword', UserController.restorePassword);
 router.get('/logout', logoutUser);
+router.post('/forgot-password', UserController.sendPasswordResetEmail);
+router.get('/reset-password/:token', UserController.renderPasswordResetForm);
+router.post('/reset-password/:token', UserController.resetPassword);
 
 export default router;

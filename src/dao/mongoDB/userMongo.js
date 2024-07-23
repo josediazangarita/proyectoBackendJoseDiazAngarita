@@ -1,13 +1,26 @@
 import userModel from '../../models/userModel.js';
 
 class UserDAO {
+  
   async findUserByEmail(email) {
-    return userModel.findOne({ email }).lean();
+    return await userModel.findOne({ email });
   }
 
   async createUser(userData) {
     const newUser = new userModel(userData);
-    return newUser.save();
+    return await newUser.save();
+  }
+
+  async findUserByResetToken(token) {
+    return await userModel.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+  }
+
+  async updateUserPasswordResetToken(email, token, expiration) {
+    return await userModel.findOneAndUpdate(
+      { email },
+      { resetPasswordToken: token, resetPasswordExpires: expiration },
+      { new: true }
+    );
   }
 
   async updateUserPassword(email, newPassword) {
