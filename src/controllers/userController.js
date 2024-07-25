@@ -70,7 +70,7 @@ class UserController {
         }
 
         const token = crypto.randomBytes(32).toString('hex');
-        const expiration = Date.now() + 3600000; // 1 hour
+        const expiration = Date.now() + 3600000;
         await userService.savePasswordResetToken(email, token, expiration);
 
         const resetLink = `${req.protocol}://${req.get('host')}/reset-password/${token}`;
@@ -97,7 +97,7 @@ class UserController {
       const user = await userService.findByPasswordResetToken(token);
 
       if (!user || user.resetPasswordExpires < Date.now()) {
-        return res.status(400).send('Password reset token is invalid or has expired.');
+        return res.redirect('/reset-password-expired');
       }
 
       res.render('passwordReset', { token });
