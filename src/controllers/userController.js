@@ -91,21 +91,31 @@ class UserController {
     }
 }
 
-  async renderPasswordResetForm(req, res, next) {
-    try {
+async validateResetToken(req, res, next) {
+  try {
       const { token } = req.params;
       const user = await userService.findByPasswordResetToken(token);
 
       if (!user || user.resetPasswordExpires < Date.now()) {
-        return res.redirect('/reset-password-expired');
+          return res.status(400).json({ message: 'Token expirado o inválido', expired: true });
       }
 
+      return res.status(200).json({ message: 'Token válido', expired: false });
+  } catch (error) {
+      logger.error('Error validando el token', { error: error.message, stack: error.stack });
+      next(error);
+  }
+}
+
+async renderPasswordResetForm(req, res, next) {
+  try {
+      const { token } = req.params;
       res.render('passwordReset', { token });
-    } catch (error) {
+  } catch (error) {
       logger.error('Error rendering password reset form', { error: error.message, stack: error.stack });
       next(error);
-    }
   }
+}
 
   async resetPassword(req, res, next) {
     try {

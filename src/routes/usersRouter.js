@@ -9,5 +9,6 @@ router.get('/logout', logoutUser);
 router.post('/forgot-password', UserController.sendPasswordResetEmail);
 router.get('/reset-password/:token', UserController.renderPasswordResetForm);
 router.post('/reset-password/:token', UserController.resetPassword);
+router.get('/validate-reset-token/:token', UserController.validateResetToken);
 
 export default router;
