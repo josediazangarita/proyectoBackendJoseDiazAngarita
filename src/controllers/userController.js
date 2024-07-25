@@ -114,8 +114,8 @@ class UserController {
 
         const user = await userService.findByPasswordResetToken(token);
         if (!user || user.resetPasswordExpires < Date.now()) {
-            return res.redirect('/reset-password-expired');
-        }
+          return res.status(400).json({ message: 'El token de restablecimiento de contraseña es inválido o ha expirado.' });
+      }
 
         const isSamePassword = await isValidPassword(user, password);
         if (isSamePassword) {
