@@ -3,7 +3,7 @@ import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
 import auth from '../middlewares/auth.js';
-import { isUser, isAdmin } from '../middlewares/authorization.js';
+import { isUser, isAdminOrPremium } from '../middlewares/authorization.js';
 import CartService from '../services/cartService.js'
 import TicketService from '../services/ticketService.js';
 import ProductDTO from '../dto/productDTO.js';
@@ -86,7 +86,7 @@ router.get('/products', async (req, res) => {
 
 
 // Ruta para la página de productos en tiempo real
-router.get('/realtimeproducts', auth, isAdmin, async (req, res) => {
+router.get('/realtimeproducts', auth, isAdminOrPremium, async (req, res) => {
     let filter = {};
     if (req.query.category && req.query.category !== '') {
         filter.category = req.query.category;
