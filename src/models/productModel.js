@@ -37,6 +37,11 @@ const productSchema = mongoose.Schema({
         type: Array,
         required: false,
         default: []
+    },
+    owner: {
+        type: String,
+        required: true,
+        default: 'admin@coder.com'
     }
 });
 

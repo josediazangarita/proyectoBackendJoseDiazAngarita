@@ -27,14 +27,12 @@ export default class ProductMongo {
     }
   }
 
-  async addProduct(product) {
-    try {
-      const result = await productModel.create(product);
-      return result.toObject();
-    } catch (error) {
-      throw new ProductDatabaseError('Error al agregar el producto', error);
-    }
-  }
+  async addProduct(productData) {
+    console.log('Producto recibido por el DAO:', productData);
+    const result = await productModel.create(productData);
+    console.log('Producto guardado en la base de datos:', result);
+    return result.toObject();
+}
 
   async updateProduct(id, productUpdate) {
     try {

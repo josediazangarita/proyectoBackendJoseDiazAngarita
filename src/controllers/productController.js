@@ -33,7 +33,13 @@ export const getProductById = async (req, res, next) => {
 
 export const addProduct = async (req, res, next) => {
     try {
-        const product = await productService.addProduct(req.body);
+        const ownerEmail = req.session.user?.email || 'admin@default.com';
+        const productData = {
+            ...req.body,
+            owner: ownerEmail
+        };
+        console.log('Datos del producto con owner:', productData); 
+        const product = await productService.addProduct(productData);
         logger.info('Product added', { product });
         res.send({ status: 'success', payload: product });
     } catch (error) {
