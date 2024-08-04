@@ -7,8 +7,8 @@ handlebars.registerHelper('eq', function (v1, v2, options) {
     return options.inverse(this);
 });
 
-handlebars.registerHelper('or', function (v1, v2, options) {
-    if (v1 === v2[0] || v1 === v2[1]) {
+handlebars.registerHelper('or', function (v1, v2Array, options) {
+    if (v2Array.includes(v1)) {
         return options.fn(this);
     }
     return options.inverse(this);

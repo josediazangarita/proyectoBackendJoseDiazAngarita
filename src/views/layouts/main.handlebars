@@ -30,13 +30,13 @@
                     {{/or}}
                 {{/if}}
                 {{#if user}}
-                {{#eq user.role 'user'}}
+                {{#or user.role (array 'user' 'premium')}}
                     <a href="/chat">Chat</a>
                     <a href="/cart">
                         <i class="bi bi-cart"></i>
                         <span id="cart-count">{{cartCount}}</span>
                     </a>
-                {{/eq}}
+                {{/or}}
                 {{/if}}
                 {{>loginButton}}
             </nav>

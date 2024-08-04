@@ -3,7 +3,7 @@ import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
 import auth from '../middlewares/auth.js';
-import { isUser, isAdminOrPremium } from '../middlewares/authorization.js';
+import { isAdminOrPremium, isUserOrPremium } from '../middlewares/authorization.js';
 import CartService from '../services/cartService.js'
 import TicketService from '../services/ticketService.js';
 import ProductDTO from '../dto/productDTO.js';
@@ -145,7 +145,7 @@ router.get('/chat', (req, res) => {
 });
 
 // Ruta para la vista del carrito
-router.get('/cart', isUser, async (req, res) => {
+router.get('/cart', isUserOrPremium, async (req, res) => {
     try {
         const cartId = req.session.user.cart;
         const cart = await cartService.getCartById(cartId);
@@ -184,7 +184,7 @@ router.get('/tickets', async (req, res) => {
 
 // Ruta para mostrar el ticket de la compra (cliente)
 // Ruta para mostrar un ticket individual
-router.get('/ticket/:tid', isUser, async (req, res) => {
+router.get('/ticket/:tid', isUserOrPremium, async (req, res) => {
     try {
         const ticketId = req.params.tid;
         const ticket = await ticketService.getTicketById(ticketId);

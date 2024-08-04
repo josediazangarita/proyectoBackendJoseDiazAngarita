@@ -85,4 +85,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             text: errorMessage,
         });
     });
+
+    socket.on('cartError', function (errorMessage) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMessage,
+        });
+    });
 });

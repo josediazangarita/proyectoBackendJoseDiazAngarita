@@ -16,7 +16,7 @@ export default class ProductMongo {
   async getProductById(id) {
     try {
         const product = await productModel.findById(id);
-        return product ? product.toObject() : null;
+        return product;
     } catch (error) {
         throw new Error('Error al obtener el producto por ID');
     }

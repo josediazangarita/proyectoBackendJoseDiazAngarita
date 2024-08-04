@@ -1,29 +1,15 @@
-const isAdmin = (req, res, next) => {
-  if (req.session.user && req.session.user.role === 'admin') {
+const checkRole = (roles) => (req, res, next) => {
+  if (req.session.user && roles.includes(req.session.user.role)) {
     return next();
   }
-  return res.status(403).send('Acceso denegado. Solo los administradores pueden realizar esta acción.');
+  return res.status(403).send(`Acceso denegado. Solo los roles permitidos pueden realizar esta acción: ${roles.join(', ')}`);
 };
 
-const isUser = (req, res, next) => {
-  if (req.session.user && req.session.user.role === 'user') {
-    return next();
-  }
-  return res.status(403).send('Acceso denegado. Solo los usuarios registrados pueden realizar esta acción.');
-};
+const isAdmin = checkRole(['admin']);
+const isUser = checkRole(['user']);
+const isPremium = checkRole(['premium']);
+const isAdminOrPremium = checkRole(['admin', 'premium']);
+const isUserOrPremium = checkRole(['user', 'premium']);
+const isUserOrAdmin = checkRole(['user', 'admin']);
 
-const isPremium = (req, res, next) => {
-  if (req.session.user && req.session.user.role === 'premium') {
-    return next();
-  }
-  return res.status(403).send('Acceso denegado. Solo los usuarios premium pueden realizar esta acción.');
-};
-
-const isAdminOrPremium = (req, res, next) => {
-  if (req.session.user && (req.session.user.role === 'admin' || req.session.user.role === 'premium')) {
-    return next();
-  }
-  return res.status(403).send('Acceso denegado. Solo los administradores o usuarios premium pueden realizar esta acción.');
-};
-
-export { isAdmin, isUser, isPremium, isAdminOrPremium };
+export { isAdmin, isUser, isPremium, isAdminOrPremium, isUserOrPremium, isUserOrAdmin };
