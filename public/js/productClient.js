@@ -34,18 +34,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 },
                 body: JSON.stringify({ quantity: 1 })
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.json().then(data => ({ status: response.status, body: data })))  // Obtener el estado de la respuesta
+        .then(({ status, body }) => {
+            if (status === 200) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto agregado al carrito',
                     showConfirmButton: false,
                     timer: 1500
                 });
-                updateCartCounter(data.products.length);
-            })
-            .catch(error => {
-                console.error('Error al agregar producto al carrito:', error);
+                updateCartCounter(body.products.length);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: body.message || 'No se pudo agregar el producto al carrito.',
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al agregar producto al carrito:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error inesperado. Por favor, intenta de nuevo.',
+            });
             });
         });
     });
