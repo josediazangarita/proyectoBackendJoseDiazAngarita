@@ -15,7 +15,12 @@ export default (io) => {
 
         // Manejar la creación de productos desde sockets
         socket.on("addProduct", async (newProduct) => {
-            const result = await store.addProduct(newProduct);
+            const ownerEmail = socket.handshake.session?.user?.email || 'admin@coder.com';
+            const productData = {
+                ...newProduct,
+                owner: ownerEmail
+            };
+            const result = await store.addProduct(productData);
             io.emit('newProduct', result);
         });
 

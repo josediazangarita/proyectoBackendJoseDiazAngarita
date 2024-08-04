@@ -33,7 +33,8 @@ export const getProductById = async (req, res, next) => {
 
 export const addProduct = async (req, res, next) => {
     try {
-        const ownerEmail = req.session.user?.email || 'admin@default.com';
+        console.log('Usuario en sesión al crear producto:', req.session.user);
+        const ownerEmail = req.session.user?.email || 'admin@coder.com';
         const productData = {
             ...req.body,
             owner: ownerEmail
