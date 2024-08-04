@@ -56,6 +56,10 @@ class UserService {
 async updateUser(uid, updateData) {
     return await userDAO.updateUser(uid, updateData);
   }
+
+  async getAllUsers() {
+    return await userDAO.getAllUsers();
+  }
 }
 
 export default UserService;

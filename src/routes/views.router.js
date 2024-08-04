@@ -3,10 +3,11 @@ import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
 import auth from '../middlewares/auth.js';
-import { isAdminOrPremium, isUserOrPremium } from '../middlewares/authorization.js';
+import { isAdminOrPremium, isUserOrPremium, isAdmin } from '../middlewares/authorization.js';
 import CartService from '../services/cartService.js'
 import TicketService from '../services/ticketService.js';
 import ProductDTO from '../dto/productDTO.js';
+import { getAllUsers } from '../controllers/userController.js';
 
 const router = express.Router();
 const store = new ProductService();
@@ -211,5 +212,12 @@ router.get('/reset-password-expired', (req, res) => {
     });
 });
 
+// Ruta para la vista de usuarios
+router.get('/users', isAdmin, getAllUsers, (req, res) => {
+    res.render('users', {
+        users: res.locals.users,
+        style: 'style.css',
+    });
+});
 
 export default router;

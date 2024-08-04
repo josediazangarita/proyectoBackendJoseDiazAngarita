@@ -39,6 +39,10 @@ class UserDAO {
 async updateUser(uid, updateData) {
     return await userModel.findByIdAndUpdate(uid, updateData, { new: true }).lean();
   }
+
+  async getAllUsers() {
+    return await userModel.find().lean();
+  }
 }
 
 export default UserDAO;

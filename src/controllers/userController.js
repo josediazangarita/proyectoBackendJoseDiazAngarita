@@ -194,4 +194,14 @@ export const toggleUserRole = async (req, res, next) => {
   }
 };
 
+export const getAllUsers = async (req, res, next) => {
+  try {
+      const users = await userService.getAllUsers();
+      res.locals.users = users;
+      next();
+  } catch (error) {
+      next(error);
+  }
+};
+
 export default new UserController();
