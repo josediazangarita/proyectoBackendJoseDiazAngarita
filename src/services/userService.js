@@ -48,6 +48,14 @@ class UserService {
   async hashPassword(password) {
     return bcrypt.hash(password, 10);
   }
+
+  async getUserById(uid) {
+    return await userDAO.getUserById(uid);
+  }
+
+async updateUser(uid, updateData) {
+    return await userDAO.updateUser(uid, updateData);
+  }
 }
 
 export default UserService;

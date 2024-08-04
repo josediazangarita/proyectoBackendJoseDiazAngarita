@@ -164,4 +164,34 @@ export const logoutUser = (req, res, next) => {
   });
 };
 
+export const toggleUserRole = async (req, res, next) => {
+  const { uid } = req.params;
+
+  try {
+      const user = await userService.getUserById(uid);
+
+      if (!user) {
+          return res.status(404).json({
+              status: 'error',
+              message: 'Usuario no encontrado',
+          });
+      }
+
+      const newRole = user.role === 'user' ? 'premium' : 'user';
+      user.role = newRole;
+
+      await userService.updateUser(uid, { role: newRole });
+
+      logger.info(`Rol de usuario actualizado: ${user.email} ahora es ${newRole}`);
+      res.status(200).json({
+          status: 'success',
+          message: `El rol de usuario se cambió a ${newRole}`,
+          newRole: newRole,
+      });
+  } catch (error) {
+      logger.error('Error al cambiar el rol del usuario', { error: error.message, stack: error.stack });
+      next(error);
+  }
+};
+
 export default new UserController();

@@ -31,6 +31,14 @@ class UserDAO {
     }
     return user;
   }
+
+  async getUserById(uid) {
+    return await userModel.findById(uid).lean();
+  }
+
+async updateUser(uid, updateData) {
+    return await userModel.findByIdAndUpdate(uid, updateData, { new: true }).lean();
+  }
 }
 
 export default UserDAO;
