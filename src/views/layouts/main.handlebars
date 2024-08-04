@@ -29,6 +29,7 @@
                         <a href="/realtimeproducts">Modificar productos</a>
                     {{/or}}
                 {{/if}}
+
                 {{#if user}}
                 {{#or user.role (array 'user' 'premium')}}
                     <a href="/chat">Chat</a>
@@ -38,6 +39,13 @@
                     </a>
                 {{/or}}
                 {{/if}}
+
+                 {{#if user}}
+                {{#eq user.role 'admin'}}
+                    <a href="/users">Usuarios</a>
+                {{/eq}}
+                {{/if}}
+
                 {{>loginButton}}
             </nav>
             <div class="menu-toggle">
