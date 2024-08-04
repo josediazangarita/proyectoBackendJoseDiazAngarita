@@ -15,7 +15,7 @@ export default class ProductService {
 
     async getProductById(id) {
       const product = await productDAO.getProductById(id);
-      return new ProductDTO(product);
+      return product ? new ProductDTO(product) : null;
     }
 
     async addProduct(productData) {
@@ -30,7 +30,6 @@ export default class ProductService {
     }
 
     async deleteProduct(id) {
-      await productDAO.deleteProduct(id);
-      return true;
+      return await productDAO.deleteProduct(id);
     }
 }

@@ -66,11 +66,25 @@ export const updateProduct = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
     try {
-        await productService.deleteProduct(req.params.pid);
-        logger.info('Product deleted', { productId: req.params.pid });
-        res.send({ status: 'success', message: 'Producto eliminado correctamente' });
+        const { pid } = req.params;
+        const user = req.session.user;
+
+        // Obtener el producto para verificar el owner
+        const product = await productService.getProductById(pid);
+
+        if (!product) {
+            return res.status(404).json({ status: 'error', message: 'Product not found' });
+        }
+
+        // Verificar permisos: solo el owner o un admin puede eliminar
+        if (user.role === 'admin' || (user.role === 'premium' && product.owner === user.email)) {
+            const result = await productService.deleteProduct(pid);
+            return res.status(200).json({ status: 'success', message: 'Producto remove' });
+        } else {
+            return res.status(403).json({ status: 'error', message: 'Access denied. You cannot delete this product' });
+        }
     } catch (error) {
-        logger.error('Error deleting product', { error: error.message, stack: error.stack });
-        next(new ProductNotFoundError(req.params.pid));
+        console.error('Error en deleteProduct:', error);
+        next(error);
     }
 };

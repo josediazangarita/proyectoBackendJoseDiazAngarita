@@ -15,17 +15,12 @@ export default class ProductMongo {
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id); // Eliminado .lean()
-      if (!product) throw new ProductNotFoundError(id);
-      return product;
+        const product = await productModel.findById(id);
+        return product ? product.toObject() : null;
     } catch (error) {
-      if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        throw new ProductNotFoundError(id);
-      } else {
-        throw new ProductDatabaseError('Error al buscar el producto', error);
-      }
+        throw new Error('Error al obtener el producto por ID');
     }
-  }
+}
 
   async addProduct(productData) {
     console.log('Producto recibido por el DAO:', productData);
@@ -52,11 +47,10 @@ export default class ProductMongo {
 
   async deleteProduct(id) {
     try {
-      const result = await productModel.findByIdAndDelete(id);
-      if (!result) throw new ProductNotFoundError(id);
-      return true;
+        const result = await productModel.findByIdAndDelete(id);
+        return result ? true : false;
     } catch (error) {
-      throw new ProductDatabaseError('Error al eliminar el producto', error);
+        throw new Error('Error al eliminar el producto');
     }
-  }
+}
 }
