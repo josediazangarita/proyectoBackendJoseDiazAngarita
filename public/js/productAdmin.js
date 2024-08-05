@@ -77,4 +77,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
         socket.emit('addProduct', newProduct);
         productForm.reset();
     });
+
+    socket.on('deleteError', function (errorMessage) {
+        Swal.fire({
+            icon: 'error',
+            title: 'No creaste este producto',
+            text: errorMessage,
+        });
+    });
+
+    socket.on('cartError', function (errorMessage) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMessage,
+        });
+    });
 });

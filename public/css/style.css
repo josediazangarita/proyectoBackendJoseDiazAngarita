@@ -599,6 +599,15 @@ footer{
     .form-category-filter {
         flex-direction: column;
     }
+
+    th, td {
+        font-size: 14px;
+        padding: 6px;
+    }
+    
+    table {
+        font-size: 12px;
+    }
 }
 
 /* Estilos para el filtro de categorías */
@@ -791,4 +800,18 @@ li {
     margin: 50px auto;
     text-align: center;
     color: #fff;
+}
+
+/* Estilos de la tabla de usuarios */
+
+.usersTable{
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+    width: 90%;
+    margin: 50px auto;
+    text-align: center;
+    color: #fff;
+    overflow-x: auto;
 }

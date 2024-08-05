@@ -3,10 +3,11 @@ import productModel from '../models/productModel.js';
 
 import ProductService from '../services/productService.js';
 import auth from '../middlewares/auth.js';
-import { isUser, isAdmin } from '../middlewares/authorization.js';
+import { isAdminOrPremium, isUserOrPremium, isAdmin } from '../middlewares/authorization.js';
 import CartService from '../services/cartService.js'
 import TicketService from '../services/ticketService.js';
 import ProductDTO from '../dto/productDTO.js';
+import { getAllUsers } from '../controllers/userController.js';
 
 const router = express.Router();
 const store = new ProductService();
@@ -86,7 +87,7 @@ router.get('/products', async (req, res) => {
 
 
 // Ruta para la página de productos en tiempo real
-router.get('/realtimeproducts', auth, isAdmin, async (req, res) => {
+router.get('/realtimeproducts', auth, isAdminOrPremium, async (req, res) => {
     let filter = {};
     if (req.query.category && req.query.category !== '') {
         filter.category = req.query.category;
@@ -119,12 +120,19 @@ router.get("/register", (req, res) => {
     )
 });
 
-router.get("/restorePassword", (req, res) => {
-    res.render('restorePassword',
-        {
-            title: 'Restore Password Ecommerce JG',
-            style: 'style.css'
-        });
+router.get('/restorePassword', (req, res) => {
+    res.render('passwordResetRequest', {
+        title: 'Restore Password Ecommerce JG',
+        style: 'style.css'
+    });
+});
+
+router.get('/reset-password/:token', (req, res) => {
+    res.render('passwordReset', {
+        title: 'Reset Password Ecommerce JG',
+        style: 'style.css',
+        token: req.params.token
+    });
 });
 
 // Ruta para la vista de chat
@@ -138,7 +146,7 @@ router.get('/chat', (req, res) => {
 });
 
 // Ruta para la vista del carrito
-router.get('/cart', isUser, async (req, res) => {
+router.get('/cart', isUserOrPremium, async (req, res) => {
     try {
         const cartId = req.session.user.cart;
         const cart = await cartService.getCartById(cartId);
@@ -177,7 +185,7 @@ router.get('/tickets', async (req, res) => {
 
 // Ruta para mostrar el ticket de la compra (cliente)
 // Ruta para mostrar un ticket individual
-router.get('/ticket/:tid', isUser, async (req, res) => {
+router.get('/ticket/:tid', isUserOrPremium, async (req, res) => {
     try {
         const ticketId = req.params.tid;
         const ticket = await ticketService.getTicketById(ticketId);
@@ -195,6 +203,21 @@ router.get('/ticket/:tid', isUser, async (req, res) => {
         console.error('Error al renderizar la vista del ticket:', error);
         res.status(500).send('Error al renderizar la vista del ticket');
     }
+});
+
+router.get('/reset-password-expired', (req, res) => {
+    res.render('passwordResetExpired', {
+        title: 'Token Expirado',
+        style: 'style.css'
+    });
+});
+
+// Ruta para la vista de usuarios
+router.get('/users', isAdmin, getAllUsers, (req, res) => {
+    res.render('users', {
+        users: res.locals.users,
+        style: 'style.css',
+    });
 });
 
 export default router;

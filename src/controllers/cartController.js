@@ -1,8 +1,11 @@
 import CartService from '../services/cartService.js';
+import ProductService from '../services/productService.js';
+import ProductMongo from '../dao/mongoDB/productMongo.js';
 import { CartNotFoundError, InvalidCartError, CartDatabaseError } from '../errors/cartErrors.js';
 import logger from '../logs/logger.js';
 
 const cartService = new CartService();
+const productService = new ProductService(new ProductMongo());
 
 export const getAllCarts = async (req, res, next) => {
   try {
@@ -44,7 +47,19 @@ export const getCartById = async (req, res, next) => {
 export const addProductToCart = async (req, res, next) => {
   const { cid, pid } = req.params;
   const { quantity } = req.body;
+  const user = req.session.user;
+
   try {
+    const product = await productService.getProductById(pid);
+    console.log(`Verificación: Product Owner: ${product.owner}, User Email: ${user.email}`);
+    if (user.role === 'premium' && product.owner === user.email) {
+      console.log('El usuario premium está intentando agregar su propio producto al carrito. Operación denegada.');
+      return res.status(403).json({
+        status: 'error',
+        message: 'No puedes agregar a tu carrito un producto que te pertenece.',
+      });
+    }
+
     const updatedCart = await cartService.addProductToCart(cid, pid, quantity);
     logger.info('Product added to cart', { cartId: cid, productId: pid, quantity });
     res.status(200).json(updatedCart);

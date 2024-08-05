@@ -15,16 +15,41 @@ export default (io) => {
 
         // Manejar la creación de productos desde sockets
         socket.on("addProduct", async (newProduct) => {
-            const result = await store.addProduct(newProduct);
+            const ownerEmail = socket.handshake.session?.user?.email || 'admin@coder.com';
+            const productData = {
+                ...newProduct,
+                owner: ownerEmail
+            };
+            const result = await store.addProduct(productData);
             io.emit('newProduct', result);
         });
 
         // Manejar la eliminación de productos desde sockets
         socket.on("deleteProduct", async (pid) => {
-            const result = await store.deleteProduct(pid);
+            try {
+                const user = socket.handshake.session.user;
 
-            if (result) {
-                io.emit('productDeleted', pid);
+                // Obtener el producto para verificar el owner
+                const product = await store.getProductById(pid);
+
+                if (!product) {
+                    return socket.emit('deleteError', 'Producto no encontrado');
+                }
+
+                // Verificar permisos: solo el owner o un admin puede eliminar
+                if (user.role === 'admin' || (user.role === 'premium' && product.owner === user.email)) {
+                    const result = await store.deleteProduct(pid);
+                    if (result) {
+                        io.emit('productDeleted', pid);
+                    } else {
+                        socket.emit('deleteError', 'Error al eliminar el producto');
+                    }
+                } else {
+                    socket.emit('deleteError', 'Acceso denegado. No puedes eliminar este producto.');
+                }
+            } catch (error) {
+                console.error('Error al eliminar producto:', error);
+                socket.emit('deleteError', 'Error interno al intentar eliminar el producto');
             }
         });
 
@@ -56,9 +81,9 @@ export default (io) => {
         // Manejar la adición de productos al carrito desde sockets
         socket.on("addToCart", async ({ cartId, productId }) => {
             try {
-                const updatedCart = await cartService.addProductToCart(cartId, productId, 1); // Puedes ajustar la cantidad según sea necesario
+                const updatedCart = await cartService.addProductToCart(cartId, productId, 1); 
                 socket.emit('cartUpdated', updatedCart);
-                io.emit('cartUpdated', updatedCart); // Emitir a todos los clientes conectados para actualizar el contador
+                io.emit('cartUpdated', updatedCart); 
             } catch (error) {
                 console.error('Error al agregar producto al carrito:', error);
                 socket.emit('cartError', { message: 'Error al agregar producto al carrito', error });
@@ -70,7 +95,7 @@ export default (io) => {
             try {
                 const updatedCart = await cartService.removeProductFromCart(cartId, productId);
                 socket.emit('cartUpdated', updatedCart);
-                io.emit('cartUpdated', updatedCart); // Emitir a todos los clientes conectados para actualizar el contador
+                io.emit('cartUpdated', updatedCart);
             } catch (error) {
                 console.error('Error al eliminar producto del carrito:', error);
                 socket.emit('cartError', { message: 'Error al eliminar producto del carrito', error });

@@ -15,11 +15,12 @@ export default class ProductService {
 
     async getProductById(id) {
       const product = await productDAO.getProductById(id);
-      return new ProductDTO(product);
+      return product ? new ProductDTO(product) : null;
     }
 
-    async addProduct(product) {
-      const newProduct = await productDAO.addProduct(product);
+    async addProduct(productData) {
+      console.log('Producto recibido por el servicio:', productData);
+      const newProduct = await productDAO.addProduct(productData);
       return new ProductDTO(newProduct);
     }
 
@@ -29,7 +30,6 @@ export default class ProductService {
     }
 
     async deleteProduct(id) {
-      await productDAO.deleteProduct(id);
-      return true;
+      return await productDAO.deleteProduct(id);
     }
 }
