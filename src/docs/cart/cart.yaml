@@ -66,33 +66,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    delete:
-      summary: Eliminar un carrito
-      parameters:
-        - name: cid
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Carrito eliminado con éxito
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Cart'
-        '404':
-          description: Carrito no encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Error al eliminar el carrito
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 
   /api/carts/{cid}/products/{pid}:
     post:
