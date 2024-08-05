@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
+        enum:['user', 'admin', 'premium'],
         required: false,
         default: 'user'
     },
@@ -41,7 +42,9 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'carts',
         required: false
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

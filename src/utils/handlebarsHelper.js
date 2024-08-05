@@ -6,3 +6,14 @@ handlebars.registerHelper('eq', function (v1, v2, options) {
     }
     return options.inverse(this);
 });
+
+handlebars.registerHelper('or', function (v1, v2Array, options) {
+    if (v2Array.includes(v1)) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+handlebars.registerHelper('array', function (...args) {
+    return args.slice(0, -1);
+});

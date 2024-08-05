@@ -3,6 +3,9 @@ import { createHash, isValidPassword } from '../utils/functionUtils.js';
 import { generateUserErrorInfo } from '../errors/generateUserErrorInfo.js';
 import { UserNotFoundError, InvalidUserError, AuthenticationError, UnderageUserError } from '../errors/userErrors.js';
 import logger from '../logs/logger.js';
+import transporter from '../config/nodemailer.config.js';
+import crypto from 'crypto';
+import userModel from '../models/userModel.js';
 
 const userService = new UserService();
 
@@ -58,23 +61,96 @@ class UserController {
     }
   }
 
-  async restorePassword(req, res, next) {
+  async sendPasswordResetEmail(req, res, next) {
     try {
-      const { email, newPassword } = req.body;
-      if (!newPassword) {
-        throw new InvalidUserError(req.body);
-      }
-      const user = await userService.updateUserPassword(email, createHash(newPassword));
-      if (!user) {
-        throw new UserNotFoundError(email);
-      }
-      logger.info('Password restored successfully', { email });
-      res.status(200).json({ status: 'success', message: 'Password restored successfully' });
+        const { email } = req.body;
+        const user = await userService.getUserByEmail(email);
+        if (!user) {
+            throw new UserNotFoundError(email);
+        }
+
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiration = Date.now() + 3600000;
+        await userService.savePasswordResetToken(email, token, expiration);
+
+        const resetLink = `${req.protocol}://${req.get('host')}/reset-password/${token}`;
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: user.email,
+            subject: 'Password Reset',
+            html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password. This link will expire in 1 hour.</p>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        logger.info('Password reset email sent', { email: user.email });
+        res.status(200).json({ message: 'Password reset email sent' });
     } catch (error) {
-      logger.error('Error restoring password', { error: error.message, stack: error.stack });
-      next(error);
+        logger.error('Error sending password reset email', { error: error.message, stack: error.stack });
+        res.status(500).json({ message: 'Error sending password reset email' });
     }
+}
+
+async validateResetToken(req, res, next) {
+  try {
+      const { token } = req.params;
+      const user = await userService.findByPasswordResetToken(token);
+
+      if (!user || user.resetPasswordExpires < Date.now()) {
+          return res.status(400).json({ message: 'Token expirado o inválido', expired: true });
+      }
+
+      return res.status(200).json({ message: 'Token válido', expired: false });
+  } catch (error) {
+      logger.error('Error validando el token', { error: error.message, stack: error.stack });
+      next(error);
   }
+}
+
+async renderPasswordResetForm(req, res, next) {
+  try {
+      const { token } = req.params;
+      res.render('passwordReset', { token });
+  } catch (error) {
+      logger.error('Error rendering password reset form', { error: error.message, stack: error.stack });
+      next(error);
+  }
+}
+
+  async resetPassword(req, res, next) {
+    try {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        const user = await userService.findByPasswordResetToken(token);
+        if (!user || user.resetPasswordExpires < Date.now()) {
+          return res.status(400).json({ message: 'El token de restablecimiento de contraseña es inválido o ha expirado.' });
+      }
+
+        const isSamePassword = await isValidPassword(user, password);
+        if (isSamePassword) {
+            return res.status(400).json({ message: 'La nueva contraseña debe ser diferente de la antigua.' });
+        }
+
+        const updatedUser = await userModel.findById(user.id);
+        if (!updatedUser) {
+            throw new UserNotFoundError(user.email);
+        }
+
+        updatedUser.password = await userService.hashPassword(password);
+        updatedUser.resetPasswordToken = undefined;
+        updatedUser.resetPasswordExpires = undefined;
+        await updatedUser.save();
+
+        logger.info('Password reset successfully', { email: user.email });
+        return res.status(200).json({ message: 'Password reset successfully' });
+    } catch (error) {
+        logger.error('Error resetting password', { error: error.message, stack: error.stack });
+        next(error);
+    }
+}
+
+
 }
 
 export const logoutUser = (req, res, next) => {
@@ -86,6 +162,46 @@ export const logoutUser = (req, res, next) => {
     logger.info('User logged out');
     res.redirect('/');
   });
+};
+
+export const toggleUserRole = async (req, res, next) => {
+  const { uid } = req.params;
+
+  try {
+      const user = await userService.getUserById(uid);
+
+      if (!user) {
+          return res.status(404).json({
+              status: 'error',
+              message: 'Usuario no encontrado',
+          });
+      }
+
+      const newRole = user.role === 'user' ? 'premium' : 'user';
+      user.role = newRole;
+
+      await userService.updateUser(uid, { role: newRole });
+
+      logger.info(`Rol de usuario actualizado: ${user.email} ahora es ${newRole}`);
+      res.status(200).json({
+          status: 'success',
+          message: `El rol de usuario se cambió a ${newRole}`,
+          newRole: newRole,
+      });
+  } catch (error) {
+      logger.error('Error al cambiar el rol del usuario', { error: error.message, stack: error.stack });
+      next(error);
+  }
+};
+
+export const getAllUsers = async (req, res, next) => {
+  try {
+      const users = await userService.getAllUsers();
+      res.locals.users = users;
+      next();
+  } catch (error) {
+      next(error);
+  }
 };
 
 export default new UserController();

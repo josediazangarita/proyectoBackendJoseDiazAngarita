@@ -1,15 +1,15 @@
-const isAdmin = (req, res, next) => {
-  if (req.session.user && req.session.user.role === 'admin') {
+const checkRole = (roles) => (req, res, next) => {
+  if (req.session.user && roles.includes(req.session.user.role)) {
     return next();
   }
-  return res.status(403).send('Access denied. Only administrators can perform this action.');
+  return res.status(403).send(`Acceso denegado. Solo los roles permitidos pueden realizar esta acción: ${roles.join(', ')}`);
 };
 
-const isUser = (req, res, next) => {
-  if (req.session.user && req.session.user.role === 'user') {
-    return next();
-  }
-  return res.status(403).send('Access denied. Only registered users can perform this action.');
-};
+const isAdmin = checkRole(['admin']);
+const isUser = checkRole(['user']);
+const isPremium = checkRole(['premium']);
+const isAdminOrPremium = checkRole(['admin', 'premium']);
+const isUserOrPremium = checkRole(['user', 'premium']);
+const isUserOrAdmin = checkRole(['user', 'admin']);
 
-export { isAdmin, isUser };
+export { isAdmin, isUser, isPremium, isAdminOrPremium, isUserOrPremium, isUserOrAdmin };
