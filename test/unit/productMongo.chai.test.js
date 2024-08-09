@@ -1,7 +1,11 @@
 import { expect } from 'chai';
 import mongoose from 'mongoose';
 import ProductMongo from '../../src/dao/mongoDB/productMongo.js';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
+const mongoUri = process.env.MONGODB_URI_TEST;
 const dao = new ProductMongo();
 
 const testProduct = {
@@ -19,7 +23,7 @@ const testProduct = {
 describe('Tests DAO Products Chai', function () {
     // Se ejecuta ANTES de comenzar el paquete de tests
     before(async function () {
-        await mongoose.connect('mongodb://localhost:27017/Ecommerce_local', {});
+        await mongoose.connect(mongoUri);
         await mongoose.connection.db.collection('products').deleteMany({});
     });
 

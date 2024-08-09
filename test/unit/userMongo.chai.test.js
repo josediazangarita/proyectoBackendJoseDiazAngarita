@@ -1,9 +1,12 @@
 import { expect } from 'chai';
 import mongoose from 'mongoose';
 import UserDAO from '../../src/dao/mongoDB/userMongo.js';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
+const mongoUri = process.env.MONGODB_URI_TEST;
 const userDao = new UserDAO();
-
 const testUser = {
   email: 'jgda@gmail.com',
   password: '12345',
@@ -14,7 +17,7 @@ const testUser = {
 
 describe('Tests DAO Users Chai', function () {
     before(async function () {
-        await mongoose.connect('mongodb://localhost:27017/Ecommerce_local');
+        await mongoose.connect(mongoUri);
         await mongoose.connection.db.collection('users').deleteMany({});
     });
 

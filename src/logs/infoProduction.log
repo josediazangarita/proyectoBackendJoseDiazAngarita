@@ -27,3 +27,19 @@
 {"email":"jgda@coder.com","level":"info","message":"User logged in","service":"user-service","timestamp":"2024-07-21T04:44:50.834Z"}
 {"level":"info","message":"Fetched all carts","service":"user-service","timestamp":"2024-07-21T04:44:51.110Z"}
 {"level":"info","message":"User logged out","service":"user-service","timestamp":"2024-07-21T04:45:09.111Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T22:34:30.799Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T22:34:30.840Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T22:34:31.262Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T22:38:00.303Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T22:38:00.348Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T22:38:00.935Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T22:45:34.784Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T22:45:34.830Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T22:45:35.437Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T23:33:03.249Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T23:33:03.289Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T23:33:03.701Z"}
+{"email":"user@gmail.com","level":"info","message":"User registered successfully","service":"user-service","timestamp":"2024-08-08T23:33:49.960Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-09T16:55:18.214Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-09T16:55:18.254Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-09T16:55:18.660Z"}

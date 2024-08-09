@@ -2,7 +2,11 @@ import { expect } from 'chai';
 import mongoose from 'mongoose';
 import CartMongo from '../../src/dao/mongoDB/cartMongo.js';
 import ProductModel from '../../src/models/productModel.js';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
+const mongoUri = process.env.MONGODB_URI_TEST;
 const cartDao = new CartMongo();
 
 const testProduct = new ProductModel({
@@ -17,7 +21,7 @@ const testProduct = new ProductModel({
 
 describe('Tests DAO Carts Chai', function () {
     before(async function () {
-        await mongoose.connect('mongodb://localhost:27017/Ecommerce_local');
+        await mongoose.connect(mongoUri);
         await mongoose.connection.db.collection('carts').deleteMany({});
         await testProduct.save();
     });
