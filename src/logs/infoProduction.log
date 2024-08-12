@@ -27,3 +27,90 @@
 {"email":"jgda@coder.com","level":"info","message":"User logged in","service":"user-service","timestamp":"2024-07-21T04:44:50.834Z"}
 {"level":"info","message":"Fetched all carts","service":"user-service","timestamp":"2024-07-21T04:44:51.110Z"}
 {"level":"info","message":"User logged out","service":"user-service","timestamp":"2024-07-21T04:45:09.111Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T22:34:30.799Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T22:34:30.840Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T22:34:31.262Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T22:38:00.303Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T22:38:00.348Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T22:38:00.935Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T22:45:34.784Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T22:45:34.830Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T22:45:35.437Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-08T23:33:03.249Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-08T23:33:03.289Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-08T23:33:03.701Z"}
+{"email":"user@gmail.com","level":"info","message":"User registered successfully","service":"user-service","timestamp":"2024-08-08T23:33:49.960Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-09T16:55:18.214Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-09T16:55:18.254Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-09T16:55:18.660Z"}
+{"level":"info","message":"Using MongoDB persistence","service":"user-service","timestamp":"2024-08-12T22:34:13.013Z"}
+{"level":"info","message":"Server active on port 8080","service":"user-service","timestamp":"2024-08-12T22:34:13.052Z"}
+{"level":"info","message":"Server connected to MongoDB Atlas","service":"user-service","timestamp":"2024-08-12T22:34:13.601Z"}
+{"error":"Authentication failed. Invalid username or password","level":"error","message":"Error logging in user","service":"user-service","stack":"AuthenticationError: Authentication failed. Invalid username or password\n    at loginUser (file:///home/jgda/Repositorios/proyectoBackendJoseDiazAngarita/src/controllers/userController.js:46:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-08-12T22:34:23.034Z"}
+{"cause":"Invalid email or password","level":"error","message":"Authentication failed. Invalid username or password","name":"AuthenticationError","service":"user-service","stack":"AuthenticationError: Authentication failed. Invalid username or password\n    at loginUser (file:///home/jgda/Repositorios/proyectoBackendJoseDiazAngarita/src/controllers/userController.js:46:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-08-12T22:34:23.035Z"}
+{"email":"user@gmail.com","level":"info","message":"User logged in","service":"user-service","timestamp":"2024-08-12T22:34:30.086Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:34:30.587Z"}
+{"level":"info","message":"User logged out","service":"user-service","timestamp":"2024-08-12T22:34:39.791Z"}
+{"error":"Authentication failed. Invalid username or password","level":"error","message":"Error logging in user","service":"user-service","stack":"AuthenticationError: Authentication failed. Invalid username or password\n    at loginUser (file:///home/jgda/Repositorios/proyectoBackendJoseDiazAngarita/src/controllers/userController.js:46:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-08-12T22:34:51.054Z"}
+{"cause":"Invalid email or password","level":"error","message":"Authentication failed. Invalid username or password","name":"AuthenticationError","service":"user-service","stack":"AuthenticationError: Authentication failed. Invalid username or password\n    at loginUser (file:///home/jgda/Repositorios/proyectoBackendJoseDiazAngarita/src/controllers/userController.js:46:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-08-12T22:34:51.055Z"}
+{"error":"Authentication failed. Invalid username or password","level":"error","message":"Error logging in user","service":"user-service","stack":"AuthenticationError: Authentication failed. Invalid username or password\n    at loginUser (file:///home/jgda/Repositorios/proyectoBackendJoseDiazAngarita/src/controllers/userController.js:46:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-08-12T22:35:08.464Z"}
+{"cause":"Invalid email or password","level":"error","message":"Authentication failed. Invalid username or password","name":"AuthenticationError","service":"user-service","stack":"AuthenticationError: Authentication failed. Invalid username or password\n    at loginUser (file:///home/jgda/Repositorios/proyectoBackendJoseDiazAngarita/src/controllers/userController.js:46:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2024-08-12T22:35:08.465Z"}
+{"email":"jgda@coder.com","level":"info","message":"User registered successfully","service":"user-service","timestamp":"2024-08-12T22:36:17.088Z"}
+{"email":"jgda@coder.com","level":"info","message":"User logged in","service":"user-service","timestamp":"2024-08-12T22:36:24.126Z"}
+{"cartId":"66ba8e60bade0a9582765536","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:36:24.396Z"}
+{"level":"info","message":"User logged out","service":"user-service","timestamp":"2024-08-12T22:37:09.610Z"}
+{"email":"user@gmail.com","level":"info","message":"User logged in","service":"user-service","timestamp":"2024-08-12T22:37:18.043Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:37:18.307Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e90bade0a9582765543","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:37:22.196Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e7cbade0a9582765541","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:37:46.510Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:37:49.978Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product removed from cart","productId":"66ba8e7cbade0a9582765541","service":"user-service","timestamp":"2024-08-12T22:37:53.998Z"}
+{"level":"info","message":"Fetched product by ID","productId":"66ba8e90bade0a9582765543","service":"user-service","timestamp":"2024-08-12T22:37:54.107Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:37:57.060Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e90bade0a9582765543","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:37:58.575Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:03.551Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:38:05.340Z","unavailableProducts":[{"_id":"66ba8ea2bade0a958276554c","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":1,"thumbnails":[],"title":"Producto 2"},"quantity":2}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:30.453Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:33.741Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:38:37.316Z","unavailableProducts":[{"_id":"66ba8ea2bade0a958276554c","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":1,"thumbnails":[],"title":"Producto 2"},"quantity":2}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product removed from cart","productId":"66ba8e90bade0a9582765543","service":"user-service","timestamp":"2024-08-12T22:38:41.023Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:44.609Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:46.687Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:47.727Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e90bade0a9582765543","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:38:50.811Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:38:54.948Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Purchase completed successfully","purchaserEmail":"user@gmail.com","service":"user-service","timestamp":"2024-08-12T22:38:57.570Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:39:10.686Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e90bade0a9582765543","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:39:13.357Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:39:18.197Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:39:20.481Z","unavailableProducts":[{"_id":"66ba8f11bade0a95827655c7","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":0,"thumbnails":[],"title":"Producto 2"},"quantity":1}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:39:41.248Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e7cbade0a9582765541","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:39:42.931Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:39:46.860Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:39:48.894Z","unavailableProducts":[{"_id":"66ba8f11bade0a95827655c7","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":0,"thumbnails":[],"title":"Producto 2"},"quantity":1}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:39:57.016Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:01.269Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product removed from cart","productId":"66ba8e90bade0a9582765543","service":"user-service","timestamp":"2024-08-12T22:40:07.362Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:10.411Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e90bade0a9582765543","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:40:12.184Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:15.918Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:40:22.375Z","unavailableProducts":[{"_id":"66ba8f4cbade0a958276561e","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":0,"thumbnails":[],"title":"Producto 2"},"quantity":1}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:29.021Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e7cbade0a9582765541","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:40:30.981Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:35.922Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:40:38.068Z","unavailableProducts":[{"_id":"66ba8f4cbade0a958276561e","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":0,"thumbnails":[],"title":"Producto 2"},"quantity":1}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:46.658Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e7cbade0a9582765541","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:40:48.219Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:40:53.823Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product removed from cart","productId":"66ba8e7cbade0a9582765541","service":"user-service","timestamp":"2024-08-12T22:40:55.136Z"}
+{"level":"info","message":"Fetched product by ID","productId":"66ba8e90bade0a9582765543","service":"user-service","timestamp":"2024-08-12T22:40:55.252Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"warning","message":"Purchase completed with unavailable products","service":"user-service","timestamp":"2024-08-12T22:40:58.830Z","unavailableProducts":[{"_id":"66ba8f4cbade0a958276561e","product":{"__v":0,"_id":"66ba8e90bade0a9582765543","category":"PC","code":"002","description":"Descripción producto 2","owner":"jgda@coder.com","price":200,"status":true,"stock":0,"thumbnails":[],"title":"Producto 2"},"quantity":1}]}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product removed from cart","productId":"66ba8e90bade0a9582765543","service":"user-service","timestamp":"2024-08-12T22:41:07.958Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:41:11.443Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e7cbade0a9582765541","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:41:13.888Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:41:17.001Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Purchase completed successfully","purchaserEmail":"user@gmail.com","service":"user-service","timestamp":"2024-08-12T22:41:19.711Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:41:24.034Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Product added to cart","productId":"66ba8e7cbade0a9582765541","quantity":1,"service":"user-service","timestamp":"2024-08-12T22:42:17.262Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Fetched cart by ID","service":"user-service","timestamp":"2024-08-12T22:42:21.201Z"}
+{"cartId":"66b555dd39f5607b129fa6aa","level":"info","message":"Purchase completed successfully","purchaserEmail":"user@gmail.com","service":"user-service","timestamp":"2024-08-12T22:42:23.379Z"}

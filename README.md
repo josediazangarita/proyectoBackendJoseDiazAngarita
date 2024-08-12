@@ -23,6 +23,7 @@ Para instalar y configurar el proyecto, sigue estos pasos:
 
     PORT=8080
     MONGODB_URI=mongodb_uri
+    MONGODB_URI_TEST=mongodb_uri
     SESSION_SECRET=tu_secreto_de_sesion
     GITHUB_CLIENT_ID=XXXXXXXXX
     GITHUB_CLIENT_SECRET=XXXXXXXXX
@@ -43,15 +44,16 @@ En el archivo `package.json` se definen los siguientes scripts:
 
     ```json
     {
-      "scripts": {
-        "start": "nodemon src/app.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-      }
+    "scripts": {
+        "start": "NODE_ENV=production node src/app.js",
+        "dev": "NODE_ENV=development nodemon src/app.js",
+        "test": "mocha test/**"
+  },
     }
     ```
-
-- **start**: Inicia la aplicación en modo desarrollo con `nodemon`.
-- **test**: Muestra un mensaje de error indicando que no hay pruebas especificadas.
+- **start**: Inicia la aplicación en modo production con `node` y la colección `test` de MongoDB Atlas (comando inicialización: `npm start mongo`).
+- **dev**: Inicia la aplicación en modo desarrollo con `nodemon` y la colección `Ecommerce` de MongoDB Atlas (comando inicialización: `npm run dev mongo`).
+- **test**: Inicia los test: comando inicialización test unitario (no requiere app levantada en el servidor) y de integración (requiere app con servidor activo en modo development): `npm test`, comando inicialización test integración sólamente (requiere servidor activo en modo development): `mocha test ./test/integration/ecommerce.supertest.test.js`.
 
 ## Dependencias
 

@@ -91,7 +91,11 @@ const productService = new ProductService(productDao);
 logger.debug(`ProductService instance created: ${productService}`);
 
 // Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
-mongoose.connect(process.env.MONGODB_URI)
+const mongoURI = process.env.NODE_ENV === 'production'
+  ? process.env.MONGODB_URI
+  : process.env.MONGODB_URI_TEST;
+
+mongoose.connect(mongoURI)
     .then(() => logger.info('Server connected to MongoDB Atlas'))
     .catch(err => logger.error('Error connecting to MongoDB Atlas:', err.message));
 

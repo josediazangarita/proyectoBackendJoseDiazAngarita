@@ -22,7 +22,7 @@ class UserController {
         throw new UnderageUserError(age);
       }
 
-      await userService.createUser({
+      const result= await userService.createUser({
         first_name,
         last_name,
         email,
@@ -31,6 +31,7 @@ class UserController {
       });
       logger.info('User registered successfully', { email });
       res.redirect('/login');
+      //res.send({status:"succes", payload:result}); //Se cambia el redirect para realizar el test de integración.  
     } catch (error) {
       logger.error('Error registering user', { error: error.message, stack: error.stack });
       next(error);
