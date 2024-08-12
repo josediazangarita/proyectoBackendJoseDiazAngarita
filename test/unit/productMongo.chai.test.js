@@ -48,7 +48,6 @@ describe('Tests DAO Products Chai', function () {
     // Lista de tests
     it('getProducts() debe retornar un array de productos', async function () {
         const result = await dao.getProducts();
-        console.log('Resultado de getProducts:', result);
         expect(result).to.be.an('array');
         expect(result.some(product => product._id.equals(testProduct._id))).to.be.true;
     });
@@ -121,7 +120,6 @@ describe('Tests DAO Products Chai', function () {
     it('updateProduct() debe retornar un objeto con datos correctamente modificados', async function () {
         const modifiedData = { price: 150 };
         const result = await dao.updateProduct(testProduct._id, modifiedData);
-        console.log('Resultado de updateProduct:', result);
         expect(result).to.be.an('object');
         expect(result).to.have.property('_id');
         expect(result.price).to.equal(modifiedData.price);

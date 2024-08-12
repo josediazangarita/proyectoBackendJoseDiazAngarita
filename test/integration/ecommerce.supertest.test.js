@@ -62,7 +62,9 @@ describe('Test de Integración Ecommerce', function () {
             .send(testProduct);
         expect(productResponse.statusCode).to.equal(200);
 
-        this.productId = productResponse.body._id; // Guarda el ID del producto para usarlo en los tests
+        this.productId = productResponse.body.payload._id; // Guarda el ID del producto para usarlo en los tests
+        //this.productStock = productResponse.body.payload.stock;
+        //console.log('ID del producto:', this.productId, 'Stock del producto:', this.productStock); // Guarda el Stock del producto para usarlo en los tests
     });
 
     after(async function () {
@@ -70,6 +72,7 @@ describe('Test de Integración Ecommerce', function () {
         await mongoose.connection.db.collection('users').deleteMany({});
         await mongoose.connection.db.collection('products').deleteMany({});
         await mongoose.connection.db.collection('carts').deleteMany({});
+        
         // Cierra la conexión de la base de datos al finalizar los tests
         await mongoose.connection.close();
     });
@@ -113,7 +116,7 @@ describe('Test de Integración Ecommerce', function () {
         expect(cartId).to.exist;
         expect(productId).to.exist;
 
-        console.log(`Agregando producto con ID: ${productId} al carrito con ID: ${cartId}`);
+        //console.log(`Agregando producto con ID: ${productId} al carrito con ID: ${cartId}`);
 
         // Realiza la petición para agregar el producto al carrito
         const addProductResponse = await requester.post(`/api/carts/${cartId}/products/${productId}`)
@@ -126,13 +129,69 @@ describe('Test de Integración Ecommerce', function () {
         // Recupera el carrito del usuario para verificar la adición del producto
         const { body: cart } = await requester.get(`/api/carts/${cartId}`)
             .set('Cookie', cookie); // Usar la cookie del login del usuario
-        
-        // Imprime el carrito para depurar
-        console.log('Contenido del carrito:', cart);
 
         // Verifica si el carrito contiene el producto agregado
-        const productInCart = cart.products.some(p => p.product.toString() === productId);
+        const productInCart = cart.products.some(p => p.product._id.toString() === productId);
         expect(productInCart).to.be.true;
-    });    
 
-});
+         // Vaciar el carrito antes de agregar el producto
+        const emptyCartResponse = await requester.delete(`/api/carts/${cartId}`)
+        .set('Cookie', cookie);
+        expect(emptyCartResponse.statusCode).to.equal(200);
+
+        // Verificar que el carrito esté vacío
+        const { body: emptyCart } = await requester.get(`/api/carts/${cartId}`)
+        .set('Cookie', cookie);
+        expect(emptyCart.products).to.be.empty;
+    });  
+    
+    it('POST /api/carts/:cid/purchase debe completar la compra correctamente y generar un ticket de compra', async function () {
+        const { cartId, cookie, productId } = this;
+    
+        expect(cartId).to.exist;
+        expect(productId).to.exist;
+    
+        // Obtener el stock inicial del producto
+        const initialProductResponse = await requester.get(`/api/products/${productId}`)
+            .set('Cookie', cookie);
+        expect(initialProductResponse.statusCode).to.equal(200);
+        const initialProduct = initialProductResponse.body.payload;
+        const initialStock = initialProduct.stock;
+    
+        // Agregar el producto al carrito con una cantidad específica
+        const addProductResponse = await requester.post(`/api/carts/${cartId}/products/${productId}`)
+            .set('Cookie', cookie)
+            .send({ quantity: 5 });
+        expect(addProductResponse.statusCode).to.equal(200);
+    
+        // Completar la compra
+        const purchaseResponse = await requester.post(`/api/carts/${cartId}/purchase`)
+            .set('Cookie', cookie)
+            .send();
+        expect(purchaseResponse.statusCode).to.equal(200);
+    
+        const { body: result } = purchaseResponse;
+    
+        // Verifica que el ticket ha sido creado correctamente
+        expect(result).to.have.property('ticket');
+        expect(result.ticket).to.have.property('code');
+        expect(result.ticket).to.have.property('purchaseDatetime');
+        expect(result.ticket).to.have.property('amount');
+        expect(result.ticket).to.have.property('purchaser');
+    
+        // Verifica que el carrito esté vacío después de la compra
+        const { body: cart } = await requester.get(`/api/carts/${cartId}`)
+            .set('Cookie', cookie);
+        expect(cart.products).to.be.empty;
+    
+        // Verifica el stock del producto después de la compra
+        const updatedProductResponse = await requester.get(`/api/products/${productId}`)
+            .set('Cookie', cookie);
+        expect(updatedProductResponse.statusCode).to.equal(200);
+        const updatedProduct = updatedProductResponse.body.payload;
+    
+        // Verifica que el stock del producto haya disminuido correctamente
+        expect(updatedProduct.stock).to.equal(initialStock - 5);
+    });    
+    
+})
