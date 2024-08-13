@@ -51,7 +51,7 @@ export const addProductToCart = async (req, res, next) => {
 
   try {
     const product = await productService.getProductById(pid);
-    console.log(`Verificación: Product Owner: ${product.owner}, User Email: ${user.email}`);
+    //console.log(`Verificación: Product Owner: ${product.owner}, User Email: ${user.email}`);
     if (user.role === 'premium' && product.owner === user.email) {
       console.log('El usuario premium está intentando agregar su propio producto al carrito. Operación denegada.');
       return res.status(403).json({
@@ -127,7 +127,7 @@ export const purchaseCart = async (req, res, next) => {
 
     const result = await cartService.purchaseCart(cartId, userId, purchaserEmail);
 
-    if (result.unavailableProducts) {
+    if (result.unavailableProducts && result.unavailableProducts.length > 0) {
       logger.warning('Purchase completed with unavailable products', { cartId, unavailableProducts: result.unavailableProducts });
       return res.status(200).json(result);
     }

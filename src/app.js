@@ -12,6 +12,9 @@ import initializePassport from './config/passport.config.js';
 import dotenv from 'dotenv';
 import __dirname from './utils.js';
 import sharedsession from "express-socket.io-session";
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+
 //import nodemailer from 'nodemailer'
 // Custom modules
 import viewsRouter from './routes/views.router.js';
@@ -88,7 +91,11 @@ const productService = new ProductService(productDao);
 logger.debug(`ProductService instance created: ${productService}`);
 
 // Conexión a MongoDB (si se seleccionó el DAO de MongoDB)
-mongoose.connect(process.env.MONGODB_URI)
+const mongoURI = process.env.NODE_ENV === 'production'
+  ? process.env.MONGODB_URI
+  : process.env.MONGODB_URI_TEST;
+
+mongoose.connect(mongoURI)
     .then(() => logger.info('Server connected to MongoDB Atlas'))
     .catch(err => logger.error('Error connecting to MongoDB Atlas:', err.message));
 
@@ -102,6 +109,21 @@ app.engine('handlebars', handlebars.engine({
         allowProtoMethodsByDefault: true
     }
 }));
+
+//Configuración de la documentación con Swagger
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación Ecommerce JGDA',
+            description: 'Esta documentación cubre toda la API habilitada para Ecommerce JGDA',
+        },
+    },
+    apis: ['./src/docs/**/*.yaml'], //Todos los archivos de configuración de rutas estrán aquí.
+    };
+const specs = swaggerJsdoc(swaggerOptions);
+
+
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
@@ -134,9 +156,17 @@ app.use('/api/tickets', ticketRoutes);
 app.use('/api/testing', mockingRouter);
 app.use('/', errorRouter);
 app.use(loggerTest);
+app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //middleware de manejo de errores
 app.use(errorMiddleware);
+
+// Servidor de sockets
+websocket(io);
+
+httpServer.listen(PORT, () => {
+    logger.info(`Server active on port ${PORT}`);
+});
 
 //Cuenta gmail
 /*app.get('/mail', async(req,res)=>{
@@ -161,9 +191,3 @@ const transport =nodemailer.createTransport({
     }
 })*/
 
-// Servidor de sockets
-websocket(io);
-
-httpServer.listen(PORT, () => {
-    logger.info(`Server active on port ${PORT}`);
-});

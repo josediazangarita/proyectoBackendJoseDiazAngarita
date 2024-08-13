@@ -23,9 +23,7 @@ export default class ProductMongo {
 }
 
   async addProduct(productData) {
-    console.log('Producto recibido por el DAO:', productData);
     const result = await productModel.create(productData);
-    console.log('Producto guardado en la base de datos:', result);
     return result.toObject();
 }
 

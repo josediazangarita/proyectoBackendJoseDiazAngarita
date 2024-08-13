@@ -19,7 +19,6 @@ export default class ProductService {
     }
 
     async addProduct(productData) {
-      console.log('Producto recibido por el servicio:', productData);
       const newProduct = await productDAO.addProduct(productData);
       return new ProductDTO(newProduct);
     }
