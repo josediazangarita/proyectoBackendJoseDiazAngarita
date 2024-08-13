@@ -41,19 +41,26 @@ class UserController {
   async loginUser(req, res, next) {
     try {
       const { email, password } = req.body;
-      const user = await userService.getUserByEmail(email);
-      if (!user || !isValidPassword(user, password)) {
+      const userDTO = await userService.getUserByEmail(email);
+
+      if (!userDTO || !isValidPassword(userDTO, password)) {
         throw new AuthenticationError('Invalid email or password');
       }
 
       req.session.user = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        age: user.age,
-        role: user.role,
-        cart: user.cart,
+        firstName: userDTO.firstName,
+        lastName: userDTO.lastName,
+        email: userDTO.email,
+        age: userDTO.age,
+        role: userDTO.role,
+        cart: userDTO.cart,
+        last_connection: userDTO.last_connection
       };
+
+      // Actualizar last_connection en el login
+      userDTO.last_connection = new Date();
+      await userDTO.save();
+
       logger.info('User logged in', { email });
       res.redirect('/products');
     } catch (error) {
@@ -153,45 +160,95 @@ async renderPasswordResetForm(req, res, next) {
 
 async uploadDocuments(req, res, next) {
   try {
-      const { profileImage, productImage, documents } = req.files;
+    const { profileImages, productImages, documents } = req.files;
 
-      if (!profileImage && !productImage && !documents) {
-          return res.status(400).json({ message: 'No files uploaded' });
-      }
+    if (!profileImages && !productImages && !documents) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
 
-      if (profileImage) {
-          console.log('Profile Image:', profileImage[0].path);
-      }
+    // Recupera el email desde la sesión
+    const userEmail = req.session.user?.email;
+    if (!userEmail) {
+      throw new UserNotFoundError('User email is undefined');
+    }
 
-      if (productImage) {
-          console.log('Product Image:', productImage[0].path);
-      }
+    const user = await userService.getUserByEmail(userEmail);
+    if (!user) {
+      throw new UserNotFoundError(`The user with email: ${userEmail} does not exist`);
+    }
 
-      if (documents) {
-          console.log('Documents:', documents.map(doc => doc.path));
-      }
+    if (documents) {
+      const uploadedDocuments = documents.map(doc => ({
+        name: doc.originalname,
+        reference: doc.path
+      }));
 
-      res.status(200).json({ 
-          message: 'Documents uploaded successfully', 
-          profileImage, 
-          productImage, 
-          documents 
-      });
+      user.documents.push(...uploadedDocuments);
+    }
+
+    if (profileImages) {
+      const uploadedProfileImages = profileImages.map(img => ({
+        name: img.originalname,
+        reference: img.path
+      }));
+
+      user.profileImages.push(...uploadedProfileImages);
+    }
+
+    if (productImages) {
+      const uploadedProductImages = productImages.map(img => ({
+        name: img.originalname,
+        reference: img.path
+      }));
+
+      user.productImages.push(...uploadedProductImages);
+    }
+
+    await user.save();
+
+    res.status(200).json({ 
+      message: 'Documents uploaded successfully', 
+      profileImages, 
+      productImages, 
+      documents 
+    });
   } catch (error) {
-      next(error);
+    logger.error('Error uploading documents', { error: error.message, stack: error.stack });
+    next(error);
   }
 }
 }
 
-export const logoutUser = (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      logger.error('Error logging out user', { error: err.message, stack: err.stack });
-      return next(new AuthenticationError('Error al cerrar sesión'));
-    }
-    logger.info('User logged out');
-    res.redirect('/');
-  });
+export const logoutUser = async (req, res, next) => {
+  try {
+      const userSession = req.session.user;
+      
+      if (!userSession) {
+          throw new AuthenticationError('No user session found');
+      }
+
+      const userDTO = await userService.getUserByEmail(userSession.email);
+
+      if (!userDTO) {
+          throw new AuthenticationError('User not found');
+      }
+
+      userDTO.last_connection = new Date();
+      await userDTO.save();  // Usa el método save del DTO
+
+      req.session.destroy(err => {
+          if (err) {
+              logger.error('Error destroying session', { error: err.message, stack: err.stack });
+              return next(err);
+          }
+          
+          logger.info('User logged out', { email: userSession.email });
+          res.redirect('/login');
+      });
+  } catch (error) {
+      logger.error('Error logging out user', { error: error.message, stack: error.stack });
+      next(error);
+  }
 };
 
 export const toggleUserRole = async (req, res, next) => {

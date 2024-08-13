@@ -43,6 +43,34 @@ const userSchema = new mongoose.Schema({
         ref: 'carts',
         required: false
     },
+    documents: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            reference: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    profileImages: [
+        {
+        name: { type: String },
+        reference: { type: String }
+        }
+    ],
+  productImages: [
+        {
+        name: { type: String },
+        reference: { type: String }
+        }
+    ],
+    last_connection: {
+        type: Date,
+        default: null
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });

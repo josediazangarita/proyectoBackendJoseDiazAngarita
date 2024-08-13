@@ -15,8 +15,8 @@ router.post('/reset-password/:token', UserController.resetPassword);
 router.get('/validate-reset-token/:token', UserController.validateResetToken);
 router.put('/premium/:uid', isAdmin, toggleUserRole);
 router.post('/:uid/documents', userUploader.fields([
-    { name: 'profileImage', maxCount: 1 },
-    { name: 'productImage', maxCount: 1 },
+    { name: 'profileImages', maxCount: 1 },
+    { name: 'productImages', maxCount: 1 },
     { name: 'documents', maxCount: 5 }
   ]), UserController.uploadDocuments);
 

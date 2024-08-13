@@ -6,9 +6,9 @@ const userStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         let folder = 'documents'; 
 
-        if (file.fieldname === 'profileImage') {
+        if (file.fieldname === 'profileImages') {
             folder = 'profiles'; 
-        } else if (file.fieldname === 'productImage') {
+        } else if (file.fieldname === 'productImages') {
             folder = 'products'; 
         }
 
