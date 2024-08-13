@@ -180,7 +180,8 @@ async uploadDocuments(req, res, next) {
     if (documents) {
       const uploadedDocuments = documents.map(doc => ({
         name: doc.originalname,
-        reference: doc.path
+        reference: doc.path,
+        status: 'uploaded'
       }));
 
       user.documents.push(...uploadedDocuments);
@@ -189,7 +190,8 @@ async uploadDocuments(req, res, next) {
     if (profileImages) {
       const uploadedProfileImages = profileImages.map(img => ({
         name: img.originalname,
-        reference: img.path
+        reference: img.path,
+        status: 'uploaded'
       }));
 
       user.profileImages.push(...uploadedProfileImages);
@@ -198,7 +200,8 @@ async uploadDocuments(req, res, next) {
     if (productImages) {
       const uploadedProductImages = productImages.map(img => ({
         name: img.originalname,
-        reference: img.path
+        reference: img.path,
+        status: 'uploaded'
       }));
 
       user.productImages.push(...uploadedProductImages);

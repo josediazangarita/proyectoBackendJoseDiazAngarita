@@ -52,19 +52,48 @@ const userSchema = new mongoose.Schema({
             reference: {
                 type: String,
                 required: true
+            },
+            status: {
+                type: String,
+                enum: ['uploaded', 'pending'],
+                default: 'pending'
             }
         }
     ],
     profileImages: [
         {
-        name: { type: String },
-        reference: { type: String }
+        name: { 
+            type: String,
+            required: true
+         },
+            
+        reference: { 
+            type: String,
+            required: true
+         },
+         status: {
+                type: String,
+                enum: ['uploaded', 'pending'],
+                default: 'pending'
+            }
         }
     ],
   productImages: [
-        {
-        name: { type: String },
-        reference: { type: String }
+    {
+        name: { 
+            type: String,
+            required: true
+         },
+            
+        reference: { 
+            type: String,
+            required: true
+         },
+         status: {
+                type: String,
+                enum: ['uploaded', 'pending'],
+                default: 'pending'
+            }
         }
     ],
     last_connection: {
