@@ -151,7 +151,36 @@ async renderPasswordResetForm(req, res, next) {
     }
 }
 
+async uploadDocuments(req, res, next) {
+  try {
+      const { profileImage, productImage, documents } = req.files;
 
+      if (!profileImage && !productImage && !documents) {
+          return res.status(400).json({ message: 'No files uploaded' });
+      }
+
+      if (profileImage) {
+          console.log('Profile Image:', profileImage[0].path);
+      }
+
+      if (productImage) {
+          console.log('Product Image:', productImage[0].path);
+      }
+
+      if (documents) {
+          console.log('Documents:', documents.map(doc => doc.path));
+      }
+
+      res.status(200).json({ 
+          message: 'Documents uploaded successfully', 
+          profileImage, 
+          productImage, 
+          documents 
+      });
+  } catch (error) {
+      next(error);
+  }
+}
 }
 
 export const logoutUser = (req, res, next) => {
