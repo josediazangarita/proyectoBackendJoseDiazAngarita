@@ -17,7 +17,7 @@ router.put('/premium/:uid', isAdmin, toggleUserRole);
 router.post('/:uid/documents', userUploader.fields([
     { name: 'profileImages', maxCount: 1 },
     { name: 'productImages', maxCount: 1 },
-    { name: 'documents', maxCount: 5 }
+    { name: 'documents', maxCount: 3 }
   ]), UserController.uploadDocuments);
 
 export default router;

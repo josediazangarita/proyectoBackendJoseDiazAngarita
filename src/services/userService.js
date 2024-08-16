@@ -60,6 +60,11 @@ async updateUser(uid, updateData) {
   async getAllUsers() {
     return await userDAO.getAllUsers();
   }
+
+  async hasUploadedRequiredDocuments(user, requiredDocuments) {
+    const uploadedDocuments = user.documents.filter(doc => doc.status === 'uploaded').map(doc => doc.name);
+    return requiredDocuments.every(doc => uploadedDocuments.includes(doc));
+  }
 }
 
 export default UserService;

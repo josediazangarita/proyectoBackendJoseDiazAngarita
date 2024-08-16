@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema({
                 type: String,
                 enum: ['uploaded', 'pending'],
                 default: 'pending'
+            },
+            category: {
+                type: String,
+                require: true,
             }
         }
     ],

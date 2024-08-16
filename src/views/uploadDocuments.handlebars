@@ -1,0 +1,24 @@
+<h1>Cargar documentos para hacerte Premium</h1>
+<form action="/api/users/{{userId}}/documents" method="POST" enctype="multipart/form-data">
+  <div>
+    <label for="profileImages">Profile Image:</label>
+    <input type="file" name="profileImages" id="profileImages">
+  </div>
+  <div>
+    <label for="productImages">Product Image:</label>
+    <input type="file" name="productImages" id="productImages">
+  </div>
+  <div>
+    <label for="document1">Identificación:</label>
+    <input type="file" name="documents" id="document1">
+  </div>
+  <div>
+    <label for="document2">Comprobante de domicilio:</label>
+    <input type="file" name="documents" id="document2">
+  </div>
+  <div>
+    <label for="document3">Comprobante de estado de cuenta:</label>
+    <input type="file" name="documents" id="document3">
+  </div>
+  <button type="submit">Upload</button>
+</form>
