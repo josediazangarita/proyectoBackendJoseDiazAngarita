@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Ocurrió un error inesperado. Por favor, intenta de nuevo.',
+                text: 'Los administradores no pueden agregar productos al carrito',
             });
             });
         });

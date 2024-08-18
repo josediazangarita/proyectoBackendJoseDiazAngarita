@@ -23,15 +23,15 @@
             <a href="/" class="logo">Ecommerce</a>
 
             <nav class="navbar">
-                <a href="/products">Productos</a>
                 {{#if user}}
                     {{#or user.role (array 'admin' 'premium')}}
-                        <a href="/realtimeproducts">Modificar productos</a>
+                        <a href="/realtimeproducts">Administrar productos</a>
                     {{/or}}
                 {{/if}}
 
                 {{#if user}}
                 {{#or user.role (array 'user' 'premium')}}
+                    <a href="/products">Comprar Productos</a>
                     <a href="/uploadDocuments">Cuenta de usuario</a>
                     <a href="/chat">Chat</a>
                     <a href="/cart">
