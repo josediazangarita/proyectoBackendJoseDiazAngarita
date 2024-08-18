@@ -196,29 +196,57 @@ export const toggleUserRole = async (req, res, next) => {
   const { uid } = req.params;
 
   try {
-      const user = await userService.getUserById(uid);
+    const user = await userService.getUserById(uid);
 
-      if (!user) {
-          return res.status(404).json({
-              status: 'error',
-              message: 'Usuario no encontrado',
-          });
-      }
-
-      const newRole = user.role === 'user' ? 'premium' : 'user';
-      user.role = newRole;
-
-      await userService.updateUser(uid, { role: newRole });
-
-      logger.info(`Rol de usuario actualizado: ${user.email} ahora es ${newRole}`);
-      res.status(200).json({
-          status: 'success',
-          message: `El rol de usuario se cambió a ${newRole}`,
-          newRole: newRole,
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Usuario no encontrado',
       });
+    }
+
+    // Verificar si el usuario es admin y está intentando cambiar su rol a user
+    if (user.role === 'admin') {
+      return res.status(403).json({
+        status: 'error',
+        message: 'No se puede cambiar el rol de admin a user.',
+      });
+    }
+
+    // Verificar si el usuario está cambiando de 'user' a 'premium'
+    if (user.role === 'user') {
+      // Categorías de documentos requeridos para el rol premium
+      const requiredCategories = ['identificacion', 'comprobante de domicilio', 'comprobante de estado de cuenta'];
+      
+      // Verificar el estado de los documentos
+      const missingDocuments = requiredCategories.filter(category => {
+        // Busca un documento en la categoría que no esté en estado 'uploaded'
+        return !user.documents.some(doc => doc.category === category && doc.status === 'uploaded');
+      });
+
+      if (missingDocuments.length > 0) {
+        return res.status(400).json({
+          status: 'error',
+          message: `El usuario no ha terminado de procesar su documentación. Documentos faltantes o pendientes: ${missingDocuments.join(', ')}`,
+        });
+      }
+    }
+
+    // Cambiar el rol del usuario
+    const newRole = user.role === 'user' ? 'premium' : 'user';
+    user.role = newRole;
+
+    await userService.updateUser(uid, { role: newRole });
+
+    console.log(`Rol de usuario actualizado: ${user.email} ahora es ${newRole}`);
+    res.status(200).json({
+      status: 'success',
+      message: `El rol de usuario se cambió a ${newRole}`,
+      newRole: newRole,
+    });
   } catch (error) {
-      logger.error('Error al cambiar el rol del usuario', { error: error.message, stack: error.stack });
-      next(error);
+    console.error('Error al cambiar el rol del usuario', { error: error.message, stack: error.stack });
+    next(error);
   }
 };
 
