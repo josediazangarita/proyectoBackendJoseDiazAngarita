@@ -1,0 +1,41 @@
+<h1>Cargar Archivos</h1>
+<input type="hidden" id="userId" value="{{userId}}">
+
+<!-- Imagen de Perfil -->
+<div class="section">
+    <form id="profileImageForm" action="/api/users/{{userId}}/profileImage" method="POST" enctype="multipart/form-data">
+        <label for="profileImage">Selecciona una imagen de perfil:</label>
+        <input type="file" name="profileImage" id="profileImage" accept="image/*">
+        <button type="submit" class="btn-upload">Guardar Imagen de Perfil</button>
+        <button type="button" id="resetProfileImageBtn" onclick="resetProfileImage()">Resetear Imagen de Perfil</button>
+    </form>
+</div>
+
+<!-- Imágenes de Productos -->
+<div class="section">
+    <form id="productImagesForm" action="/api/users/{{userId}}/productImages" method="POST" enctype="multipart/form-data">
+        <label for="productImages">Selecciona imágenes de productos:</label>
+        <div id="productImagesContainer">
+            <input type="file" name="productImages" accept="image/*">
+        </div>
+        <button type="button" class="add-more-btn" onclick="addProductImageInput()">Añadir más imágenes</button>
+        <button type="submit" class="btn-upload">Guardar Imágenes de Productos</button>
+        <button type="button" id="resetProductImagesBtn" onclick="resetProductImages()">Resetear Imágenes de Productos</button>
+    </form>
+</div>
+
+<!-- Documentos -->
+<div class="section">
+    <form id="documentsForm" action="/api/users/{{userId}}/documents" method="POST" enctype="multipart/form-data">
+        <label for="document1">Identificación:</label>
+        <input type="file" class="btn-input-file" name="document1" id="document1">
+        <label for="document2">Comprobante de domicilio:</label>
+        <input type="file" class="btn-input-file" name="document2" id="document2">
+        <label for="document3">Comprobante de estado de cuenta:</label>
+        <input type="file" class="btn-input-file" name="document3" id="document3">
+        <button type="submit" class="btn-upload">Guardar Documentos</button>
+        <button type="button" id="resetDocumentsBtn" onclick="resetDocuments()">Resetear Documentos</button>
+    </form>
+</div>
+
+    <script src="/js/uploadDocumentsUser.js"></script>

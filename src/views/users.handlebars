@@ -4,7 +4,9 @@
     <table class="usersTable">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>ID del usuario</th>
+                <th>Nombre (s)</th>
+                <th>Apellido (s)</th>
                 <th>Email</th>
                 <th>Rol</th>
                 <th>Acciones</th>
@@ -14,6 +16,8 @@
             {{#each users}}
             <tr>
                 <td>{{this._id}}</td>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
                 <td>{{this.email}}</td>
                 <td>{{this.role}}</td>
                 <td>

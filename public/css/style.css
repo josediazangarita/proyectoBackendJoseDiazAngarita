@@ -25,7 +25,7 @@ flex-direction: column;
 margin-top: 80px;
 background-color: #001524;
 min-height: 100vh;
-background-image: url(../img/wallpaper-balls-3d.jpg);
+background-image: url(../imgAdmin/wallpaper-balls-3d.jpg);
 /*background-image: linear-gradient(to top, #09203f 0%, #537895 100%);*/
 background-size: cover;
 background-position: center;
@@ -814,4 +814,126 @@ li {
     text-align: center;
     color: #fff;
     overflow-x: auto;
+}
+
+/* Estilos de la vista de carga de documentos del usuario */
+.section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#profileImageForm {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: yellow;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+}
+
+#productImagesForm {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: yellow;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+}
+
+#documentsForm {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: yellow;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 20px;
+}
+
+#profileImage {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 70%;
+}
+
+#productImagesContainer{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 70%;
+}
+
+.btn-input-file{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 70%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+
+.btn-upload {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.btn-upload:hover {
+    background-color: #25d84c;
+}
+
+/* Estilo para los botones de reset */
+button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+button[type="button"]:hover {
+    background-color: #c62828;
+}
+#resetProfileImageBtn {
+    background-color: #ff5722;
+}
+#resetProfileImageBtn:hover {
+    background-color: #e64a19;
+}
+#resetProductImagesBtn {
+    background-color: #9c27b0;
+}
+#resetProductImagesBtn:hover {
+    background-color: #7b1fa2;
+}
+#resetDocumentsBtn {
+    background-color: #3f51b5;
+}
+#resetDocumentsBtn:hover {
+    background-color: #303f9f;
 }

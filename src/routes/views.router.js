@@ -121,7 +121,8 @@ router.get("/register", (req, res) => {
 });
 
 router.get('/restorePassword', (req, res) => {
-    res.render('passwordResetRequest', {
+    res.render('passwordResetRequest', 
+        {
         title: 'Restore Password Ecommerce JG',
         style: 'style.css'
     });
@@ -217,6 +218,16 @@ router.get('/users', isAdmin, getAllUsers, (req, res) => {
     res.render('users', {
         users: res.locals.users,
         style: 'style.css',
+    });
+});
+
+//Ruta para la carga de documentos para hacerse Premium
+router.get('/uploadDocuments', isUserOrPremium, (req, res) => {
+    res.render('uploadDocuments', 
+        {
+        userId: req.session.user.id,
+        title: 'Completar documentación para hacerse Premium',
+        style: 'style.css'
     });
 });
 
