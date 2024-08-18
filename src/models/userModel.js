@@ -43,6 +43,67 @@ const userSchema = new mongoose.Schema({
         ref: 'carts',
         required: false
     },
+    documents: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            reference: {
+                type: String,
+                required: true
+            },
+            status: {
+                type: String,
+                enum: ['uploaded', 'pending'],
+                default: 'pending'
+            },
+            category: {
+                type: String,
+                require: true,
+            }
+        }
+    ],
+    profileImage: [
+        {
+        name: { 
+            type: String,
+            required: true
+         },
+            
+        reference: { 
+            type: String,
+            required: true
+         },
+         status: {
+                type: String,
+                enum: ['uploaded', 'pending'],
+                default: 'pending'
+            }
+        }
+    ],
+  productImages: [
+    {
+        name: { 
+            type: String,
+            required: true
+         },
+            
+        reference: { 
+            type: String,
+            required: true
+         },
+         status: {
+                type: String,
+                enum: ['uploaded', 'pending'],
+                default: 'pending'
+            }
+        }
+    ],
+    last_connection: {
+        type: Date,
+        default: null
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
