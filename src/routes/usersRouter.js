@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import UserController, { logoutUser, saveProfileImage, saveProductImages, saveDocuments } from '../controllers/userController.js';
+import UserController, { logoutUser, saveProfileImage, saveProductImages, saveDocuments, deleteUserById, getAllUsers, getUserById } from '../controllers/userController.js';
 import { toggleUserRole } from '../controllers/userController.js';
 import { isAdmin, isUserOrPremium, isAdminOrPremium } from '../middlewares/authorization.js';
 import { upload } from '../utils/multerUser.js';
+import { deleteInactiveUsers } from '../controllers/userController.js';
 
 const router = Router();
 
@@ -23,5 +24,18 @@ router.post('/:uid/documents', isUserOrPremium, upload.fields([
     { name: 'document2', maxCount: 1 },
     { name: 'document3', maxCount: 1 }
   ]), saveDocuments);
+
+//Ruta para eliminar usuarios inactivos}
+router.delete('/inactive', isAdmin, deleteInactiveUsers);
+
+//ruta para eliminar usuarios por Id
+router.post('/:uid', isAdmin, deleteUserById);
+
+// Ruta para obtener todos los usuarios
+router.get('/', isAdmin, getAllUsers);
+
+// Ruta para obtener un usuario específico por ID
+router.get('/:uid', getUserById);
+
 
 export default router;

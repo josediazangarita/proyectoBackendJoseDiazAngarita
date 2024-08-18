@@ -14,6 +14,7 @@ import __dirname from './utils.js';
 import sharedsession from "express-socket.io-session";
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
+import methodOverride from 'method-override';
 
 //import nodemailer from 'nodemailer'
 // Custom modules
@@ -63,6 +64,9 @@ const sessionMiddleware = session({
 });
 
 app.use(sessionMiddleware);
+
+// Configura method-override para manejar el método DELETE en formularios
+app.use(methodOverride('_method'));
 
 // Compartir sesión con socket.io
 io.use(sharedsession(sessionMiddleware, {
@@ -167,27 +171,3 @@ websocket(io);
 httpServer.listen(PORT, () => {
     logger.info(`Server active on port ${PORT}`);
 });
-
-//Cuenta gmail
-/*app.get('/mail', async(req,res)=>{
-    let result = await transport.sendMail({
-        from: 'Coder test <josediazangarita@gmail.com>',
-        to:'Correo de prueba',
-        html: `
-        <div>
-            <h1> Esto es un test </h1>
-        </div>
-        `,
-        attachments:[]
-    })
-})
-
-const transport =nodemailer.createTransport({
-    service: 'gmail',
-    port: 587,
-    auth:{
-        user:'josediazangarita@gmail.com',
-        pass:'nzaf zdwj kzbb fegd'
-    }
-})*/
-

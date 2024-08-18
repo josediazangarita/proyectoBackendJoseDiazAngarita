@@ -41,8 +41,39 @@ async updateUser(uid, updateData) {
   }
 
   async getAllUsers() {
-    return await userModel.find().lean();
+    return await userModel.find({}, 'first_name last_name email role last_connection').lean();
+}
+
+async deleteInactiveUsers(thresholdDate) {
+  const result = await userModel.deleteMany({
+    last_connection: { $lt: thresholdDate },
+    role: { $ne: 'admin' }
+  });
+  return result;
+}
+
+  async findInactiveUsers(thresholdDate) {
+    return await userModel.find({
+      last_connection: { $lt: thresholdDate }
+    }).lean();
   }
+
+  async findDeletedUsers(thresholdDate) {
+    return await userModel.find({ deletedAt: { $gte: thresholdDate }, role: { $ne: 'admin' } });
+  }
+
+  async findAll() {
+    return await userModel.find({});
+  }
+
+  async findById(userId) {
+    return await userModel.findById(userId);
+  }
+
+  async deleteById(userId) {
+    return await userModel.findByIdAndDelete(userId);
+  }
+
 }
 
 export default UserDAO;

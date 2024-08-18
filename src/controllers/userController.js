@@ -100,31 +100,31 @@ class UserController {
     }
 }
 
-async validateResetToken(req, res, next) {
-  try {
-      const { token } = req.params;
-      const user = await userService.findByPasswordResetToken(token);
+  async validateResetToken(req, res, next) {
+    try {
+        const { token } = req.params;
+        const user = await userService.findByPasswordResetToken(token);
 
-      if (!user || user.resetPasswordExpires < Date.now()) {
-          return res.status(400).json({ message: 'Token expirado o inválido', expired: true });
-      }
+        if (!user || user.resetPasswordExpires < Date.now()) {
+            return res.status(400).json({ message: 'Token expirado o inválido', expired: true });
+        }
 
-      return res.status(200).json({ message: 'Token válido', expired: false });
-  } catch (error) {
-      logger.error('Error validando el token', { error: error.message, stack: error.stack });
-      next(error);
+        return res.status(200).json({ message: 'Token válido', expired: false });
+    } catch (error) {
+        logger.error('Error validando el token', { error: error.message, stack: error.stack });
+        next(error);
+    }
   }
-}
 
-async renderPasswordResetForm(req, res, next) {
-  try {
-      const { token } = req.params;
-      res.render('passwordReset', { token });
-  } catch (error) {
-      logger.error('Error rendering password reset form', { error: error.message, stack: error.stack });
-      next(error);
+  async renderPasswordResetForm(req, res, next) {
+    try {
+        const { token } = req.params;
+        res.render('passwordReset', { token });
+    } catch (error) {
+        logger.error('Error rendering password reset form', { error: error.message, stack: error.stack });
+        next(error);
+    }
   }
-}
 
   async resetPassword(req, res, next) {
     try {
@@ -357,5 +357,45 @@ export const saveDocuments = async (req, res, next) => {
   }
 };
 
+export const deleteInactiveUsers = async (req, res) => {
+  try {
+      const deletedUsers = await userService.deleteInactiveUsers();
+      res.status(200).json({ message: 'Usuarios inactivos eliminados', deletedCount: deletedUsers.deletedCount });
+  } catch (error) {
+      res.status(500).json({ message: 'Error al eliminar usuarios inactivos', error: error.message });
+  }
+};
+
+export const deleteUserById = async (req, res, next) => {
+  const { uid } = req.params;
+
+  try {
+    const result = await userService.deleteUser(uid);
+
+    if (result.deletedCount === 0) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+    res.redirect('/users');
+  } catch (error) {
+    console.error('Error al eliminar el usuario', { error: error.message, stack: error.stack });
+    next(error);
+  }
+};
+
+export const getUserById = async (req, res, next) => {
+  const { uid } = req.params;
+  try {
+    const user = await userService.getUserById(uid);
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Usuario no encontrado',
+      });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export default new UserController();

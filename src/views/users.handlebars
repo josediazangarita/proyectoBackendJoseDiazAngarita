@@ -1,5 +1,9 @@
 <div>
     <h1>Lista de Usuarios</h1>
+    <div class="btn-delete-inactive-users-container">
+        <button id="delete-inactive-users-btn">Eliminar Usuarios Inactivos</button>
+    </div>
+    
 
     <table class="usersTable">
         <thead>
@@ -9,6 +13,7 @@
                 <th>Apellido (s)</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Última conexión</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -20,10 +25,18 @@
                 <td>{{this.last_name}}</td>
                 <td>{{this.email}}</td>
                 <td>{{this.role}}</td>
+                <td>{{this.last_connection}}</td>
                 <td>
                     <button class="toggle-role-btn" data-user-id="{{this._id}}" data-user-role="{{this.role}}">
                         Cambiar Rol
                     </button>
+                </td>
+                <td>
+                    <form method="POST" action="/api/users/{{this._id}}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+
                 </td>
             </tr>
             {{/each}}
@@ -34,3 +47,4 @@
 </div>
 
 <script src="/js/toggleUserRole.js"></script>
+<script src="/js/deleteInactiveUsers.js"></script>
