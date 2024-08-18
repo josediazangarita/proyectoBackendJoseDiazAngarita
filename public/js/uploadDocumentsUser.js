@@ -70,52 +70,55 @@ function addProductImageInput() {
 async function handleProductImagesSubmit(event) {
     event.preventDefault();
     const userId = document.getElementById('userId').value;
-    const productImageInputs = document.querySelectorAll('.productImageInput');
+    const productImageInputs = document.querySelectorAll('#productImagesContainer input[type="file"]');
 
-    // Validación para asegurar que al menos un input de imagen tenga un archivo seleccionado
-    const hasImage = Array.from(productImageInputs).some(input => input.files.length > 0);
-    
-    if (!hasImage) {
+    const formData = new FormData();
+    productImageInputs.forEach(input => {
+        if (input.files.length > 0) {
+            Array.from(input.files).forEach(file => {
+                formData.append('productImages', file);
+            });
+        }
+    });
+
+    if (formData.has('productImages')) {
+        try {
+            const response = await fetch(`/api/users/${userId}/productImages`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error:', errorData);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocurrió un error...',
+                    html: `<p>${errorData.modalMessage}</p><p><strong>Detalles:</strong> ${errorData.details}</p>`
+                });
+                return;
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Imágenes Cargadas',
+                text: 'Tus imágenes de productos se han cargado exitosamente.',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ocurrió un error inesperado. Si no eres premium no puedes cargar imágenes de productos. Por favor, intenta de nuevo.'
+            });
+        }
+    } else {
         Swal.fire({
             icon: 'error',
             title: 'Error',
             text: 'Por favor, selecciona al menos una imagen para cargar.'
-        });
-        return;
-    }
-
-    const formData = new FormData(document.getElementById('productImagesForm'));
-
-    try {
-        const response = await fetch(`/api/users/${userId}/productImages`, {
-            method: 'POST',
-            body: formData
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Error:', errorData);
-            Swal.fire({
-                icon: 'error',
-                title: 'Ocurrió un error...',
-                html: `<p>${errorData.modalMessage}</p><p><strong>Detalles:</strong> ${errorData.details}</p>`
-            });
-            return;
-        }
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Imágenes Cargadas',
-            text: 'Tus imágenes de productos se han cargado exitosamente.',
-            showConfirmButton: false,
-            timer: 2000
-        });
-    } catch (error) {
-        console.error('Error:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Ocurrió un error inesperado. Por favor, intenta de nuevo.'
         });
     }
 }

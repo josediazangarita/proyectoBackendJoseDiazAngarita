@@ -222,7 +222,7 @@ router.get('/users', isAdmin, getAllUsers, (req, res) => {
 });
 
 //Ruta para la carga de documentos para hacerse Premium
-router.get('/uploadDocuments', (req, res) => {
+router.get('/uploadDocuments', isUserOrPremium, (req, res) => {
     res.render('uploadDocuments', 
         {
         userId: req.session.user.id,

@@ -215,12 +215,8 @@ export const toggleUserRole = async (req, res, next) => {
 
     // Verificar si el usuario está cambiando de 'user' a 'premium'
     if (user.role === 'user') {
-      // Categorías de documentos requeridos para el rol premium
       const requiredCategories = ['identificacion', 'comprobante de domicilio', 'comprobante de estado de cuenta'];
-      
-      // Verificar el estado de los documentos
       const missingDocuments = requiredCategories.filter(category => {
-        // Busca un documento en la categoría que no esté en estado 'uploaded'
         return !user.documents.some(doc => doc.category === category && doc.status === 'uploaded');
       });
 
@@ -300,6 +296,7 @@ export const saveProductImages = async (req, res, next) => {
 
     const { files } = req;
     const uploadedFiles = Array.isArray(files) ? files : [files];
+
     if (!uploadedFiles || uploadedFiles.length === 0) {
       return res.status(400).json({ message: 'No files uploaded' });
     }
@@ -311,14 +308,13 @@ export const saveProductImages = async (req, res, next) => {
     }));
 
     userDTO.productImages.push(...productImages);
-
     await userDTO.save();
+
     res.status(200).json({ message: 'Product images uploaded successfully' });
   } catch (error) {
     next(error);
   }
 };
-
 
 export const saveDocuments = async (req, res, next) => {
   try {
