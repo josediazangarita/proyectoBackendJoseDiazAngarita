@@ -789,9 +789,10 @@ li {
 }
 
 #totalAmount{
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.50);
     margin-bottom: 20px;
     font-size: 18px;
+    color: black;
 }
 
 .btn-purchase {
