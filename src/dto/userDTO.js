@@ -1,6 +1,6 @@
 import userModel from '../models/userModel.js';
 class UserDTO {
-    constructor({ _id, first_name, last_name, email, age, password, role, githubId, cart, documents, profileImages, productImages, last_connection }) {
+    constructor({ _id, first_name, last_name, email, age, password, role, githubId, cart, documents, profileImage, productImages, last_connection }) {
       this.id = _id;
       this.firstName = first_name;
       this.lastName = last_name;
@@ -11,7 +11,7 @@ class UserDTO {
       this.githubId = githubId;
       this.cart = cart;
       this.documents = documents;
-      this.profileImages = profileImages;
+      this.profileImage = profileImage;
       this.productImages = productImages;
       this.last_connection = last_connection;
     }
@@ -27,7 +27,7 @@ class UserDTO {
           githubId: this.githubId,
           cart: this.cart,
           documents: this.documents,
-          profileImages: this.profileImages,
+          profileImage: this.profileImage,
           productImages: this.productImages,
           last_connection: this.last_connection
       }, { new: true });

@@ -48,6 +48,7 @@ class UserController {
       }
 
       req.session.user = {
+        id: userDTO.id,
         firstName: userDTO.firstName,
         lastName: userDTO.lastName,
         email: userDTO.email,
@@ -157,69 +158,6 @@ async renderPasswordResetForm(req, res, next) {
         next(error);
     }
 }
-
-async uploadDocuments(req, res, next) {
-  try {
-    const { profileImages, productImages, documents } = req.files;
-
-    if (!profileImages && !productImages && !documents) {
-      return res.status(400).json({ message: 'No files uploaded' });
-    }
-
-    // Recupera el email desde la sesión
-    const userEmail = req.session.user?.email;
-    if (!userEmail) {
-      throw new UserNotFoundError('User email is undefined');
-    }
-
-    const user = await userService.getUserByEmail(userEmail);
-    if (!user) {
-      throw new UserNotFoundError(`The user with email: ${userEmail} does not exist`);
-    }
-
-    if (documents) {
-      const uploadedDocuments = documents.map(doc => ({
-        name: doc.originalname,
-        reference: doc.path,
-        status: 'uploaded'
-      }));
-
-      user.documents.push(...uploadedDocuments);
-    }
-
-    if (profileImages) {
-      const uploadedProfileImages = profileImages.map(img => ({
-        name: img.originalname,
-        reference: img.path,
-        status: 'uploaded'
-      }));
-
-      user.profileImages.push(...uploadedProfileImages);
-    }
-
-    if (productImages) {
-      const uploadedProductImages = productImages.map(img => ({
-        name: img.originalname,
-        reference: img.path,
-        status: 'uploaded'
-      }));
-
-      user.productImages.push(...uploadedProductImages);
-    }
-
-    await user.save();
-
-    res.status(200).json({ 
-      message: 'Documents uploaded successfully', 
-      profileImages, 
-      productImages, 
-      documents 
-    });
-  } catch (error) {
-    logger.error('Error uploading documents', { error: error.message, stack: error.stack });
-    next(error);
-  }
-}
 }
 
 export const logoutUser = async (req, res, next) => {
@@ -237,7 +175,7 @@ export const logoutUser = async (req, res, next) => {
       }
 
       userDTO.last_connection = new Date();
-      await userDTO.save();  // Usa el método save del DTO
+      await userDTO.save();
 
       req.session.destroy(err => {
           if (err) {
@@ -293,5 +231,107 @@ export const getAllUsers = async (req, res, next) => {
       next(error);
   }
 };
+
+export const saveProfileImage = async (req, res, next) => {
+  try {
+    const { email } = req.session.user;
+    console.log('datos del usuario al cargar profileImage', req.session.user)
+    
+    const userDTO = await userService.getUserByEmail(email);
+    if (!userDTO) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { file } = req;
+
+    if (!file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    userDTO.profileImage = {
+      name: file.originalname,
+      reference: `/profile_images/${file.filename}`,
+      status: 'uploaded'
+    };
+
+    await userDTO.save();
+    res.status(200).json({ message: 'Profile image uploaded successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const saveProductImages = async (req, res, next) => {
+  try {
+    const { email } = req.session.user;
+    
+    const userDTO = await userService.getUserByEmail(email);
+    if (!userDTO) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { files } = req;
+    const uploadedFiles = Array.isArray(files) ? files : [files];
+    if (!uploadedFiles || uploadedFiles.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
+
+    const productImages = uploadedFiles.map(file => ({
+      name: file.originalname,
+      reference: file.path,
+      status: 'uploaded'
+    }));
+
+    userDTO.productImages.push(...productImages);
+
+    await userDTO.save();
+    res.status(200).json({ message: 'Product images uploaded successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const saveDocuments = async (req, res, next) => {
+  try {
+    const { email } = req.session.user;
+
+    const userDTO = await userService.getUserByEmail(email);
+    if (!userDTO) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { files } = req;
+
+    if (!files || Object.keys(files).length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
+
+    const documentCategories = {
+      document1: 'identificacion',
+      document2: 'comprobante de domicilio',
+      document3: 'comprobante de estado de cuenta'
+    };
+
+    const newDocuments = Object.keys(files).map(key => ({
+      name: files[key][0].originalname,
+      reference: files[key][0].path,
+      category: documentCategories[key],
+      status: 'uploaded'
+    }));
+
+    userDTO.documents = userDTO.documents.filter(doc => 
+      !newDocuments.some(newDoc => newDoc.category === doc.category)
+    );
+
+    userDTO.documents.push(...newDocuments);
+
+    await userDTO.save();
+    res.status(200).json({ message: 'Documents uploaded successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export default new UserController();

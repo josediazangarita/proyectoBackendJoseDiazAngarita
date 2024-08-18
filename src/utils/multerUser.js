@@ -1,39 +1,25 @@
 import multer from 'multer';
 import path from 'path';
-import __dirname from '../utils.js';
 
-const userStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        let folder = 'documents'; 
-
-        if (file.fieldname === 'profileImages') {
-            folder = 'profiles'; 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        let folder;
+        if (file.fieldname === 'profileImage') {
+            folder = path.resolve('public/profile_images');
         } else if (file.fieldname === 'productImages') {
-            folder = 'products'; 
+            folder = path.resolve('public/product_images');
+        } else {
+            folder = path.resolve('public/documents');
         }
-
-        cb(null, path.join(__dirname, `../public/${folder}`));
+        console.log(`Saving file to: ${folder}`);
+        cb(null, folder);
     },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
+    filename: (req, file, cb) => {
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+        const filename = `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`;
+        console.log(`Generated filename: ${filename}`);
+        cb(null, filename);
     }
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|pdf|docx/;
-    const mimeType = allowedTypes.test(file.mimetype);
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-
-    if (mimeType && extname) {
-        return cb(null, true);
-    } else {
-        cb(new Error('Only images (jpegf, jpg, png, gif) and documents (PDF, DOCX) are allowed'));
-    }
-};
-
-export const userUploader = multer({ 
-    storage: userStorage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 }
-});
+export const upload = multer({ storage });
