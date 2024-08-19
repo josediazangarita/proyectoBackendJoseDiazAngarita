@@ -85,33 +85,31 @@ async updateUser(uid, updateData) {
   }
 
   async deleteInactiveUsers() {
-    const thresholdDate = new Date(Date.now() - 5 * 60 * 1000); // Últimos 5 minutos para pruebas
-                          //new Date(Date.now() - 30 * 60 * 1000); // Últimos 30 minutos para pruebas
-                          //new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Últimos 30 días
-    const result = await userDAO.deleteInactiveUsers(thresholdDate);
+    const thresholdDate = new Date(Date.now() - 5 * 60 * 1000);
+
+    const deletedUsers = await userDAO.deleteInactiveUsers(thresholdDate);
   
-    console.log(`Usuarios eliminados: ${result.deletedCount}`);
+    console.log(`Usuarios eliminados: ${deletedUsers.length}`);
   
-    if (result.deletedCount > 0) {
-      const deletedUsers = await userDAO.findDeletedUsers(thresholdDate);
-      const usersToNotify = deletedUsers.filter(user => user.role !== 'admin');
-      const notificationPromises = usersToNotify.map(user =>
-        transporter.sendMail({
-          from: process.env.EMAIL,
-          to: user.email,
-          subject: 'Cuenta eliminada por inactividad',
-          text: `Hola ${user.first_name},\n\nTu cuenta ha sido eliminada debido a la inactividad durante los últimos días. Si tienes alguna duda o quieres reactivar tu cuenta, por favor contáctanos.\n\nSaludos,\nEl equipo de Ecommerce JGDA.`,
-        }).catch(error => {
-          console.error(`Error enviando correo a ${user.email}:`, error);
-        })
-      );
+    if (deletedUsers.length > 0) {
+        // Filtrar los usuarios que no son admin
+        const usersToNotify = deletedUsers.filter(user => user.role !== 'admin');
+        const notificationPromises = usersToNotify.map(user =>
+            transporter.sendMail({
+                from: process.env.EMAIL,
+                to: user.email,
+                subject: 'Cuenta eliminada por inactividad',
+                text: `Hola ${user.first_name},\n\nTu cuenta ha sido eliminada debido a la inactividad durante los últimos días. Si tienes alguna duda o quieres reactivar tu cuenta, por favor contáctanos.\n\nSaludos,\nEl equipo de Ecommerce JGDA.`,
+            }).catch(error => {
+                console.error(`Error enviando correo a ${user.email}:`, error);
+            })
+        );
   
-      await Promise.all(notificationPromises);
+        await Promise.all(notificationPromises);
     }
   
-    return result;
-  }
-    
+    return { deletedCount: deletedUsers.length };
+} 
 }
 
 export default UserService;

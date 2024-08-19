@@ -45,12 +45,19 @@ async updateUser(uid, updateData) {
 }
 
 async deleteInactiveUsers(thresholdDate) {
+  const usersToDelete = await userModel.find({
+    last_connection: { $lt: thresholdDate },
+    role: { $ne: 'admin' }
+  });
+
   const result = await userModel.deleteMany({
     last_connection: { $lt: thresholdDate },
     role: { $ne: 'admin' }
   });
-  return result;
+
+  return usersToDelete;
 }
+
 
   async findInactiveUsers(thresholdDate) {
     return await userModel.find({
