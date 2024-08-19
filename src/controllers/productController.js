@@ -2,6 +2,7 @@ import ProductDTO from '../dto/productDTO.js';
 import ProductService from '../services/productService.js';
 import { ProductNotFoundError, InvalidProductError, ProductDatabaseError } from '../errors/productErrors.js';
 import logger from '../logs/logger.js';
+import transporter from '../config/nodemailer.config.js'; 
 
 const productService = new ProductService();
 
@@ -66,20 +67,33 @@ export const deleteProduct = async (req, res, next) => {
     try {
         const { pid } = req.params;
         const user = req.session.user;
-
-        // Obtener el producto para verificar el owner
         const product = await productService.getProductById(pid);
 
         if (!product) {
-            return res.status(404).json({ status: 'error', message: 'Product not found' });
+            return res.status(404).json({ status: 'error', message: 'Producto no encontrado' });
         }
 
-        // Verificar permisos: solo el owner o un admin puede eliminar
         if (user.role === 'admin' || (user.role === 'premium' && product.owner === user.email)) {
             const result = await productService.deleteProduct(pid);
-            return res.status(200).json({ status: 'success', message: 'Producto remove' });
+
+            if (result) {
+                if (user.role === 'premium' && product.owner === user.email) {
+                    await transporter.sendMail({
+                        from: process.env.EMAIL,
+                        to: user.email,
+                        subject: 'Producto eliminado',
+                        text: `Hola ${user.first_name},\n\nEl producto "${product.title}" que poseías ha sido eliminado de la plataforma.\n\nSi tienes alguna pregunta, no dudes en contactarnos.\n\nSaludos,\nEl equipo de Ecommerce JGDA.`,
+                    }).catch(error => {
+                        console.error(`Error enviando correo a ${user.email}:`, error);
+                    });
+                }
+
+                return res.status(200).json({ status: 'success', message: 'Producto eliminado' });
+            } else {
+                return res.status(500).json({ status: 'error', message: 'Error al eliminar el producto' });
+            }
         } else {
-            return res.status(403).json({ status: 'error', message: 'Access denied. You cannot delete this product' });
+            return res.status(403).json({ status: 'error', message: 'Acceso denegado. No puedes eliminar este producto.' });
         }
     } catch (error) {
         console.error('Error en deleteProduct:', error);

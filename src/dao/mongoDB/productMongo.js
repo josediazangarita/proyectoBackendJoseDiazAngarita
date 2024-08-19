@@ -45,10 +45,13 @@ export default class ProductMongo {
 
   async deleteProduct(id) {
     try {
-        const result = await productModel.findByIdAndDelete(id);
-        return result ? true : false;
+      const product = await this.getProductById(id);
+      if (!product) return false;
+
+      await productModel.findByIdAndDelete(id);
+      return product;
     } catch (error) {
-        throw new Error('Error al eliminar el producto');
+      throw new Error('Error al eliminar el producto');
     }
-}
+  }
 }
