@@ -1,16 +1,19 @@
-import productService from "./services/productService.js";
+import ProductService from "./services/productService.js";
+import ProductMongo from './dao/mongoDB/productMongo.js';
 import CartService from './services/cartService.js';
 import UserDTO from './dto/userDTO.js';
+import transporter from './config/nodemailer.config.js';
 
-
-const store = new productService();
+// Crear instancias de los servicios
+const productDAO = new ProductMongo();
+const productService = new ProductService(productDAO);
 const cartService = new CartService();
 let messages = []; 
 
 export default (io) => {
     io.on("connection", async socket => {
         // Enviar la lista de productos al cliente cuando se conecta
-        const products = await store.getProducts();
+        const products = await productService.getProducts();
         socket.emit('productList', products);
 
         // Manejar la creación de productos desde sockets
@@ -20,27 +23,48 @@ export default (io) => {
                 ...newProduct,
                 owner: ownerEmail
             };
-            const result = await store.addProduct(productData);
+            const result = await productService.addProduct(productData);
             io.emit('newProduct', result);
         });
 
-        // Manejar la eliminación de productos desde sockets
-        socket.on("deleteProduct", async (pid) => {
+        socket.on('deleteProduct', async (pid) => {
             try {
                 const user = socket.handshake.session.user;
-
+        
                 // Obtener el producto para verificar el owner
-                const product = await store.getProductById(pid);
-
+                const product = await productService.getProductById(pid);
+        
                 if (!product) {
                     return socket.emit('deleteError', 'Producto no encontrado');
                 }
-
+        
                 // Verificar permisos: solo el owner o un admin puede eliminar
                 if (user.role === 'admin' || (user.role === 'premium' && product.owner === user.email)) {
-                    const result = await store.deleteProduct(pid);
+                    const result = await productService.deleteProduct(pid);
                     if (result) {
                         io.emit('productDeleted', pid);
+        
+                        // Enviar notificación por correo si es necesario
+                        if (user.role === 'premium' && product.owner === user.email) {
+                            await transporter.sendMail({
+                                from: process.env.EMAIL,
+                                to: user.email,
+                                subject: 'Producto eliminado',
+                                text: `Hola, \n\nEl producto "${product.title}" que poseías ha sido eliminado de la plataforma.\n\nSi tienes alguna pregunta, no dudes en contactarnos.\n\nSaludos,\nEl equipo de Ecommerce JGDA.`,
+                            }).catch(error => {
+                                console.error(`Error enviando correo a ${user.email}:`, error);
+                            });
+                        } else if (user.role === 'admin') {
+                            // Enviar notificación al propietario del producto si es admin
+                            await transporter.sendMail({
+                                from: process.env.EMAIL,
+                                to: product.owner,
+                                subject: 'Producto eliminado por admin',
+                                text: `Hola,\n\nEl producto "${product.title}" ha sido eliminado por un administrador de la plataforma.\n\nSi tienes alguna pregunta, no dudes en contactarnos.\n\nSaludos,\nEl equipo de Ecommerce JGDA.`,
+                            }).catch(error => {
+                                console.error(`Error enviando correo a ${product.owner}:`, error);
+                            });
+                        }
                     } else {
                         socket.emit('deleteError', 'Error al eliminar el producto');
                     }

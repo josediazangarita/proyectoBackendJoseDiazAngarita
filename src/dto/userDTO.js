@@ -13,7 +13,7 @@ class UserDTO {
       this.documents = documents;
       this.profileImage = profileImage;
       this.productImages = productImages;
-      this.last_connection = last_connection;
+      this.lastConnection = last_connection ? new Date(last_connection).toLocaleString() : 'Nunca conectado';
     }
 
     async save() {

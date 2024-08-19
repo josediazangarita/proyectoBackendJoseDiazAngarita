@@ -111,7 +111,7 @@ async function handleProductImagesSubmit(event) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Ocurrió un error inesperado. Si no eres premium no puedes cargar imágenes de productos. Por favor, intenta de nuevo.'
+                text: 'Si no eres premium no puedes cargar imágenes de productos.'
             });
         }
     } else {

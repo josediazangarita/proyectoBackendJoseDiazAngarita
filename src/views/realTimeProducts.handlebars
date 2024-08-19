@@ -10,7 +10,11 @@
         <button type="submit">Crear Producto</button>
     </form>
 
-    <h2> Lista de productos actualizada </h2>
+    <div class="button-container">
+        <a href="/products" class="btn-product-list">Ver lista publicada de productos para usuarios</a>
+    </div>
+
+    <h2> Lista de productos en tiempo real para administrar </h2>
     <ul id="productList">
         {{#each products}}
             <li>

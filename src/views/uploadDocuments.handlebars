@@ -4,7 +4,7 @@
 <!-- Imagen de Perfil -->
 <div class="section">
     <form id="profileImageForm" action="/api/users/{{userId}}/profileImage" method="POST" enctype="multipart/form-data">
-        <label for="profileImage">Selecciona una imagen de perfil:</label>
+        <label for="profileImage">Sube una imagen de perfil:</label>
         <input type="file" name="profileImage" id="profileImage" accept="image/*">
         <button type="submit" class="btn-upload">Guardar Imagen de Perfil</button>
         <button type="button" id="resetProfileImageBtn" onclick="resetProfileImage()">Resetear Imagen de Perfil</button>
@@ -14,7 +14,7 @@
 <!-- Imágenes de Productos -->
 <div class="section">
     <form id="productImagesForm" action="/api/users/{{userId}}/productImages" method="POST" enctype="multipart/form-data">
-        <label for="productImages">Selecciona imágenes de productos:</label>
+        <label for="productImages">Sube imágenes de productos:</label>
         <div id="productImagesContainer">
             <input type="file" name="productImages" accept="image/*">
         </div>
@@ -27,6 +27,7 @@
 <!-- Documentos -->
 <div class="section">
     <form id="documentsForm" action="/api/users/{{userId}}/documents" method="POST" enctype="multipart/form-data">
+        <h3><strong>Sube tus documentos para hacerte premium</strong></h3>
         <label for="document1">Identificación:</label>
         <input type="file" class="btn-input-file" name="document1" id="document1">
         <label for="document2">Comprobante de domicilio:</label>

@@ -102,7 +102,7 @@ const userSchema = new mongoose.Schema({
     ],
     last_connection: {
         type: Date,
-        default: null
+        default: Date.now
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date
