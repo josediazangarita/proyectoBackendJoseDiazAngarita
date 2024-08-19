@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Ocurrió un error inesperado. Por favor, intenta de nuevo.',
+                text: 'Los administradores no pueden agregar productos al carrito',
             });
             });
         });
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         totalAmountElement.textContent = `Total: $${totalAmount}`;
 
-        // Asignar eventos de clic para los nuevos botones de eliminar producto
+        // Asignar eventos de clic para los nuevos botones de eliminar producto del carrito
         cartList.querySelectorAll('.remove-from-cart-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const productId = button.dataset.productId;

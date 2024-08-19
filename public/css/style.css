@@ -157,7 +157,7 @@ h3{
 }
 
 p{
-    padding: 10px;
+    padding: 4px;
     color: #ffff;
     text-align: center;
 }
@@ -196,9 +196,8 @@ p{
 }
 
 .card-body {
-    padding: 10px;
     color: antiquewhite;
-    font-size: 1.2em;
+    font-size: 1em;
     text-align: center;
 }
 
@@ -206,7 +205,6 @@ p{
     max-width: 100%;
     height: auto;
     display: block;
-    margin-top: 10px;
 }
 
 .add-to-cart-btn {
@@ -251,7 +249,8 @@ p{
     color: antiquewhite;
     font-size: 1.2em;
     text-align: center;
-    margin: auto; 
+    margin: auto;
+    margin-bottom: 25px; 
     width: 80%; 
     max-width: 500px; 
 }
@@ -281,6 +280,30 @@ p{
 }
 
 /* Estilos para lista de productos de realTimeProducts */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-product-list {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    width: fit-content;
+    text-decoration: none;
+}
+
+.btn-product-list:hover {
+    background-color: #25d84c;
+}
+
 #productList {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -531,9 +554,28 @@ p{
     background-color: #4bc2e5;
 }
 
+.btn-delete-inactive-users-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
 
+#delete-inactive-users-btn{
+    background-color: orangered;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50px;
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center;
+}
 
-
+#delete-inactive-users-btn:hover{
+    background-color: red;
+}
 
 /*Estilos del footer*/
 footer{
@@ -766,9 +808,10 @@ li {
 }
 
 #totalAmount{
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.50);
     margin-bottom: 20px;
     font-size: 18px;
+    color: black;
 }
 
 .btn-purchase {
@@ -899,6 +942,7 @@ label {
     border-radius: 50px;
     font-size: 16px;
     margin-top: 15px;
+    text-align: center;
 }
 
 .btn-upload:hover {
@@ -937,3 +981,4 @@ button[type="button"]:hover {
 #resetDocumentsBtn:hover {
     background-color: #303f9f;
 }
+
