@@ -1,4 +1,3 @@
-import ProductDTO from '../dto/productDTO.js';
 import ProductService from '../services/productService.js';
 import { ProductNotFoundError, InvalidProductError, ProductDatabaseError } from '../errors/productErrors.js';
 import logger from '../logs/logger.js';

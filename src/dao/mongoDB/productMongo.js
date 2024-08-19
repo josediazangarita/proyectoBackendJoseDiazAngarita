@@ -1,6 +1,5 @@
 import productModel from '../../models/productModel.js';
 import { ProductNotFoundError, ProductDatabaseError, InvalidProductError } from '../../errors/productErrors.js';
-import { generateProductErrorInfo } from '../../errors/generateProductErrorInfo.js';
 export default class ProductMongo {
   constructor() {}
 
