@@ -44,7 +44,7 @@ router.get('/products', async (req, res) => {
     }
 
     const limit = 9;
-    const baseURL = "http://localhost:8080/products";
+    const baseURL = "https://proyectobackendjosediazangarita.onrender.com/products";
 
     try {
         const options = {
